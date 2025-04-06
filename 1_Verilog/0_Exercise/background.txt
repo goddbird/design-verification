@@ -1,0 +1,9 @@
+//Terminal
+PROFILE_ID=$(gsettings get org.gnome.Terminal.ProfilesList default | tr -d \')
+PROFILE_ID=$(gsettings get org.gnome.Terminal.ProfilesList default | tr -d \') && \
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$PROFILE_ID/ use-theme-colors false && \
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$PROFILE_ID/ background-color '#000000' && \
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$PROFILE_ID/ foreground-color '#FFFFFF'
+
+//gedit
+gsettings set org.gnome.gedit.preferences.editor scheme 'oblivion'
