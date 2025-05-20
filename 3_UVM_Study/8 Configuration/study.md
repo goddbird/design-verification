@@ -43,4 +43,6 @@
   - uvm_config_int::set(this, "*", "recording_detail", 1); //為所有元件中的recording_detail改成1
 - config設定失敗時，要如何debug?
   - 可以在test加入check phase做檢查 (check_config_usage) ，會在simulation最後階段印出所有set過但沒有被get到的設定。
+  - ![image](https://github.com/user-attachments/assets/3ce82217-c9cc-4f34-a26c-9b42983244cc)
+
 
