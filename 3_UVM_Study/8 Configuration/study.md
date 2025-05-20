@@ -46,3 +46,12 @@
   - ![image](https://github.com/user-attachments/assets/3ce82217-c9cc-4f34-a26c-9b42983244cc)
 
 
+#### UVM Configure Method
+|方法  | 功能說明 | 語法範例 |
+|---------|------|-----|
+|set|寫入設定：將 <field_name> 和 <value> 寫入 config DB（指定路徑）|set(uvm_component ctx, string inst_name, string field, T value)|
+|get|讀取設定：取得先前設定的值，成功傳回 1，失敗傳回 0|get(uvm_component ctx, string inst_name, string field, inout T value)|
+|exists|檢查是否存在：檢查指定的 field 在指定路徑下是否有被 set|exists(ctx, inst, field, bit spell_chk)|
+|wait_modified|等待某個設定值被改變才繼續執行，可用於同步或等待 config 設定完成|wait_modified(ctx, inst, field)|
+
+
