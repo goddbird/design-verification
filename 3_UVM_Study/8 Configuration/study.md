@@ -1,12 +1,12 @@
 # 目標
 1. 學會使用UVM configuration機制，在build phase控制topology，比如控制UVC agent是active/passive，或者設定有幾個master/slave
-2. 為特定實例設定屬性 : 可以讓agent / sequence / monitor指定獨有行為，使用uvm_config_db，使用不合法的設定來測試error case
+2. 為特定實例設定屬性 : 使用uvm_config_db可以讓agent / sequence / monitor指定獨有行為，e.g. 使用不合法的設定來測試error case
 
 ---
 
 ## 內容重點
 
-### uvm中的 `is_active`
+### 一、uvm中的 `is_active`
 | 問題                                       | 解釋 |
 |--------------------------------------------|------|
 | 這是什麼？                                      | 這是一個 Config Property，可以改變整個 UVM 的架構是 active / passive |
@@ -24,7 +24,7 @@
 ![image](https://github.com/user-attachments/assets/2d0e2cfe-7962-4604-96cd-bae29b7b1940)
 
 ---
-### uvm_config_db
+### 二、uvm_config_db
 
 | 問題                                       | 解釋 |
 |--------------------------------------------|------|
