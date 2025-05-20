@@ -41,4 +41,6 @@
   - uvm_config_int::set(this, "tb.env.agent?", "is_active", UVM_PASSIVE);  //這是可以把agent1, agent2….agent9裡面的is_active都改成passive
   - uvm_config_int::set(this, "`*agent*`", "is_active", UVM_ACTIVE); //這是路徑中有包含agent的元件，都設定成active
   - uvm_config_int::set(this, "*", "recording_detail", 1); //為所有元件中的recording_detail改成1
+- config設定失敗時，要如何debug?
+  - 可以在test加入check phase做檢查 (check_config_usage) ，會在simulation最後階段印出所有set過但沒有被get到的設定。
 
