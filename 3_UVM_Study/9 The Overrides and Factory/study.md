@@ -32,22 +32,27 @@ this的意思是，告訴factory這個物件是在哪個元件下創造的
 <br>
 <br>
 #### B. Override with Factory
-*type override  
-語法 : set_type_override_by_type(src_class::get_type(), des_class::get_type());  
 覆蓋的流程如以下順序 :   
 1. 宣告 : 需宣告src_class
 2. 註冊 : `uvm_object_utils(src_class)
 3. 覆蓋 : 在`test level`使用set_type_override_by_type()來覆蓋
 4. 創建 : 這邊原本的src_class::type_id::create(..)會自動取代掉
+
+*type override  : 
+所有 instance 都換掉  
+語法1 : set_type_override_by_type(src_class::get_type(), des_class::get_type());
+語法2 : src_class::type_id::set_type_override(des_class::get_type());
 ![image](https://github.com/user-attachments/assets/bda370c8-b688-47e9-b488-17c40936da6d)
 
-*instance override
-語法 : set_inst_override_by_type(src_class::get_type(), des_class::get_type());
+*instance override  : 
+只想換某個instance (agent/monitor)  
+語法1 : set_inst_override_by_type(`hierarchy path`, src_class::get_type(), des_class::get_type());
+語法2 : src_class::type_id::set_inst_override(`hierarchy path`, des_class::get_type());
 ![image](https://github.com/user-attachments/assets/80bc37cd-6e66-4f0f-b02a-56f3ddc48f92)
 
-||全域型別替換 (Type Override) | 實例指定型別（Instance Override）|
-|----|----|----|
-|語法|sub_class::type_id::set_type_override(base_class::get_type());|sub_class::type_id::set_inst_override("my_instance", base_class::get_type());|
-|使用時機||例如你有一個 yapp_packet 的子類別 short_packet，但你只想讓 env.agent[0] 用 short_packet，其餘 agent 用原本的 yapp_packet|
-|||![image](https://github.com/user-attachments/assets/9471601c-75d3-4586-8f4e-6c94dfbe5842)
-|
+#### 整理
+![image](https://github.com/user-attachments/assets/34b8fe97-3f6e-4cd7-a867-3f45addbeca2)
+
+
+### 三、Debug Factory
+factory.print() 可印出目前所有的 1. 已註冊type  2. type override & instance override 規則
