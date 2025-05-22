@@ -36,7 +36,7 @@
 |1️⃣|	creation|	使用 factory 建立 transaction 實例，設定 parent 與 sequencer|	create()
 |2️⃣|	synchronize|	等待 sequencer 發出 get_next_item() 請求（表示 driver 需要 item）|	start_item()
 |3️⃣|pre_do hook|	呼叫 pre_do() 方法（可以客製化行為）|	—
-|4️⃣|	randomization|	對 item 做隨機化，若失敗會發出警告	|randomize()
+|4️⃣|	randomization|	對 item 做隨機化`是針對transaction裏面的變數做rand，不會針對sequence內的變數做rand`，若失敗會發出警告	|randomize()
 |5️⃣|	mid_do hook|	隨機化後，送出前可在此進一步修改 item|	—
 |6️⃣|	send & wait|	將 item 傳給 driver，並等待執行結束|	finish_item()
 |7️⃣|	post_do hook|	driver 執行結束後呼叫，可作為後處理|	—
@@ -112,5 +112,11 @@ endtask
 4. 通常在test level (上層level)設定於build phase
 ![image](https://github.com/user-attachments/assets/72275dbf-d487-4409-beb7-ca01bd5343ab)
 
+註: uvm_config_wrapper是透過`typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper;` 來的
 
-
+//以下可刪
+1. 一定要在test level才能宣告seqr, seq? 不能在env先宣告?
+2. create sequence一定得在super.build_phase前嗎? 為什麼?
+3. 為什麼直到connect_phase在要把sequencer的handle指定好，而不是在build_phase就指定好?
+4. 所以在run_phase還得指定sequence做randomize，可以不做randomize然後讓sequence裡面自己跑body，讓他randomize就好?
+5. 
