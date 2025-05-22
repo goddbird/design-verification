@@ -56,3 +56,6 @@ this的意思是，告訴factory這個物件是在哪個元件下創造的
 
 ### 三、Debug Factory
 factory.print() 可印出目前所有的 1. 已註冊type  2. type override & instance override 規則
+可以使用下列此方式
+![image](https://github.com/user-attachments/assets/a8bc717f-8649-4533-90c3-5a7b931cb7fb)
+
