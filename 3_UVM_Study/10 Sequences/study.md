@@ -17,7 +17,7 @@
 ![image](https://github.com/user-attachments/assets/d2ebc401-d307-4c12-9dc0-ec75b51d8c37)
 1. 宣告 : 從uvm_sequence extends來的，transaction type必須指定為yapp_packet
 2. 註冊 : 使用`uvm_object_utils(<class name>)
-3. constructor : 使用new，但只有指定name
+3. constructor : 使用new，`但只有指定name`
 4. body : 在圖中的uvm_info是用來print message用的，這是sequence的主要流程，uvm_do是常用的UVM巨集，`用來產生&送出transaction`，第一筆是隨機packet : uvm_do(req)，第二筆是強制addr == 0
 ![image](https://github.com/user-attachments/assets/e80c6ee9-108b-406a-8eec-67a5787454f8)
 
@@ -94,7 +94,7 @@ endtask
 `uvm_rand_send_with(req, {addr inside {[0:15]};})
 ```
 
-範例2.
+範例2.  
 ![image](https://github.com/user-attachments/assets/2d50c2d1-09b2-4eb5-8947-d1b97fbbfccb)
 
 ---
@@ -113,6 +113,12 @@ endtask
 ![image](https://github.com/user-attachments/assets/72275dbf-d487-4409-beb7-ca01bd5343ab)
 
 註: uvm_config_wrapper是透過`typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper;` 來的
+
+### 2. 使用test class來執行Sequence
+1. 需要test class裡面create，會在build phase階段生成sequence，`需傳入Parent讓config_db可以作用，儘管是object`
+2. connect phase必須連接sequencer的handle
+3. run phase必須讓指定的sequence start起來，seq.start(seqr)
+![image](https://github.com/user-attachments/assets/7bc0b42b-7884-4665-9bfc-6a576d1a8136)
 
 //以下可刪
 1. 一定要在test level才能宣告seqr, seq? 不能在env先宣告?
@@ -141,6 +147,29 @@ stop executed：真的關閉模擬
 示意圖
 ![image](https://github.com/user-attachments/assets/85390075-4be2-42a7-813a-e4422468a1e7)
 
+## 3.1 Objection語法 (objection method)
+raise_objection(<object>, <description>, <count>);
+drop_objection(<object>, <description>, <count>);
+*description是一種string，用來trace & debug
+
+### 1. Objection handling
+目前有三種方式執行objection handling
+1. test class handle
+2. default sequence
+3. another sequence
+
+#### 1. test class objection
+test objection，會在`run phase`裡面使用objection method
+![image](https://github.com/user-attachments/assets/e7b92e5d-0a8c-42dd-bc44-40bfc39abc07)
+
+#### 2. Sequence objection
+sequence objection，會在body()裡面使用，會搭配starting_phase來使用
+會確認starting_phase是否為null? 如果sequence是由test執行的(seq.start())，starting_phase就會為null，就無法在sequence內使用objection。
+如果是用uvm_config_db::set，這種就是default sequence，就不會是null。
+![image](https://github.com/user-attachments/assets/0c65c752-e298-43f3-9cf7-6ca7c122741d)
+
+
+
 使用範例: 注意不是所有Sequence都要raise objection
 ```systemverilog
 task body();
@@ -154,3 +183,5 @@ task body();
 endtask
 ```
 
+#### 3. Efficient Sequence Objections
+在Pre/Post body使用Objection，統一處理objection
