@@ -185,3 +185,8 @@ endtask
 
 #### 3. Efficient Sequence Objections
 在Pre/Post body使用Objection，統一處理objection
+
+#### 4. 注意
+raise objection不能加入消耗模擬時間的敘述，否則有可能無法起作用
+![image](https://github.com/user-attachments/assets/d8e62ca0-be0b-43e5-839c-f3b9927db001)
+
