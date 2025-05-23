@@ -1,7 +1,7 @@
 # 目標
 1. 建立uvm sequence，使用UVM macros & methods建立stimulus
 2. 定義sequencer該執行哪些sequence
-3. 使用UVM objection mechanism控制simulation結尾
+3. 說明 UVM 模擬結束的機制：Objection（異議）機制
 
 
 ---
@@ -116,7 +116,41 @@ endtask
 
 //以下可刪
 1. 一定要在test level才能宣告seqr, seq? 不能在env先宣告?
+A: Sequencer會放agent/env中，作為component結構的一部分。sequence會放在test或virtual sequence中  
 2. create sequence一定得在super.build_phase前嗎? 為什麼?
+A: super.build_phase() 可能會做 config_db::set()
+UVM 的建構順序是 由上而下、由 test 去建 env，再建 agent，再建 sequencer...
+在某些層級的 component（如 base_test 或 env）裡，可能會使用 uvm_config_db::set() 去傳遞設定給 sequence。
+若你在 super.build_phase() 之後才 create() 你的 sequence，那麼那些 config 設定早就已經完成，但你的 sequence 還沒建立，自然也無法接收到這些設定。
 3. 為什麼直到connect_phase在要把sequencer的handle指定好，而不是在build_phase就指定好?
+A: UVM 架構設計上就是希望「所有 handle 指定與連接動作」放在 connect_phase 處理。
 4. 所以在run_phase還得指定sequence做randomize，可以不做randomize然後讓sequence裡面自己跑body，讓他randomize就好?
-5. 
+A: 是的，你可以不在 run_phase 手動 randomize()，讓 sequence 裡的 body() 自己跑 randomize() 是可行的，前提是你在 body() 中真的有寫 randomize() 的邏輯。
+
+
+## 3. 說明 UVM 模擬結束的機制：Objection（異議）機制
+Objecttion是一個UVM的同步控制機制，用來決定該不該結束一個Run Phase
+
+下圖說明
+raise：sequence 開始，阻止 run_phase 結束
+drop：sequence 執行完，放手讓 run phase 可以結束
+drain time：最後一個 drop 後會等一小段時間（可設）再結束
+stop called：UVM 開始準備結束
+stop executed：真的關閉模擬
+
+示意圖
+![image](https://github.com/user-attachments/assets/85390075-4be2-42a7-813a-e4422468a1e7)
+
+使用範例: 注意不是所有Sequence都要raise objection
+```systemverilog
+task body();
+  `uvm_info("SEQ", "Start", UVM_LOW);
+  starting_phase.raise_objection(this);
+
+  repeat (10) `uvm_do(req);
+
+  starting_phase.drop_objection(this);
+  `uvm_info("SEQ", "Finished", UVM_LOW);
+endtask
+```
+
