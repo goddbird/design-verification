@@ -105,7 +105,7 @@ endtask
 3. 使用Sequence library
 
 ### 1. Run Phase Default Sequence
-使用uvm_config_wrapper (這在ch7有介紹過，設定sequence到某個sequencer的phase)
+使用uvm_config_wrapper (這在ch7有介紹過，設定sequence到某個sequencer的phase)，會讓一個特定sequence自動在某個phase啟動，如此一來不用手動呼叫start() / start_item()
 1. default_sequence是讓sequence自動在某個phase被執行的設定方法
 2. 透過uvm_config_db或uvm_config_wrapper設定
 3. 可以指定phase : main_phase、run_phase、reset_phase
@@ -119,6 +119,10 @@ endtask
 2. connect phase必須連接sequencer的handle
 3. run phase必須讓指定的sequence start起來，seq.start(seqr)
 ![image](https://github.com/user-attachments/assets/7bc0b42b-7884-4665-9bfc-6a576d1a8136)
+
+|default sequence| test class|
+|---|---|
+|![image](https://github.com/user-attachments/assets/dd867f9d-f2ca-4191-9659-b2d458eec40d)|![image](https://github.com/user-attachments/assets/7dfb8619-79e9-4d54-943a-99a2450378f2)|
 
 //以下可刪
 1. 一定要在test level才能宣告seqr, seq? 不能在env先宣告?
@@ -148,8 +152,10 @@ stop executed：真的關閉模擬
 ![image](https://github.com/user-attachments/assets/85390075-4be2-42a7-813a-e4422468a1e7)
 
 ## 3.1 Objection語法 (objection method)
+```systemverilog
 raise_objection(<object>, <description>, <count>);
 drop_objection(<object>, <description>, <count>);
+```
 *description是一種string，用來trace & debug
 
 ### 1. Objection handling
