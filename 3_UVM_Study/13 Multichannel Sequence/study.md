@@ -11,8 +11,8 @@
 ---
  
 ## 📌 內容重點
-為什麼需要UVC multichannel sequence?
-A: 讓一個sequence能指揮多個sequencer
+為什麼需要UVC multichannel sequence?  
+A: 讓一個上層sequence，能啟動多個sequence，讓不同個sequencer使用
 1. 需要跨多個UVC同步行為 e.g. 一邊送AXI、一邊觀察APB
 2. 將資料分配到多個input port
 
@@ -31,7 +31,9 @@ A: 讓一個sequence能指揮多個sequencer
   
 2. 建 multichannel sequence，呼叫各個子 sequence  
 ![image](https://github.com/user-attachments/assets/d11c939f-a75f-4c59-9dca-56508d5a79b3)  
-這步使用p_sequencer連接時，記得要先宣告p_sequencer
+這步使用p_sequencer連接時，記得要先宣告p_sequencer  
+要記得multichannel sequence也是一種object  
+最後在body使用uvm_do_on來連接p_sequencer & sequence
 
 3. 在環境中建好 sequencer，並連接各 UVC 的 sequencer  
 ![image](https://github.com/user-attachments/assets/8666487e-f7f1-4f1b-ac05-2ee28f53f1f9)
