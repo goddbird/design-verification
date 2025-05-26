@@ -32,13 +32,14 @@ A: 讓一個上層sequence，能啟動多個sequence，讓不同個sequencer使�
 2. 建 multichannel sequence，呼叫各個子 sequence  
 ![image](https://github.com/user-attachments/assets/d11c939f-a75f-4c59-9dca-56508d5a79b3)  
 這步使用p_sequencer連接時，記得要先宣告p_sequencer  
+`uvm_declare_p_sequencer(router_mcsequencer)  
 要記得multichannel sequence也是一種object  
 最後在body使用uvm_do_on來連接p_sequencer & sequence
 
-3. 在env中建好 sequencer，並連接各 UVC 的 sequencer  
+4. 在env中建好 sequencer，並連接各 UVC 的 sequencer  
 ![image](https://github.com/user-attachments/assets/8666487e-f7f1-4f1b-ac05-2ee28f53f1f9)
 
-4. 在 test 中設定 default sequence，並取消 UVC 的 local control  
+5. 在 test 中設定 default sequence，並取消 UVC 的 local control  
 ![image](https://github.com/user-attachments/assets/5c07f63c-cf13-4551-b11a-5ed65dc1f71a)
 
 
@@ -67,6 +68,6 @@ class base_mcseq extends uvm_sequence;
 endclass
 ```
 
-2. Multichannel Sequence繼承此class
+2. Multichannel Sequence繼承此class  
 class router_mcseq extends base_mcseq; 
 
