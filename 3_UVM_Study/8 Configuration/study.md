@@ -34,6 +34,9 @@
 | test                                       | agent |
 |--------------------------------------------|------|
 |![image](https://github.com/user-attachments/assets/9cbff238-e721-45e4-b8c2-b5cfbdfa6226)|![image](https://github.com/user-attachments/assets/2268f5f0-f597-4834-b643-80741084dbd3)|
+
+![image](https://github.com/user-attachments/assets/3d6045d5-0284-48bd-a45f-e15aeb81bf9e)
+
 ---
 #### 補充
 - uvm_bitstream_t 是什麼? UVM提供一種通用的整數型別，可以用來容納大多數整數類型，int, bit, byte, logic等，例如 : uvm_config_db#(uvm_bitstream_t)::set(this, "env.agent", "burst_length", 32);
