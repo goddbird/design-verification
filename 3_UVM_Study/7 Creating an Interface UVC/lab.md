@@ -21,6 +21,11 @@
 |x|1. task run_phase<br>2. send_to_dut||
 
 ## 修正版❤️
+`很重要的` uvm_config_wrapper在指定sequencer路徑的時候，其實很容易寫錯，要確認的話就是在sequencer的build_phase裡面加入`uvm_info(get_type_name(), $sformatf("My path is %s", get_full_name()), UVM_NONE)
+![image](https://github.com/user-attachments/assets/2ffd5864-8894-4ad2-862a-813b9df8b911)
+
+
+
 |top|sequence|agent|
 |---|---|---|
 |![image](https://github.com/user-attachments/assets/af022400-be8a-41f8-b2e0-07746cbdcc62)|![image](https://github.com/user-attachments/assets/e2070ac3-d0c1-4a3c-b928-649bfe898c57)|![image](https://github.com/user-attachments/assets/aeef0ea6-78ab-4d65-b8fc-28de7a94ff3d)|![image](https://github.com/user-attachments/assets/122d9022-687b-44ef-b411-40089f5fd163)|
