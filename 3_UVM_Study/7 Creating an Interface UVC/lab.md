@@ -27,4 +27,27 @@ Scope: worklib.uvm_pkg::uvm_seq_item_pull_port#(yapp_packet)::get_next_item
 
 |錯誤訊息|Code|改善方式|
 |---|---|---|
-|![image](https://github.com/user-attachments/assets/ffc4b22d-e203-4d40-bd4f-9896aed150f6)|看起來有成功印出topology![image](https://github.com/user-attachments/assets/fe83079a-5485-40ea-811e-0f9f1cd935da)||
+|![image](https://github.com/user-attachments/assets/ffc4b22d-e203-4d40-bd4f-9896aed150f6)|看起來有成功印出topology!且seqr & driver都有顯示[image](https://github.com/user-attachments/assets/fe83079a-5485-40ea-811e-0f9f1cd935da)||
+
+
+
+## 問題集
+1. 為什麼agent裡 build_phase 要先呼叫 super.build_phase(phase);？
+因為這是 UVM 架構規定：
+在 component 的 build_phase() 中，你要在建立子 component 前先呼叫父類別的 build_phase()，目的是：
+
+✅ 目的 1：讓 UVM 的內部機制先初始化完成
+super.build_phase() 會建立很多必要的 UVM 元件內部機制（像是 config、resource、factory）
+
+如果你沒先呼叫它，有些 UVM 的功能像 uvm_config_db 或 factory override 可能無法正確運作
+
+✅ 目的 2：遵循正確的 UVM phase 呼叫順序
+UVM framework 會自動依照 hierarchy 呼叫每個 component 的 build_phase()
+→ super.build_phase() 保證你是 延續上層的 phase 行為，不中斷整個架構
+
+✅ 目的 3：避免錯誤或難 trace 的行為
+如果你先 create 物件，再呼叫 super.build_phase()
+
+父類別有可能會 override 或干擾你剛剛 new 出來的東西
+
+導致 debug 非常困難（特別是在大型 testbench）
