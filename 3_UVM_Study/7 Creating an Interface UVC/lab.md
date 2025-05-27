@@ -27,4 +27,4 @@ Scope: worklib.uvm_pkg::uvm_seq_item_pull_port#(yapp_packet)::get_next_item
 
 |錯誤訊息|Code|改善方式|
 |---|---|---|
-|![image](https://github.com/user-attachments/assets/bee7363c-2335-44b3-a3ed-2088d21d3140)|![image](https://github.com/user-attachments/assets/2903e9d3-938f-4147-836b-c54ef2901665)||
+|![image](https://github.com/user-attachments/assets/ffc4b22d-e203-4d40-bd4f-9896aed150f6)|看起來有成功印出topology![image](https://github.com/user-attachments/assets/fe83079a-5485-40ea-811e-0f9f1cd935da)||
