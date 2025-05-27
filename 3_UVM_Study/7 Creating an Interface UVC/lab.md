@@ -9,9 +9,9 @@
 6. 產生出一個packet & 檢查log file
 
 ## 摘要
-||top|Code|改善方式|
-|---|---|---|---|
-||1. 宣告agent<br>2. build_phase<br>3. topology|||
+||top|agent|seqr|driver|
+|---|---|---|---|---|
+||1. 宣告agent<br>2. build_phase(set default seq)<br>3. topology|1. 宣告seqr/driver<br>2. build_phase<br>3. connect_phase|x|1. task run_phase<br>2. send_to_dut|
 ## 錯誤狀況
 
 1.
