@@ -14,7 +14,7 @@
 | 由誰來主導？                                    | 通常在上層級就決定了，會由 `test` 級別 來決定是 active / passive |
 | 改值前需要前置作業？                            | 是，需在 component 建立前就設定，要先在agent裡面先註冊 (`uvm_field_enum(uvm_active_passive_enum, is_active, UVM_ALL_ON))，如此一來is_active就可以被管理 |
 | 如何改變此值？                                  | 透過 test 的 build phase 設定：<br>`uvm_config_db#(uvm_active_passive_enum)::set(this, "env.agent", "is_active", UVM_PASSIVE)` |
-| 會在哪個階段生效？                              | 必須在 `build phase`「之前」就設定好 config，要怎麼吃到這個設定?  super.build_phase()就會呼叫到test level的build phase (做set) |
+| 會在哪個階段生效？                              | 必須在 `super.build_phase`「之前」就設定好 config，要怎麼吃到這個設定?  super.build_phase()就會呼叫到test level的build phase (做set) |
 | 延伸學習：為什麼不用 new/build phase 傳變數？ e.g. `my_agent_h = new("agent_h", this, is_active);`  | 因為這樣會破壞封裝性與可重用性。用 config 設定可讓元件更泛用，不綁定上下文 |
 
 *最後延伸學習的原因如下  
