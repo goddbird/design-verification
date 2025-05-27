@@ -24,17 +24,19 @@
 `很重要的` uvm_config_wrapper在指定sequencer路徑的時候，其實很容易寫錯，要確認的話就是在sequencer的build_phase裡面加入`uvm_info(get_type_name(), $sformatf("My path is %s", get_full_name()), UVM_NONE)
 ![image](https://github.com/user-attachments/assets/2ffd5864-8894-4ad2-862a-813b9df8b911)
 
-
-
-|top|sequence|agent|
+|top|test|tb|
 |---|---|---|
-|![image](https://github.com/user-attachments/assets/af022400-be8a-41f8-b2e0-07746cbdcc62)|![image](https://github.com/user-attachments/assets/e2070ac3-d0c1-4a3c-b928-649bfe898c57)|![image](https://github.com/user-attachments/assets/aeef0ea6-78ab-4d65-b8fc-28de7a94ff3d)|![image](https://github.com/user-attachments/assets/122d9022-687b-44ef-b411-40089f5fd163)|
+|![image](https://github.com/user-attachments/assets/a5aee7c0-843d-4d72-8932-12256fcc0a23)|![image](https://github.com/user-attachments/assets/cb7ef338-a245-483d-899f-214c4a95f0aa)|![image](https://github.com/user-attachments/assets/f7f8a8f0-0675-4e00-a8c7-53deb4078061)|
+
+|env|sequence|agent|
+|---|---|---|
+|![image](https://github.com/user-attachments/assets/7d99a16e-b15d-43b1-982f-496a00eb08db)|![image](https://github.com/user-attachments/assets/0f32651e-4a12-48f4-bf38-24a05e5e908e)|![image](https://github.com/user-attachments/assets/ce169ae2-041a-484b-bd6d-002a214123df)|
 |1. 宣告agent<br>2. build_phase(set default seq)<br>3. topology|1. 定義body來傳送transaction|1. 宣告seqr/driver<br>2. build_phase<br>3. connect_phase|
 
 
 |seqr|driver|monitor|
 |---|---|---|
-|![image](https://github.com/user-attachments/assets/122d9022-687b-44ef-b411-40089f5fd163)|![image](https://github.com/user-attachments/assets/8133991b-1a39-45a0-b91b-a89c72745ccb)|![image](https://github.com/user-attachments/assets/da7763c0-525d-41a9-a566-3db0166cf7c3)|
+|![image](https://github.com/user-attachments/assets/b364b7af-edd1-4c9f-9c03-3eeb50afd90e)|![image](https://github.com/user-attachments/assets/d18d3aef-d19c-47e9-8ea8-ad34370abf25)|![image](https://github.com/user-attachments/assets/eea2b418-5a0d-4c99-bdad-a07b882c51a8)|
 |x|1. task run_phase<br>2. send_to_dut||
 
 
