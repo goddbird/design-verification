@@ -9,9 +9,16 @@
 6. 產生出一個packet & 檢查log file
 
 ## 摘要
-||top|agent|seqr|driver|
-|---|---|---|---|---|
-||1. 宣告agent<br>2. build_phase(set default seq)<br>3. topology|1. 宣告seqr/driver<br>2. build_phase<br>3. connect_phase|x|1. task run_phase<br>2. send_to_dut|
+|top|sequence|agent|
+|---|---|---|
+|![image](https://github.com/user-attachments/assets/af022400-be8a-41f8-b2e0-07746cbdcc62)|![image](https://github.com/user-attachments/assets/e2070ac3-d0c1-4a3c-b928-649bfe898c57)|![image](https://github.com/user-attachments/assets/aeef0ea6-78ab-4d65-b8fc-28de7a94ff3d)|![image](https://github.com/user-attachments/assets/122d9022-687b-44ef-b411-40089f5fd163)|
+|1. 宣告agent<br>2. build_phase(set default seq)<br>3. topology|1. 定義body來傳送transaction|1. 宣告seqr/driver<br>2. build_phase<br>3. connect_phase|
+
+
+|seqr|driver|monitor|
+|---|---|---|
+|![image](https://github.com/user-attachments/assets/122d9022-687b-44ef-b411-40089f5fd163)|![image](https://github.com/user-attachments/assets/8133991b-1a39-45a0-b91b-a89c72745ccb)|![image](https://github.com/user-attachments/assets/da7763c0-525d-41a9-a566-3db0166cf7c3)|
+|x|1. task run_phase<br>2. send_to_dut||
 ## 錯誤狀況
 
 1.
