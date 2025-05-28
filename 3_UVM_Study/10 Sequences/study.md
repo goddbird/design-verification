@@ -171,7 +171,7 @@ test objection，會在`run phase`裡面使用objection method
 #### 2. Sequence objection
 sequence objection，會在body()裡面使用，會搭配starting_phase來使用
 會確認starting_phase是否為null? 如果sequence是由test執行的(seq.start())，starting_phase就會為null，就無法在sequence內使用objection。
-如果是用uvm_config_db::set，這種就是default sequence，就不會是null。
+如果是用uvm_config_db::set，這種就是default sequence，就不會是null。  
 ![image](https://github.com/user-attachments/assets/0c65c752-e298-43f3-9cf7-6ca7c122741d)
 
 
