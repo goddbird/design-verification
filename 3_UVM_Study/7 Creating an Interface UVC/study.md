@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/ab5b5522-8099-4fde-8013-b2639f025881)![image](https://github.com/user-attachments/assets/9d2d9ddf-cd1e-4923-abbc-f0ab02995213)# 介紹
+# 介紹
  
 1. 介紹 UVC 的架構  
 2. 介紹 Sequencer 和 Driver 如何透過 TLM interface 進行資料傳遞  
