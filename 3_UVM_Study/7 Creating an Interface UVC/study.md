@@ -9,6 +9,11 @@
 ## 📌 內容重點
  
 ### 一、介紹 UVC 的架構
+  a. UVC (universal verification methodology) : 整體的驗證元件，可以包含一個 or 多個agent  
+		b. Agent : UVC的子單位，包含了sequencer / driver / monitor，有分成active agent / passive agent  active會主動送stimulus，passive的話會是被動監控訊號。    
+		c. Sequencer : 負責產生sequence，管理arbitration，透過TLM interface把下一筆transaction送給driver。  
+		d. Driver : 根據Sequencer給的資料，用正確的時序去drive DUT，並用virtual interface接到DUT，完成驅動後，會回報給sequencer，讓sequencer送下一筆資料。  
+		e. Monitor : 從DUT的virtual interface蒐集訊號，被動的監控，不影響DUT，會把觀察到的transaction轉成object再送給scoreboard / coverage / reference model等，TLM port/export : 提供一組方法 (如get_next_item / item_done)實作連線。  
  
 #### 1. UVC 架構說明
  
