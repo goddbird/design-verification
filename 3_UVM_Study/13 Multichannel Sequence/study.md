@@ -36,10 +36,10 @@ A: 讓一個上層sequence，能啟動多個sequence，讓不同個sequencer使�
 要記得multichannel sequence也是一種object  
 最後在body使用uvm_do_on來連接p_sequencer & sequence
 
-4. 在env中建好 sequencer，並連接各 UVC 的 sequencer  
+3. 在env中建好 sequencer，並連接各 UVC 的 sequencer，把multichannel seqr連線上實體seqr  
 ![image](https://github.com/user-attachments/assets/8666487e-f7f1-4f1b-ac05-2ee28f53f1f9)
 
-5. 在 test 中設定 default sequence，並取消 UVC 的 local control  
+4. 在 test 中設定 default sequence，並取消 UVC 的 local control  
 ![image](https://github.com/user-attachments/assets/5c07f63c-cf13-4551-b11a-5ed65dc1f71a)
 
 
