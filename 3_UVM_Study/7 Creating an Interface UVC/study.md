@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/9d2d9ddf-cd1e-4923-abbc-f0ab02995213)# 介紹
+![image](https://github.com/user-attachments/assets/ab5b5522-8099-4fde-8013-b2639f025881)![image](https://github.com/user-attachments/assets/9d2d9ddf-cd1e-4923-abbc-f0ab02995213)# 介紹
  
 1. 介紹 UVC 的架構  
 2. 介紹 Sequencer 和 Driver 如何透過 TLM interface 進行資料傳遞  
@@ -152,19 +152,38 @@ A : 不一定，但幾乎必要，不需要寫body的情況
 宣告一個abstract sequence, base sequence，就不需要寫body
 
 ## test
-![image](https://github.com/user-attachments/assets/9c59b0e1-e928-4801-81e5-d4131ad90a97)
-9. uvm_config_wrapper::set的功能，這邊的例子是用來設定uvm default sequence in sequencer
-這個 function 是 UVM 的設定機制的一部分，用來動態設定組件之間的參數。它的用途是：
+![image](https://github.com/user-attachments/assets/9c59b0e1-e928-4801-81e5-d4131ad90a97)  
+uvm_config_wrapper::set的功能，這邊的例子是用來設定uvm default sequence in sequencer  
+這個 function 是 UVM 的設定機制的一部分，用來動態設定組件之間的參數。它的用途是：  
 📌 功能：
 	在特定的 component 上設定一個 key-value 配對，在 simulation 中的某個階段可被讀取使用。
 📘 語法說明：
 
 ```systemverilog
 uvm_config_wrapper::set(
-  context,     // 目前在哪個 component 設定
+  context,     // 目前在哪個 component 設定，通常設定this
   inst_name,   // 指定的 component path
   field_name,  // 要設定的變數名稱
   value        // 設定的值（可為 object, int, string...）
 );
 ```
+
+---
+### 四、其他要注意的事情
+
+1. 什麼是uvm_do?
+是一個啟動sequence的語法，包含start_item, randomize, finish_item等步驟。
+
+2. 下圖介紹哪些component需要型別參數化。  
+![image](https://github.com/user-attachments/assets/256c8ff6-01b2-4a3b-bbd4-e2056126e3d0)
+active元件 (driver / sequence / sequencer) 需要處理transaction，需要知道transaction的型別 : yapp_packet
+passive元件不需要知道型別，只要負責控制、建構、連接即可。
+
+3. UVC的目錄應該要包含 : 可重用程式碼 & 不可重用程式碼。架構圖應該要像下圖
+![image](https://github.com/user-attachments/assets/2ea19865-6355-4031-a136-fcad0bd0030e)
+![image](https://github.com/user-attachments/assets/ad43e900-09f6-479a-8955-2090c7d68898)
+![image](https://github.com/user-attachments/assets/2ac9dc0d-954b-4311-bf40-d03ed703d5c5)
+
+4. 介紹實際的sv檔例子 : include的file必須要遵守bottom-up的順序 (從小的build到大的)
+![image](https://github.com/user-attachments/assets/f2c41310-988c-47b5-af17-c23825b5e3d5)
 
