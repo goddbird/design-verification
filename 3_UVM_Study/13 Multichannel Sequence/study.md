@@ -23,9 +23,14 @@ A: 讓一個上層sequence，能啟動多個sequence，讓不同個sequencer使�
 
 
 ### 一、如何建立Multichannel Sequencer/Sequence
- 
+步驟摘要
+1. 宣告multichannel seqr
+2. 宣告multichannel seq
+3. 在env把mc seqr跟實體seqr連接
+4. 在test level設定default sequence
+
 #### 1. 步驟說明
-1. 建一個 multichannel sequencer class，加入 handle  
+1. 建一個 multichannel sequencer class，宣告handle  
 ![image](https://github.com/user-attachments/assets/a15cedf0-270f-41f0-a3a4-67aa08431629)  
 這個是virtual sequencer，不處理item，所以不用參數。
   
