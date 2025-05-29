@@ -28,3 +28,28 @@ A: Scoreboard會定義write function，而monitor會call write function並帶入
 |monitor|scoreboard|testbench|
 |---|---|---|
 |先宣告analysis port & 實例化`在TLM溝通中，會避免使用type override的功能，所以只能用new`，後續把packet當作輸入丟進write![image](https://github.com/user-attachments/assets/ad8eb952-a4b4-45d0-a8ea-5ec7da1983ac)|宣告analysis imp port(會在env/test做連接，並要帶入transaction的class & 實作write的class)，還需要定義好write function內容![image](https://github.com/user-attachments/assets/931e47d9-5bcb-4d3d-84f0-b115d3ba0261)|在tb裡面宣告env & sb，build_phase把sb create出來，最後在env的connect_phase連接![image](https://github.com/user-attachments/assets/d8653864-723c-49f1-a27f-33fcc9412cac)|
+
+
+6. 多個imp機制
+
+  
+🔧 問題背景
+UVM 中的設計限制是：
+一個 component 只能宣告一個 uvm_analysis_imp 物件。
+👉 但在實務中，你的 scoreboard 可能要從多個 monitor 收資料（例如 yapp、chan0、chan1、hb等）→ 就需要多個 imp！
+ 
+✅ 解決方式：使用 uvm_analysis_imp_decl(<suffix>) 巨集
+這個巨集的用途是：
+🔁 產生多個不同的 imp 類別，每個 imp 都有自己的 write_<suffix>() 方法可以實作
+
+語法: `新增註冊的宣告式`，再用剛宣告的註冊式來註冊，write function也要使用新的名字來定義
+```systemverilog
+`umv_analysis_imp_decl(_yapp)
+uvm_analysis_imp_yapp#(yapp_packet, router_tb)
+```
+例子如下  
+![image](https://github.com/user-attachments/assets/73ca2378-6fed-4707-b7d4-afa1bbb0fa08)
+
+最終的應用如下圖
+建立一個sb後，在tb的connect_phase把多個monitor連接到同一sb上，sb內部用imp處理多個port(yapp_in, hbus_in)
+![image](https://github.com/user-attachments/assets/9b8b4dab-0a3c-4e31-8bdb-30e136a973f8)
