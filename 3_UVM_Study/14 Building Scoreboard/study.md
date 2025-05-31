@@ -22,7 +22,7 @@ connect phase會在env/test中完成
 ![image](https://github.com/user-attachments/assets/7ca3d099-060c-4ee9-aca2-fede89299ec9)  
 
 
-5. Write function機制  
+4. Write function機制  
 A: Scoreboard會定義write function，而monitor會call write function並帶入transaction做輸入，來表示傳送transaction
 
 |monitor|scoreboard|testbench|
@@ -30,7 +30,7 @@ A: Scoreboard會定義write function，而monitor會call write function並帶入
 |先宣告analysis port & 實例化`在TLM溝通中，會避免使用type override的功能，所以只能用new`，後續把packet當作輸入丟進write![image](https://github.com/user-attachments/assets/ad8eb952-a4b4-45d0-a8ea-5ec7da1983ac)|宣告analysis imp port(會在env/test做連接，並要帶入transaction的class & 實作write的class)，還需要定義好write function內容![image](https://github.com/user-attachments/assets/931e47d9-5bcb-4d3d-84f0-b115d3ba0261)|在tb裡面宣告env & sb，build_phase把sb create出來，最後在env的connect_phase連接![image](https://github.com/user-attachments/assets/d8653864-723c-49f1-a27f-33fcc9412cac)|
 
 
-6. 多個imp機制
+5. 多個imp機制
 
   
 🔧 問題背景
@@ -54,3 +54,20 @@ uvm_analysis_imp_yapp#(yapp_packet, router_tb)
 建立一個sb後，在tb的connect_phase把多個monitor連接到同一sb上，sb內部用imp處理多個port(yapp_in, hbus_in)  
 要注意是monitor的connect函式，然後把scoreboard當成輸入丟進去。 (monitor.connect(scoreboard) )
 ![image](https://github.com/user-attachments/assets/9b8b4dab-0a3c-4e31-8bdb-30e136a973f8)
+
+
+6. Clone的機制  
+因為monitor傳給scoreboard的方式，是用write(pkt)來傳指標，不是透過copy，所以每次都重複使用pkt這物件時，可能變成以下狀況:
+`queue = {pkt, pkt, pkt}`，這樣就等於封包內容傳了後，又會一直被更改，傳了就沒有意義。
+
+### 正確做法
+🔧 正確做法：在 write() 中用 clone() 複製封包！
+```systemverilog
+function void write_yapp(yapp_packet packet);
+  yapp_packet vpkt;
+  $cast(vpkt, packet.clone()); // 複製出一份新封包（不同記憶體位置）
+  case (vpkt.addr)
+    2'b00: q0.push_back(vpkt);
+    ...
+endfunction
+```
