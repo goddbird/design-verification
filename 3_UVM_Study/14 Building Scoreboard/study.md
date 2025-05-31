@@ -71,3 +71,13 @@ function void write_yapp(yapp_packet packet);
     ...
 endfunction
 ```
+
+7. Clone的機制
+Scoreboard在碰到封包類型不同的時候，無法直接透過==比較
+### 正確做法
+![image](https://github.com/user-attachments/assets/f12c9747-1f6f-488d-9a97-7fe1bd76e791)
+
+8. 階層式連線的方法
+- 在 UVM 的階層架構下，你的 component（例如 testbench, env, agent）通常是分層的
+- 低層會產生資料（monitor），最終要送到 scoreboard 的 imp
+- 中間的層級無法實作 write()，但可以轉交 → 所以要用 export
