@@ -51,5 +51,6 @@ uvm_analysis_imp_yapp#(yapp_packet, router_tb)
 ![image](https://github.com/user-attachments/assets/73ca2378-6fed-4707-b7d4-afa1bbb0fa08)
 
 最終的應用如下圖
-建立一個sb後，在tb的connect_phase把多個monitor連接到同一sb上，sb內部用imp處理多個port(yapp_in, hbus_in)
+建立一個sb後，在tb的connect_phase把多個monitor連接到同一sb上，sb內部用imp處理多個port(yapp_in, hbus_in)  
+要注意是monitor的connect函式，然後把scoreboard當成輸入丟進去。 (monitor.connect(scoreboard) )
 ![image](https://github.com/user-attachments/assets/9b8b4dab-0a3c-4e31-8bdb-30e136a973f8)
