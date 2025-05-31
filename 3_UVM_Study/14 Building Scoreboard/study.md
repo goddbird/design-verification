@@ -22,7 +22,7 @@ connect phase會在env/test中完成
 ![image](https://github.com/user-attachments/assets/7ca3d099-060c-4ee9-aca2-fede89299ec9)  
 
 
-5. Write function機制
+5. Write function機制  
 A: Scoreboard會定義write function，而monitor會call write function並帶入transaction做輸入，來表示傳送transaction
 
 |monitor|scoreboard|testbench|
