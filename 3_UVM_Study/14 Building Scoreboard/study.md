@@ -72,7 +72,7 @@ function void write_yapp(yapp_packet packet);
 endfunction
 ```
 
-7. Clone的機制
+7. Compare的機制
 Scoreboard在碰到封包類型不同的時候，無法直接透過==比較
 ### 正確做法
 ![image](https://github.com/user-attachments/assets/f12c9747-1f6f-488d-9a97-7fe1bd76e791)
