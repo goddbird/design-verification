@@ -106,4 +106,6 @@ function bit <name> (預期封包, 實際封包, 比較器=null)
 
 ### Scoreboard機制 & Driver機制的差別
 port是發送請求者，Scoreboard機制的請求者是monitor，Drive的是Driver
+![image](https://github.com/user-attachments/assets/114672b6-0cc9-42e4-9bdb-55b310fbc47c)
+
 ![image](https://github.com/user-attachments/assets/83fbaecd-330d-4aa5-ab51-389111c1a2ac)
