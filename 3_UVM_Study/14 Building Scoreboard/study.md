@@ -94,7 +94,15 @@ function bit <name> (預期封包, 實際封包, 比較器=null)
 
 
 ---
-8. 階層式連線的方法
+8. 階層式連線的方法  
 - 在 UVM 的階層架構下，你的 component（例如 testbench, env, agent）通常是分層的
 - 低層會產生資料（monitor），最終要送到 scoreboard 的 imp
 - 中間的層級無法實作 write()，但可以轉交 → 所以要用 export
+
+
+### 每層TLM介面怎麼用?
+![image](https://github.com/user-attachments/assets/367fe93e-fd7f-4619-89b0-89580f4af00a)
+
+
+### Scoreboard機制 & Driver機制的差別
+![image](https://github.com/user-attachments/assets/83fbaecd-330d-4aa5-ab51-389111c1a2ac)
