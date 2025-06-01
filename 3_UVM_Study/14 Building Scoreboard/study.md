@@ -73,10 +73,27 @@ endfunction
 ```
 
 7. Compare的機制
-Scoreboard在碰到封包類型不同的時候，無法直接透過==比較
+Scoreboard在碰到封包類型不同的時候，無法直接透過==比較。這個compare method要寫在scoreboard裡面
+#### 語法
+function bit <name> (預期封包, 實際封包, 比較器=null)
+1. 判斷是否傳入comparer  
+如果沒傳入comparer，就自己創建一個新的
+
+2. 使用comparer比較欄位  
+語法 name = comparer.compare_field("欄位名稱", 預期欄位, 實際欄位, 欄位寬度);
+
+### 總結
+會自動報告差異 / 比較多欄位
+
+### 比較後錯誤
+![image](https://github.com/user-attachments/assets/79995735-e6c8-4523-8c18-3203e279cd96)
+
+
 ### 正確做法
 ![image](https://github.com/user-attachments/assets/f12c9747-1f6f-488d-9a97-7fe1bd76e791)
 
+
+---
 8. 階層式連線的方法
 - 在 UVM 的階層架構下，你的 component（例如 testbench, env, agent）通常是分層的
 - 低層會產生資料（monitor），最終要送到 scoreboard 的 imp
