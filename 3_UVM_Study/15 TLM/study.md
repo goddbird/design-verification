@@ -109,5 +109,6 @@ D-2. Analysis port的廣播範例
 這是另外一種port，叫做uvm_transport_port
 ![image](https://github.com/user-attachments/assets/10941595-f1fd-4554-be88-e8c76c372934)
 可以有兩種方法
-![Uploading image.png…]()
+![image](https://github.com/user-attachments/assets/37d53de8-59e9-444a-aae4-b818fee2f099)
+
 
