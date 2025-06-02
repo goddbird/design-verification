@@ -80,3 +80,34 @@ UVM提供內建的FIFO類別，用來緩衝producer & consumer的transaction資�
 #### TLM FIFO Methods
 ![image](https://github.com/user-attachments/assets/0255bbc0-112e-446a-b7f8-402395ec2e2f)
 
+### TLM FIFO - Analysis FIFO
+uvm_tlm_analysis是一種uvm_tlm_fifo的特殊化版本
+A. 架構
+![image](https://github.com/user-attachments/assets/216f0b6b-bb31-4b51-92cd-6b7082a53247)
+![image](https://github.com/user-attachments/assets/8b7f0805-a61c-4a1b-9038-189428fbb084)
+
+B. 實際配置
+![image](https://github.com/user-attachments/assets/ca6c0627-cddd-40e0-bc84-1ef65edcb476)
+
+C. Connect
+![image](https://github.com/user-attachments/assets/22897f8d-7613-4ec3-9cf8-9a13ce7f12a0)
+
+D-1. 與原本uvm_analysis_imp差別
+![image](https://github.com/user-attachments/assets/74b3c35b-9a86-4969-aa78-b0e4d836c68f)
+使用uvm_tlm_analysis_fifo的好處:
+1. 不需實作write()
+2. Scoreboard主動get()
+3. 可同時get多個FIFO做比對
+
+D-2. Analysis port的廣播範例
+使用一種write可以連結到"多個"monitor
+![image](https://github.com/user-attachments/assets/b219e714-ae66-4143-88ea-1f9f5f46d03d)
+
+若使用的是FIFO，就沒辦法使用broadcast了
+
+### 雙向的TLM傳輸
+這是另外一種port，叫做uvm_transport_port
+![image](https://github.com/user-attachments/assets/10941595-f1fd-4554-be88-e8c76c372934)
+可以有兩種方法
+![Uploading image.png…]()
+
