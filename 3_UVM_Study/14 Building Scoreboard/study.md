@@ -75,6 +75,7 @@ endfunction
 7. Compare的機制
 Scoreboard在碰到封包類型不同的時候，無法直接透過==比較。這個compare method要寫在scoreboard裡面
 #### 語法
+e.g. function bit pkt_compare(yapp_packet yp, channel_packet cp);
 function bit <name> (預期封包, 實際封包, 比較器=null)
 1. 判斷是否傳入comparer  
 如果沒傳入comparer，就自己創建一個新的
