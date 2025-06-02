@@ -82,6 +82,9 @@ function bit <name> (預期封包, 實際封包, 比較器=null)
 
 2. 使用comparer比較欄位  
 語法 name = comparer.compare_field("欄位名稱", 預期欄位, 實際欄位, 欄位寬度);
+#### 範例
+![image](https://github.com/user-attachments/assets/ab4a8761-3c66-45c2-8be3-b46eb2977800)
+
 
 ### 總結
 會自動報告差異 / 比較多欄位
