@@ -121,7 +121,7 @@ endtask
 ![image](https://github.com/user-attachments/assets/7bc0b42b-7884-4665-9bfc-6a576d1a8136)
 
 ## 補充
-小馬說 : 此種test class，可以指定在某一phase(比如main phase)，然後再打sequence，會比default sequence更有彈性
+小馬說 : 此種test class手動啟動sequence的方法，可以指定在某一phase(比如main phase)，然後再打sequence，會比default sequence更有彈性
 
 |default sequence| test class|
 |---|---|
