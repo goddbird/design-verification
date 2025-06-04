@@ -120,6 +120,9 @@ endtask
 3. run phase必須讓指定的sequence start起來，seq.start(seqr)
 ![image](https://github.com/user-attachments/assets/7bc0b42b-7884-4665-9bfc-6a576d1a8136)
 
+## 補充
+小馬說 : 此種test class，可以指定在某一phase(比如main phase)，然後再打sequence，會比default sequence更有彈性
+
 |default sequence| test class|
 |---|---|
 |![image](https://github.com/user-attachments/assets/dd867f9d-f2ca-4191-9659-b2d458eec40d)|![image](https://github.com/user-attachments/assets/7dfb8619-79e9-4d54-943a-99a2450378f2)|
