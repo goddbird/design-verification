@@ -1,10 +1,11 @@
-# 目標
+![image](https://github.com/user-attachments/assets/db33febd-e39d-41bb-a432-fc34bdaadcf2)# 目標
  
 1. 為何要使用Phase
 2. Phase的特性
 3. 各Phase介紹
 4. Phase的跳轉機制
 5. Phase的debug方式
+6. Objection機制
 
 
 ---
@@ -49,6 +50,33 @@ phase.jump(uvm_reset_phase::get())  e.g. phase.jump(uvm_reset_phase::get());
 ### 跳轉的限制
 1. 不能跳到build -> start_of_function之間的phase
 2. 不能直接跳到run_phase
-3. 從run_phase後就可以向前/向後跳轉了
+3. `從run_phase後就可以向前/向後跳轉了`
 ![image](https://github.com/user-attachments/assets/0d39b0fa-7c66-49f4-b590-edafac14960b)
 
+
+## Phase的Debug方式
+1. 在compile加入+UVM_PHASE_TRACE : 這會印出很多phase的資訊
+![image](https://github.com/user-attachments/assets/b1911192-f1d9-4730-9854-cd599f0ba018)
+
+2. 可以加入Timeout條件
++UVM_TIMEOUT=“300ns, YES”
+
+3. 或者在每個phase中加入uvm_info來確認log
+
+
+## Objection機制
+component中，task phase是會消耗simulation時間的，可以使用objection機制來控制phase執行。
+![image](https://github.com/user-attachments/assets/0b00aeb4-2576-49af-afea-8d67172341cc)
+分為raise/drop objection兩種，raise objection可以讓phase不要結束，而drop objection可以讓phase在執行完後，進入下一個phase。
+
+## 重要觀念
+run_phase & 其他run-time phase是平行執行
+Case 1
+如果其他的run-time phase有raise objection，run phase就能維持住不結束。
+Case 2 
+如果run phase有raise objection，其他的run-time phase可能會結束。
+![image](https://github.com/user-attachments/assets/cf1552aa-31ee-4967-b4fb-6ff08de661b9)
+
+
+推薦的objection使用位置
+![image](https://github.com/user-attachments/assets/d2754cae-311f-413c-b2d1-c70c0d30b2a9)
