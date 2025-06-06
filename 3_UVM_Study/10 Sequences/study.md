@@ -23,7 +23,7 @@
 
 ### 三、uvm_do
 摘要，實際運作了哪些流程 :
-1. create : 用factory自動分配建立req，也就是transaction item
+1. create : 用factory自動分配建立req，也就是transaction item，不要create到sequence class
 2. Wait : sequencer等driver說需要資料了才送
 3. Randomize : 會與class內的constraint結合
 4. Transfer : sequencer把item傳給driver的seq_item_port
