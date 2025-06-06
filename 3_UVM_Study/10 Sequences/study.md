@@ -203,3 +203,13 @@ endtask
 raise objection不能加入消耗模擬時間的敘述，否則有可能無法起作用
 ![image](https://github.com/user-attachments/assets/d8e62ca0-be0b-43e5-839c-f3b9927db001)
 
+
+## m_sequencer / p_sequencer
+### m_sequencer (my sequencer)
+- 可以理解為local sequencer
+- 類型為uvm_sequencer_base，定義在uvm_sequence_item中
+- 每個sequence中都有一個default變數叫做m_sequence，是一個指向當前sequence的`sequencer`
+
+### p_sequencer (parent sequencer)
+- 需要使用uvm_declare_p_sequencer(my_sequencer)，宣告p_sequencer
+- 會在sequence裡面指定sequencer的Handle，可以透過那個handle提取sequencer裡的變數
