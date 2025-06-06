@@ -29,6 +29,10 @@
 4. Transfer : sequencer把item傳給driver的seq_item_port
 5. Wait done : sequencer會等driver呼叫`item_done()`才繼續往下執行
 
+*如何檢查sequence打出去的內容 req.sprint()
+![image](https://github.com/user-attachments/assets/04de385f-745d-4553-a055-c886bcd7ac7a)
+
+
 實際運行流程 : 
 ![image](https://github.com/user-attachments/assets/21217e0a-f122-4772-aa88-9d165d398e18)
 |步驟|名稱|說明|對應方法|
