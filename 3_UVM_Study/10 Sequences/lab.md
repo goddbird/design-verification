@@ -4,3 +4,8 @@
 2. 在sequencer上執行選定的sequence
 3. TBD
 4. Debug & fix rand fail
+
+
+# 實作
+## 1.宣告yapp sequence的多種stimulus
+|種類||
