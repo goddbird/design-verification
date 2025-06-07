@@ -116,7 +116,9 @@ endtask
 4. 通常在test level (上層level)設定於build phase
 ![image](https://github.com/user-attachments/assets/72275dbf-d487-4409-beb7-ca01bd5343ab)
 
-註: uvm_config_wrapper是透過`typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper;` 來的
+註: 
+1. uvm_config_wrapper是透過`typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper;` 來的
+2. 此種方式需使用`get`拿test level設定的配置，有get後才會生效
 
 ### 2. 使用test class來執行Sequence
 1. 需要test class裡面create，會在build phase階段生成sequence，`需傳入Parent讓config_db可以作用，儘管是object`
