@@ -39,11 +39,11 @@
 |---|---|---|---|
 |1️⃣|	creation|	使用 factory 建立 transaction 實例，設定 parent 與 sequencer|	`create()`
 |2️⃣|	synchronize|	等待 sequencer 發出 get_next_item() 請求（表示 driver 需要 item）|	`start_item()`
-|3️⃣|pre_do hook|	呼叫 pre_do() 方法（可以客製化行為）|	—
+|3️⃣|pre_do hook|	呼叫 pre_do() 方法（可以客製化行為）|	通常會raise objection
 |4️⃣|	randomization|	對 item 做隨機化`是針對transaction裏面的變數做rand，不會針對sequence內的變數做rand`，若失敗會發出警告	|`randomize()`
 |5️⃣|	mid_do hook|	隨機化後，送出前可在此進一步修改 item|	—
 |6️⃣|	send & wait|	將 item 傳給 driver，並等待執行結束|	`finish_item()`
-|7️⃣|	post_do hook|	driver 執行結束後呼叫，可作為後處理|	—
+|7️⃣|	post_do hook|	driver 執行結束後呼叫，可作為後處理|	通常會drop objection
 
 🔹 pre_do(bit is_item)
 在 隨機化之前執行
