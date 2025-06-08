@@ -145,7 +145,7 @@ UVM 的建構順序是 由上而下、由 test 去建 env，再建 agent，再�
 A: UVM 架構設計上就是希望「所有 handle 指定與連接動作」放在 connect_phase 處理。
 4. 所以在run_phase還得指定sequence做randomize，可以不做randomize然後讓sequence裡面自己跑body，讓他randomize就好?
 A: 是的，你可以不在 run_phase 手動 randomize()，讓 sequence 裡的 body() 自己跑 randomize() 是可行的，前提是你在 body() 中真的有寫 randomize() 的邏輯。
-5. 請問一個seqr，可以同時設定default sequence & 用sequence.start來跑嗎?
+5. 請問一個seqr，可以同時設定default sequence & 用sequence.start來跑嗎?  
 A: 
 ![image](https://github.com/user-attachments/assets/aa779af5-45e7-48ec-a835-0c718ae07b85)
 
@@ -173,8 +173,8 @@ drop_objection(<object>, <description>, <count>);
 
 ### 1. Objection handling
 目前有三種方式執行objection handling
-1. test class handle
-2. default sequence
+1. test class handle `(讓run phase來raise/drop)`
+2. default sequence `(讓sequence的body來raise/drop)`
 3. another sequence
 
 #### 1. test class objection
