@@ -70,11 +70,15 @@ component中，task phase是會消耗simulation時間的，可以使用objection
 分為raise/drop objection兩種，raise objection可以讓phase不要結束，而drop objection可以讓phase在執行完後，進入下一個phase。
 
 ## 重要觀念
-run_phase & 其他run-time phase是平行執行
-Case 1
-如果其他的run-time phase有raise objection，run phase就能維持住不結束。
-Case 2 
+run_phase & 其他run-time phase是平行執行  
+Case 1  
+如果其他的run-time phase有raise objection，run phase就能維持住不結束。  
+Case 2   
 如果run phase有raise objection，其他的run-time phase可能會結束。  
+|Run time phase - Objection|Run phase - Objection|
+|-|-|
+|這可以維持!![image](https://github.com/user-attachments/assets/327d34be-d2d3-45b7-9ebf-d4ff5fece8be)|這不能維持!![image](https://github.com/user-attachments/assets/9457fab4-6241-4590-95ea-bba4e2e47f7c)
+|
 ![image](https://github.com/user-attachments/assets/cf1552aa-31ee-4967-b4fb-6ff08de661b9)
 
 
