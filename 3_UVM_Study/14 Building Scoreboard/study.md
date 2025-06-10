@@ -25,6 +25,22 @@ connect phase會在env/test中完成
 4. Write function機制  
 A: Scoreboard會定義write function，而monitor會call write function並帶入transaction做輸入，來表示傳送transaction
 
+步驟摘要
+### Monitor
+1. ap port的宣告，要輸入transaction
+2. constructor要帶new ap port
+3. 呼叫write function
+
+### Scoreboard   
+1. ap imp的宣告，帶入transaction & sb的class
+2. constructor要帶new ap imp port
+3. 定義write function
+
+### tb
+1. 宣告sb handle
+2. build_phase要create sb
+3. connect_phase要把ap & imp連起來
+
 |monitor|scoreboard|testbench|
 |---|---|---|
 |先宣告analysis port & 實例化`在TLM溝通中，會避免使用type override的功能，所以只能用new`，後續把packet當作輸入丟進write![image](https://github.com/user-attachments/assets/ad8eb952-a4b4-45d0-a8ea-5ec7da1983ac)|宣告analysis imp port(會在env/test做連接，並要帶入transaction的class & 實作write的class)，還需要定義好write function內容![image](https://github.com/user-attachments/assets/931e47d9-5bcb-4d3d-84f0-b115d3ba0261)|在tb裡面宣告env & sb，build_phase把sb create出來，最後在env的connect_phase連接![image](https://github.com/user-attachments/assets/d8653864-723c-49f1-a27f-33fcc9412cac)|
