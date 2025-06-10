@@ -39,7 +39,7 @@ A: Scoreboard會定義write function，而monitor會call write function並帶入
 ### tb
 1. 宣告sb handle
 2. build_phase要create sb
-3. connect_phase要把ap & imp連起來
+3. connect_phase要把ap & imp連起來，使用ap的connect函式來做連接
 
 |monitor|scoreboard|testbench|
 |---|---|---|
