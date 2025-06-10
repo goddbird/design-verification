@@ -48,7 +48,24 @@
   - 可以在test加入check phase做檢查 (check_config_usage) ，會在simulation最後階段印出所有set過但沒有被get到的設定。
   - ![image](https://github.com/user-attachments/assets/3ce82217-c9cc-4f34-a26c-9b42983244cc)
 
+## 問題討論
+發現uvm_field_xxx會有自動get & 透過super.build_phase自動更新  
+但是uvm 1.1d對於uvm_active_passive_enum這個type有bug
 
+結論1 : 根據測試，換了版本 1.1d -> 1.2
+結論是uvm_field_enum在1.1d看起來有問題，會沒有super.build_phase自動更新的效果 => `假如不寫get，是不會更新test level更新is_active的效果`    
+![image](https://github.com/user-attachments/assets/8718f71a-cd6a-4bdd-8c58-cb97fb17ad6b)
+
+
+
+結論2 : 假如有`uvm_field_xxx註冊某變數or object，在經過了build phase中的super.build_phase後，會自動"更新註冊過的變數"
+![image](https://github.com/user-attachments/assets/f2c1ab4c-876c-45a2-9526-890c438bc8b6)
+![image](https://github.com/user-attachments/assets/78b86eb0-daf3-4796-a1c0-9b444dc5d4a8)
+
+
+
+
+---
 #### UVM Configure Method
 |方法  | 功能說明 | 語法範例 |
 |---------|------|-----|
