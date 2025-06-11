@@ -46,7 +46,7 @@ this的意思是，告訴factory這個物件是在哪個元件下創造的
 
 *instance override  : 
 只想換某個instance (agent/monitor)  
-語法1 : set_inst_override_by_type(`hierarchy path`, src_class::get_type(), des_class::get_type());
+語法1 : set_inst_override_by_type(`hierarchy path`, src_class::get_type(), des_class::get_type());  
 語法2 : src_class::type_id::set_inst_override(`hierarchy path`, des_class::get_type());
 ![image](https://github.com/user-attachments/assets/80bc37cd-6e66-4f0f-b02a-56f3ddc48f92)
 
