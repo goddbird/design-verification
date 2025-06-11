@@ -35,7 +35,7 @@ A: 讓一個上層sequence，能啟動多個sequence，讓不同個sequencer使�
 這個是virtual sequencer，不處理item，所以不用參數。
   
 2. 建 multichannel sequence，呼叫各個子 sequence  
-![image](https://github.com/user-attachments/assets/d11c939f-a75f-4c59-9dca-56508d5a79b3)  
+![image](https://github.com/user-attachments/assets/01b6a46b-91a1-470f-9c31-ff6694624e9c)
 這步使用p_sequencer連接時，記得要先宣告p_sequencer  
 `uvm_declare_p_sequencer(router_mcsequencer)，需要把multichannel seqr的class註冊進p_sequencer
 要記得multichannel sequence也是一種object  
