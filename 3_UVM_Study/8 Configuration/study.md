@@ -76,8 +76,8 @@
 
 ---
 ## uvm_config_db的set方法，wildcard版本 (*, ?)
-* 代表全部的意思
-? 代表有幾個字的意思，??等於兩個字
+* 代表全部的意思  
+? 代表有幾個字的意思，??等於兩個字  
 
 例子
 uvm_config_int::set(this, "tb.env.agent?", "is_active", UVM_PASSIVE);  //這是可以把agent1, agent2….agent9裡面的is_active都改成passive
