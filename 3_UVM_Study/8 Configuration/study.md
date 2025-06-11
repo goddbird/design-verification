@@ -74,4 +74,10 @@
 |exists|檢查是否存在：檢查指定的 field 在指定路徑下是否有被 set|exists(ctx, inst, field, bit spell_chk)|
 |wait_modified|等待某個設定值被改變才繼續執行，可用於同步或等待 config 設定完成|wait_modified(ctx, inst, field)|
 
+---
+## uvm_config_db的set方法，wildcard版本 (*, ?)
+uvm_config_int::set(this, "tb.env.agent?", "is_active", UVM_PASSIVE);  //這是可以把agent1, agent2….agent9裡面的is_active都改成passive
+uvm_config_int::set(this, "*agent*", "is_active", UVM_ACTIVE); //這是路徑中有包含agent的元件，都設定成active
+uvm_config_int::set(this, "*", "recording_detail", 1); //為所有元件中的recording_detail改成1
+
 
