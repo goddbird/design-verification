@@ -118,7 +118,8 @@ endtask
 
 註: 
 1. uvm_config_wrapper是透過`typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper;` 來的
-2. 此種方式需使用`get`拿test level設定的配置，有get後才會生效
+2. 若有使用uvm_field_enum(uvm_active_passive_enum, is_active, UVM_ALL_ON)，就會在super.build_phase後自動更新is_active變數，不需要get
+
 
 ### 2. 使用test class來執行Sequence
 1. 需要test class裡面create，會在build phase階段生成sequence，`需傳入Parent讓config_db可以作用，儘管是object`
