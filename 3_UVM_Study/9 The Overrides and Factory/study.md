@@ -40,7 +40,7 @@ this的意思是，告訴factory這個物件是在哪個元件下創造的
 
 *type override  : 
 所有 instance 都換掉  
-語法1 : set_type_override_by_type(src_class::get_type(), des_class::get_type());
+語法1 : set_type_override_by_type(src_class::get_type(), des_class::get_type());  
 語法2 : src_class::type_id::set_type_override(des_class::get_type());
 ![image](https://github.com/user-attachments/assets/bda370c8-b688-47e9-b488-17c40936da6d)
 
