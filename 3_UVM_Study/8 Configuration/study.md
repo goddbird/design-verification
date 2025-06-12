@@ -1,4 +1,4 @@
-# 目標
+![image](https://github.com/user-attachments/assets/279248ca-6059-4aee-a488-7b4ebc8fc5ca)# 目標
 1. 學會使用UVM configuration機制，在build phase控制topology，比如控制UVC agent是active/passive，或者設定有幾個master/slave
 2. 為特定實例設定屬性 : 使用uvm_config_db可以讓agent / sequence / monitor指定獨有行為，e.g. 使用不合法的設定來測試error case
 
@@ -65,8 +65,15 @@
 ![image](https://github.com/user-attachments/assets/78b86eb0-daf3-4796-a1c0-9b444dc5d4a8)
 
 ### 2
-若是uvm_config_db設定某uvm_object的變數，是可以靠uvm_field來自動更新的嗎?
-
+若是uvm_config_db設定某uvm_object的變數，是可以靠uvm_field來自動更新的嗎?  
+A: 實驗中，我在test level做set  
+![image](https://github.com/user-attachments/assets/341546ad-84a4-4e4d-b529-47cc2dd7498e)  
+並且在sequence level做了 : 註冊。  
+![image](https://github.com/user-attachments/assets/2a3c290b-83a9-415d-8170-3be03915b622)  
+結果發現沒辦法自動更新。  
+但是！如果是有get的話，是可以吃到set的設定的。  
+結論是: 只有component可以這樣做，但object是沒辦法靠uvm_field_int來自動更新。  
+![image](https://github.com/user-attachments/assets/76cb9389-0d08-4f7e-9c1b-73330c8acfdf)
 
 ---
 #### UVM Configure Method
