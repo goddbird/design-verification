@@ -49,6 +49,8 @@
   - ![image](https://github.com/user-attachments/assets/3ce82217-c9cc-4f34-a26c-9b42983244cc)
 
 ## 問題討論
+
+### 1
 發現uvm_field_xxx會有自動get & 透過super.build_phase自動更新  
 但是uvm 1.1d對於uvm_active_passive_enum這個type有bug
 
@@ -62,7 +64,8 @@
 ![image](https://github.com/user-attachments/assets/f2c1ab4c-876c-45a2-9526-890c438bc8b6)
 ![image](https://github.com/user-attachments/assets/78b86eb0-daf3-4796-a1c0-9b444dc5d4a8)
 
-
+### 2
+若是uvm_config_db設定某uvm_object的變數，是可以靠uvm_field來自動更新的嗎?
 
 
 ---
