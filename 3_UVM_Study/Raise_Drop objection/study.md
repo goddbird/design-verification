@@ -91,3 +91,9 @@ Case 2
 
 ![image](https://github.com/user-attachments/assets/d2754cae-311f-413c-b2d1-c70c0d30b2a9)
 
+## Debug專用
+要如何知道程式裡有沒drop的objection?
+A: 可以在compile option裡面加入+UVM_PHASE_TRACE來確認PHASE的狀態
+|有drop|沒drop|
+|-|-|
+|最後會看到final phase之類的![image](https://github.com/user-attachments/assets/4301ee43-337c-4e85-ae1a-4e85f66a3b4f)|如果有沒drop的objection，則會卡在shutdown phase![image](https://github.com/user-attachments/assets/9138d439-4ce6-4bc9-9af4-e5b143500df0)|
