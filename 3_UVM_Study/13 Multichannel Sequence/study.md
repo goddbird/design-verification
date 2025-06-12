@@ -30,21 +30,20 @@ A: 讓一個上層sequence，能啟動多個sequence，讓不同個sequencer使�
 4. 在test level設定default sequence
 
 #### 1. 步驟說明
-1. 建一個 multichannel sequencer class，宣告handle  
+1. 建一個 multichannel sequencer class，只宣告seqr handle  
 ![image](https://github.com/user-attachments/assets/a15cedf0-270f-41f0-a3a4-67aa08431629)  
 這個是virtual sequencer，不處理item，所以不用參數。
   
-2. 建 multichannel sequence，呼叫各個子 sequence  
+2. 建 multichannel sequence，要先把前面宣告的virtual seqr註冊p_sequencer
 ![image](https://github.com/user-attachments/assets/01b6a46b-91a1-470f-9c31-ff6694624e9c)
-這步使用p_sequencer連接時，記得要先宣告p_sequencer  
 `uvm_declare_p_sequencer(router_mcsequencer)，需要把multichannel seqr的class註冊進p_sequencer
-最後在body使用uvm_do_on來連接p_sequencer & sequence，uvm_do需輸入要執行哪一種packet。
+然後要宣告好sequence的handle，最後在body使用uvm_do_on來連接p_sequencer & sequence，uvm_do需輸入要執行哪一種sequence，且是p_sequencer中的哪一個seqr實體。
 
 3. 在env中建好mc sequencer的handle，在build_phase中create各個handle，並在connect_phase連接各 UVC 的 sequencer，把multichannel seqr連線上實體的agent裡面的seqr  
 註: 為什麼是在env裡做連接而不是在agent裡面做，是因為mc sequencer是一個跨agent的元件，他需要從多個agent中取得sequencer的handle  
 ![image](https://github.com/user-attachments/assets/8666487e-f7f1-4f1b-ac05-2ee28f53f1f9)
 
-4. 在 test 中設定 default sequence，並取消 UVC 的 local control  
+4. 在 test 中設定 default sequence，並取消原本有的default sequence
 ![image](https://github.com/user-attachments/assets/5c07f63c-cf13-4551-b11a-5ed65dc1f71a)
 
 
