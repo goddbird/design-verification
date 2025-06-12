@@ -25,7 +25,7 @@ connect phase會在env/test中完成
 4. Write function機制  
 A: Scoreboard會定義write function，而monitor會call write function並帶入transaction做輸入，來表示傳送transaction
 
-步驟摘要
+## 步驟摘要
 ### Monitor
 1. ap port的宣告，要輸入transaction
 2. constructor要帶new ap port
