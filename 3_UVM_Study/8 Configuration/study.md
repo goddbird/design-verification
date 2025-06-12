@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/279248ca-6059-4aee-a488-7b4ebc8fc5ca)# 目標
+# 目標
 1. 學會使用UVM configuration機制，在build phase控制topology，比如控制UVC agent是active/passive，或者設定有幾個master/slave
 2. 為特定實例設定屬性 : 使用uvm_config_db可以讓agent / sequence / monitor指定獨有行為，e.g. 使用不合法的設定來測試error case
 
