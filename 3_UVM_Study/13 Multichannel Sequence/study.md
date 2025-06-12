@@ -43,7 +43,7 @@ A: 讓一個上層sequence，能啟動多個sequence，讓不同個sequencer使�
 註: 為什麼是在env裡做連接而不是在agent裡面做，是因為mc sequencer是一個跨agent的元件，他需要從多個agent中取得sequencer的handle  
 ![image](https://github.com/user-attachments/assets/8666487e-f7f1-4f1b-ac05-2ee28f53f1f9)
 
-4. 在 test 中設定 default sequence，並取消原本有的default sequence
+4. 在 test 中設定 default sequence，並取消原本有的default sequence  
 ![image](https://github.com/user-attachments/assets/5c07f63c-cf13-4551-b11a-5ed65dc1f71a)
 
 
