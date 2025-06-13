@@ -1,0 +1,5 @@
+s1(22Oct2021:10:15:34):  xrun -f lab06run.f 
+s2(22Oct2021:10:16:06):  xrun -f lab06run.f -gui -access rwc 
+s3(22Oct2021:10:16:35):  xrun -f lab06run.f 
+s4(22Oct2021:10:30:14):  xrun -f lab06run.f 
+s5(22Oct2021:10:31:13):  xrun -f lab06run.f -gui -access rwc 
