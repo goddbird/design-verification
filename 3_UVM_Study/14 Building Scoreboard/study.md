@@ -62,6 +62,7 @@ UVM 中的設計限制是：
 ```systemverilog
 `umv_analysis_imp_decl(_yapp)
 uvm_analysis_imp_yapp#(yapp_packet, router_tb)
+function void write_yapp(input yapp_packet packet);
 ```
 例子如下  
 ![image](https://github.com/user-attachments/assets/73ca2378-6fed-4707-b7d4-afa1bbb0fa08)
