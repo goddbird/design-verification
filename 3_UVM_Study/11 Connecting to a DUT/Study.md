@@ -99,3 +99,6 @@ endinterface
 2. 在hw_top中宣告interface的instance  
 3. 在test level使用config_db做set動作，路徑設定是test.env.agent.*  
 4. 路徑設定好後，名稱給"vif"，值要給instance的路徑，e.g. hw_top.if1  
+
+
+assign_vi好像只有宣告並沒有呼叫
