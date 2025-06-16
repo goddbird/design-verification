@@ -29,10 +29,10 @@ virtual interface <if_name> <local_name>
 
 # 4. 介紹各檔案的top modules
 ## tb_top
-✅ import uvm_pkg::*：匯入 UVM 所需的所有 class。
-✅ import yapp_pkg::*：自訂封裝的驗證 component。
-✅ run_test()：啟動整個 UVM 測試流程。
-✅ connect interfaces：會在 initial block 中用 uvm_config_db::set() 把實體 interface 傳給 driver 等 UVM 元件。
+✅ import uvm_pkg::*：匯入 UVM 所需的所有 class。  
+✅ import yapp_pkg::*：自訂封裝的驗證 component。  
+✅ run_test()：啟動整個 UVM 測試流程。  
+✅ connect interfaces：會在 initial block 中用 uvm_config_db::set() 把實體 interface 傳給 driver 等 UVM 元件。  
 ![image](https://github.com/user-attachments/assets/4d70b120-9f00-410a-8471-2a21ee340805)
 
 ### 如何在tb_top做設定
@@ -50,10 +50,10 @@ uvm_config_db#(virtual yapp_if)::set(
 
 
 ## hw_top
-✅ 宣告並實體化 interface，如 yapp_if in0(clock, reset);
-✅ 將 interface 的訊號接到 DUT（例如 router）的 port 上
-✅ 也會宣告其他硬體模組（如 clock generator）
-❌ 不包含 run_test()（這部分是在軟體端執行）
+✅ 宣告並實體化 interface，如 yapp_if in0(clock, reset);  
+✅ 將 interface 的訊號接到 DUT（例如 router）的 port 上  
+✅ 也會宣告其他硬體模組（如 clock generator）  
+❌ 不包含 run_test()（這部分是在軟體端執行）  
 ![image](https://github.com/user-attachments/assets/d1dc415e-c0b9-446f-9010-5d056494c535)
 
 ## 統整
