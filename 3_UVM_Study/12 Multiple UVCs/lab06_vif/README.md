@@ -29,4 +29,7 @@ monitor_example.sv：可能是用來說明或測試 monitor 行為的範例。
 
 # 問問題
 1. driver中的num_sent有什麼用?
-2. num_pkt_col? 
+2. num_pkt_col?
+3. recording_detail是什麼?
+4. HBus是什麼?  A: 基本的RW bus protocol
+5. Channel是什麼?  A: 模擬輸出通道。Router的測試中，可能會有多個輸出通道，channel應該是模擬接收端，在收到封包時進行紀錄、檢查順序、驗證parity
