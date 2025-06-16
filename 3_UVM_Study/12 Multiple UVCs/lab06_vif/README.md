@@ -23,6 +23,9 @@ driver_example.sv：應該是一個簡化版或範例 driver 類別。
 
 monitor_example.sv：可能是用來說明或測試 monitor 行為的範例。
 
+# 目前的topology
+![image](https://github.com/user-attachments/assets/822d4ed5-87d1-42b5-b4df-feed9f2655e2)
+
 
 # 問問題
 1. driver中的num_sent有什麼用?
