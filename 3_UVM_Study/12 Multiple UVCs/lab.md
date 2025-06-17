@@ -12,7 +12,7 @@ YAPP 傳資料，HBUS 控制哪裡能收、何時送等，看 Router 是否能�
 3. 在tb level控制channel_env: uvm_config_int::set(this, "chan0", "channel_id", 0);
 並把對應channel設定值
 4. 發現hbus沒有設定好對應的vif，hbus還有分master/slave
-可以透過以下設定一口氣把hbus裡有使用到interface get的全部set好
+可以透過以下設定，在tb_top一口氣把hbus裡有使用到interface get的全部set好
 ![image](https://github.com/user-attachments/assets/0189c6e1-7e22-48de-bb2a-078eb17d82d2)
 
 
