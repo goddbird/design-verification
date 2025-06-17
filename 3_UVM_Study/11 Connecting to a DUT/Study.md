@@ -21,7 +21,7 @@ virtual interface <if_name> <local_name>
 ## 範例
 ![image](https://github.com/user-attachments/assets/0714aa5a-781d-4308-a1a6-0fc3e2e7a6a9)
 ## 解釋
-![image](https://github.com/user-attachments/assets/4915e339-665c-4091-ac33-3ea9ae4c7773)
+![image](https://github.com/user-attachments/assets/4915e339-665c-4091-ac33-3ea9ae4c7773)  
 📷 模擬結果
 在 waveform 中會看到：
 一個時間軸上的方塊，代表該 transaction 的存在時間。
@@ -45,20 +45,25 @@ uvm_config_db#(virtual interface yapp_if)::set(
     hw_top.in0                           // 要傳遞的 interface 實體
 );
 ```
+![image](https://github.com/user-attachments/assets/3ecfe269-25ab-401e-a12e-169c073bc094)  
 註1: 這個測試環境的階層長這樣，路徑才會是uvm_test_top.tb.yapp.*  
 ✅ 為什麼不用設到 driver/monitor？  
 因為：driver 和 monitor 都有一個成員變數叫 vif  
 如果你用 "uvm_test_top.tb.yapp.*" 搭配萬用字元 *，UVM config DB 會自動找出所有符合路徑的子 component 中有vif的並設定，所以這個用法是"對agent底下元件設值"  
-![image](https://github.com/user-attachments/assets/3ecfe269-25ab-401e-a12e-169c073bc094)
+
 
 註2: 做了set之後還得在driver/monitor中的connect phase做get
 ![image](https://github.com/user-attachments/assets/f6f5c3f5-37d9-4dd6-a8bc-6f6d0cf302fb)  
 問: 為什麼是在connect phase做  
+![image](https://github.com/user-attachments/assets/1c1e531b-7658-41c7-8b31-1c1de771cdd4)  
+
 
 註3: 建議使用typedef包住uvm_config_db#(...)
 uvm_config_db 是一個 template（泛型）class，對 type 非常敏感。  
 如果 set() 和 get() 的 type 不一致（例如少了 virtual 關鍵字或用了不同的 interface 名），就會導致配置失敗。所以建議將 uvm_config_db#(virtual yapp_if) 透過 typedef 命名為一個通用的型別名稱。  
-  
+![image](https://github.com/user-attachments/assets/73c4d8d4-b5a6-452c-9032-13f6affe0244)
+
+
 ## hw_top
 ✅ 宣告並實體化 interface，如 yapp_if in0(clock, reset);  
 ✅ 將 interface 的訊號接到 DUT（例如 router）的 port 上  
