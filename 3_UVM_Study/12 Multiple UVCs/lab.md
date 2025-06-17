@@ -15,7 +15,11 @@ YAPP 傳資料，HBUS 控制哪裡能收、何時送等，看 Router 是否能�
 可以透過以下設定，在tb_top一口氣把hbus裡有使用到interface get的全部set好
 ![image](https://github.com/user-attachments/assets/0189c6e1-7e22-48de-bb2a-078eb17d82d2)
 5. 發現假如要讓原本是hw_top控制的reset訊號，交由clock_and_reset_if來控制時，需要把原本在initial begin控制的reset訊號那段code註解掉，然後把reset的操作寫在if裡面。
+6. 做Router & 其他component連線
 
+|router|channel_if|hbus_if|  
+|-|-|-|  
+|![image](https://github.com/user-attachments/assets/9551a378-e3e0-4df1-a353-7eccc4325576)|![image](https://github.com/user-attachments/assets/25adb8d4-f14e-46cd-b54b-43e0e52147bc)|![image](https://github.com/user-attachments/assets/d0d6eddd-7421-4f72-a90d-a7687411f487)|
 # Summary
 driver: 
 
