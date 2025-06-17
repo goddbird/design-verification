@@ -16,6 +16,12 @@ YAPP 傳資料，HBUS 控制哪裡能收、何時送等，看 Router 是否能�
 ![image](https://github.com/user-attachments/assets/0189c6e1-7e22-48de-bb2a-078eb17d82d2)
 5. 發現假如要讓原本是hw_top控制的reset訊號，交由clock_and_reset_if來控制時，需要把原本在initial begin控制的reset訊號那段code註解掉，然後把reset的操作寫在if裡面。
 6. 做Router & 其他component連線
+發現會在hbus碰到問題，hb.hdata是logic，但是內部因為assign inout = logic，造成下面的錯誤
+![image](https://github.com/user-attachments/assets/f2be6d25-b203-4f39-b8a7-dee9e020c197)
+解法是  
+![image](https://github.com/user-attachments/assets/a4dae6e9-6ba0-43fe-ae70-9694a30d6055)  
+![image](https://github.com/user-attachments/assets/ee246c8c-32d3-4a9a-b215-17b110e76e9b)
+做到第10個步驟
 
 |router|channel_if|hbus_if|  
 |-|-|-|  
