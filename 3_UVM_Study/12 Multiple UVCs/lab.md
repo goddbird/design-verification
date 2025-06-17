@@ -14,7 +14,7 @@ YAPP 傳資料，HBUS 控制哪裡能收、何時送等，看 Router 是否能�
 4. 發現hbus沒有設定好對應的vif，hbus還有分master/slave
 可以透過以下設定，在tb_top一口氣把hbus裡有使用到interface get的全部set好
 ![image](https://github.com/user-attachments/assets/0189c6e1-7e22-48de-bb2a-078eb17d82d2)
-
+5. 發現假如要讓原本是hw_top控制的reset訊號，交由clock_and_reset_if來控制時，需要把原本在initial begin控制的reset訊號那段code註解掉，然後把reset的操作寫在if裡面。
 
 # Summary
 driver: 
