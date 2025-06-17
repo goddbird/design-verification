@@ -100,10 +100,11 @@ endinterface
 
 
 # 6. 用法步驟總結
-1. 在if.sv中宣告好interface該有的訊號  
-2. 在hw_top中宣告interface的instance  
-3. 在test level使用config_db做set動作，路徑設定是test.env.agent.*  
-4. 路徑設定好後，名稱給"vif"，值要給instance的路徑，e.g. hw_top.if1  
+1. 在if.sv中宣告好interface該有的訊號
+2. 在file list要加入寫好的if.sv來compile
+3. 在hw_top中宣告interface的instance  
+4. 在test level使用config_db做set動作，路徑設定是test.env.agent.`*`，如果有多個agent要設定vif，可以改成test.env.`*`    
+5. 路徑設定好後，名稱給"vif"，值要給instance的路徑，e.g. hw_top.if1  
 
 
 assign_vi好像只有宣告並沒有呼叫
