@@ -21,11 +21,13 @@ YAPP 傳資料，HBUS 控制哪裡能收、何時送等，看 Router 是否能�
 解法是  
 ![image](https://github.com/user-attachments/assets/a4dae6e9-6ba0-43fe-ae70-9694a30d6055)  
 ![image](https://github.com/user-attachments/assets/ee246c8c-32d3-4a9a-b215-17b110e76e9b)
-做到第10個步驟
+
 
 |router|channel_if|hbus_if|  
 |-|-|-|  
 |![image](https://github.com/user-attachments/assets/9551a378-e3e0-4df1-a353-7eccc4325576)|![image](https://github.com/user-attachments/assets/25adb8d4-f14e-46cd-b54b-43e0e52147bc)|![image](https://github.com/user-attachments/assets/d0d6eddd-7421-4f72-a90d-a7687411f487)|
+
+# 做到第10個步驟
 # Summary
 driver: 
 
