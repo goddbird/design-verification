@@ -2,7 +2,7 @@
 建立一個multiple UVC，並且連接&配置HBUS, channel, clock/reset UVC
 
 1. 先讓run能動
-2. 確認uvm topology : 無法
+2. 確認uvm topology : 沒辦法，因為沒設定對應的channel vif
 ![image](https://github.com/user-attachments/assets/321ec0d2-1dad-440b-988a-f51fa37c20f2)
 
 
