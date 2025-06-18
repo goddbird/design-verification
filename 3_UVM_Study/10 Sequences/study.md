@@ -85,7 +85,7 @@ endtask
 |`uvm_rand_send(req)|步驟 2 ~ 7（含 randomize）|若你已手動建立 req，可以用這個送出|自己處理 randomize，但仍需 sequencer 管理送出與等待|
 |`uvm_rand_send_with(req, {...})|步驟 2 ~ 7，且帶限制條件|手動建立 + 附加隨機條件送出|想結合手動建立 + 隨機限制|
 
-實際語法使用:
+實際語法使用:  
 範例1.
 ```systemverilog
 `uvm_do(req)
