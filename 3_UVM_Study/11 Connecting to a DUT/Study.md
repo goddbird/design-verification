@@ -4,6 +4,9 @@
 
 
 ---
+# 0. Interface的內容
+1. 訊號
+2. Task, function
 
 # 1. Interface的compile
 - 一個interface，在uvm架構裡面做compile時，必須加入pkg中
