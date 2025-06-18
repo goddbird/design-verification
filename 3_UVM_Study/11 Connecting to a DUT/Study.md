@@ -107,7 +107,10 @@ endinterface
 2. 在file list要加入寫好的if.sv來compile
 3. 在hw_top中宣告interface的instance  
 4. 在test level使用config_db做set動作，路徑設定是test.env.agent.`*`，如果有多個agent要設定vif，可以改成test.env.`*`    
-5. 路徑設定好後，名稱給"vif"，值要給instance的路徑，e.g. hw_top.if1  
+5. 路徑設定好後，名稱給"vif"，值要給instance的路徑，e.g. hw_top.if1
+6. 會在底層的driver, monitor做get的動作  
+![image](https://github.com/user-attachments/assets/52b6cff3-866f-4412-97c2-83af8527c5ff)
+
 
 
 assign_vi好像只有宣告並沒有呼叫
