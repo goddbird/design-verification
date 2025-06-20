@@ -7,7 +7,7 @@
 
 ---
 # 介紹
-UVM register model是一種high level的abstract class，用來對DUT中有地址映射的register跟memory進行建模，可以反映DUT中register的各種特性，也可以產生Stimulus對DUT的register進行檢查，透過UVM register model可以進行front door / back door的操作。
+UVM register model是一種high level的abstract class，用來對DUT中有地址映射的register跟memory進行建模，`可以反映DUT中register的各種特性`，讓工程師可以不用手動紀錄每個register的位置與值，也可以產生Stimulus對DUT的register進行檢查，透過UVM register model可以進行front door / back door的操作。
 ![image](https://github.com/user-attachments/assets/1c66938f-8323-4197-a267-7628514cce0e)
 
 以之前要驗的router為例，可以把檔案歸納成下列這幾個:
