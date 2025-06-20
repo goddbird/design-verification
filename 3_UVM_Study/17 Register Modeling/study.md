@@ -19,24 +19,117 @@ router_reg_sequence.sv：示範如何用 sequence 測試 register
 # 驗證register的流程如下
 ![image](https://github.com/user-attachments/assets/088a009b-e0d4-4f29-9032-37828ec39055)
 
-1. 建立一個 Register Reference Model
-包含每個 register 的：
-位址、寬度、reset 值
-權限（RW / RO）
-這些資訊由 uvm_reg, uvm_reg_field, uvm_reg_block 等類別描述
-是 RTL register 的「影子版本」，用來做比對
+## 1. 建立一個 Register class
+這是你定義一個單獨 Register 的地方，使用 uvm_reg 來繼承。
+```systemverilog
+class en_reg extends uvm_reg;
+    rand uvm_reg_field router_en;
 
-2. 使用 sequence 去存取 DUT register
-透過 HBUS UVC 傳送 read/write 訊號
-ex: reg_model.ctrl_reg.write(status);
+    function new(string name = "en_reg");
+        super.new(name, 8, UVM_NO_COVERAGE); // 這個 register 是 8-bit
+    endfunction
 
-3. 更新 register model
-如果成功寫入 DUT，register model 就也更新對應值
-讀的時候則比對實際讀值與 model 預期值是否一致
+    virtual function void build();
+        router_en = uvm_reg_field::type_id::create("router_en");
+        router_en.configure(this, 1, 0, "RW", 0, 1, 1, 0); 
+    endfunction
+endclass
+```
+📌 重點說明：  
+router_en 是這個 register 裡的一個 field。  
+.configure() 裡面定義的是 field 的 bit 寬度、位置、讀寫權限、reset 值等。  
+這一步就是在告訴 RAL：「我這個 register 有什麼結構」。  
 
-4. 比對 DUT register vs. model
-會呼叫 UVM 內建的 mirror / predict 機制
-若發現 mismatch，會報 error：表示 RTL register 行為有問題
+
+## 2. 建立register block
+這是 將多個 Register 組合起來 的地方，也就是 RAL 架構的「管理層」。
+```systemverilog
+class router_reg_block extends uvm_reg_block;
+    rand en_reg en_reg_h;
+
+    function new(string name = "router_reg_block");
+        super.new(name, build_coverage(UVM_NO_COVERAGE));
+    endfunction
+
+    virtual function void build();
+        default_map = create_map("default_map", 0, 1, UVM_LITTLE_ENDIAN);
+
+        en_reg_h = en_reg::type_id::create("en_reg_h");
+        en_reg_h.build();
+        en_reg_h.configure(this);
+        default_map.add_reg(en_reg_h, 'h1001, "RW");
+    endfunction
+endclass
+```
+📌 重點說明：  
+create_map() 創建了 register map，告訴 UVM 你從什麼起始位址開始，位元組間距等。  
+add_reg() 把之前定義好的 register 放到 map 中並指定 address。  
+這是讓你可以用 .ctrl_reg.write(...) 而不是 write_to_addr(0x1001) 的關鍵步驟。  
+
+
+## 3. 建立adapter
+Adapter 的角色是：把 RAL 的讀寫請求，轉成 bus protocol 的 transaction，也就是連結 RAL 與 Bus UVC 的橋樑。
+```systemverilog
+class router_reg_adapter extends uvm_reg_adapter;
+
+    function new(string name = "router_reg_adapter");
+        super.new(name);
+        supports_byte_enable = 0;
+        provides_responses = 1;
+    endfunction
+
+    virtual function uvm_sequence_item reg2bus(const ref uvm_reg_bus_op rw);
+        hbus_transaction tx = hbus_transaction::type_id::create("tx");
+        tx.addr = rw.addr;
+        tx.data = rw.data;
+        tx.kind = (rw.kind == UVM_READ) ? READ : WRITE;
+        return tx;
+    endfunction
+
+    virtual function void bus2reg(uvm_sequence_item bus_item, ref uvm_reg_bus_op rw);
+        hbus_transaction tx;
+        $cast(tx, bus_item);
+        rw.addr = tx.addr;
+        rw.data = tx.data;
+        rw.kind = (tx.kind == READ) ? UVM_READ : UVM_WRITE;
+        rw.status = UVM_IS_OK;
+    endfunction
+endclass
+```
+📌 重點說明：  
+reg2bus() 是 write/read 前會被呼叫，把 register 的操作轉換成 bus 傳輸。  
+bus2reg() 則是從 bus 收到回應時用來轉回 RAL 格式。  
+
+## 4. 在 test 中用 .write() 與 .mirror() 來驗證
+```systemverilog
+initial begin
+    router_reg_block reg_blk;
+    router_reg_adapter reg_adapt;
+
+    // 建立 reg block & adapter
+    reg_blk = router_reg_block::type_id::create("reg_blk");
+    reg_adapt = router_reg_adapter::type_id::create("reg_adapt");
+
+    reg_blk.build();
+    reg_blk.lock_model(); // 鎖住 reg 架構
+    reg_blk.default_map.set_sequencer(p_sequencer, reg_adapt);
+
+    // 寫入 register
+    reg_blk.en_reg_h.router_en.write(status, 1'b0);
+
+    // 讀回來 check
+    uvm_reg_data_t read_val;
+    reg_blk.en_reg_h.router_en.read(status, read_val);
+    `uvm_info("REG_CHECK", $sformatf("Read back = %0h", read_val), UVM_LOW)
+
+    // mirror() 自動比對 DUT 值與 shadow copy
+    reg_blk.en_reg_h.mirror(status, UVM_CHECK);
+end
+```
+📌 重點說明：
+.write()：會透過 adapter 呼叫 bus 去寫入 register。  
+.read()：同樣透過 adapter 讀出值。  
+.mirror()：自動比對 shadow copy 和真實 DUT 的 register 值是否一致，不用你自己寫 if/else 判斷式去比！  
 
 # UVM register model架構
 🔍 功能總結：
