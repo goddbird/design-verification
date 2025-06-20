@@ -6,7 +6,9 @@
 4. 在simulation中打出自定義的stimulus
 
 ---
- 
+# 介紹
+UVM register model是一種high level的abstract class，用來對DUT中有地址映射的register跟memory進行建模，可以反映DUT中register的各種特性，也可以產生Stimulus對DUT的register進行檢查，透過UVM register model可以進行front door / back door的操作。
+
 # 驗證register的流程如下
 ![image](https://github.com/user-attachments/assets/088a009b-e0d4-4f29-9032-37828ec39055)
 
@@ -46,3 +48,9 @@ UVM register model 讓你不用自己去記每個 register 在哪裡、初始值
 - 在 uvm_reg_block 寫好 reg 架構
 - 在 uvm_reg_adapter 連結 reg model 與 bus UVC
 - 用 .read() / .write() 和 .mirror() 自動做驗證
+---
+
+# Register API Access Methods
+![image](https://github.com/user-attachments/assets/2671798e-d67b-422d-908e-b4503e6be9a8)  
+![image](https://github.com/user-attachments/assets/a909abe3-8ce9-4dc4-9106-8beedad39ae5)
+
