@@ -90,3 +90,6 @@ Coverage 寫法：紀錄有哪些 slave ID 被 access 過
 bins ch0_cov = {[1:$]}; // 表示 1 以上的值都會被統計
 ```
 ![image](https://github.com/user-attachments/assets/dbc41d08-a1eb-4c5a-b86a-5861fd8c60c2)
+
+# Sample的時機點?
+![image](https://github.com/user-attachments/assets/3722d51d-bded-49af-ab46-15fbd67685f1)
