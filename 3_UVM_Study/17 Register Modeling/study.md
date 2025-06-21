@@ -27,6 +27,51 @@ uvm_reg/uvm_mem，最小單位是uvm_field
 
 結論: UVM的register API可以讓你省去為每種bus寫專屬sequence的麻煩，直接用統一的方法存取register。
 ---
+
+
+# UVM register model怎麼和DUT配合?
+1. 使用register API存取register
+```systemverilog
+model.ctrl_reg.write(..., 8'h00);
+model.ctrl_reg.read(..., rdata, UVM_BACKDOOR);
+```
+這段程式碼不是直接對 bus 下指令，而是：  
+透過 register model 存取 DUT 的 register  
+可以選擇使用 frontdoor（經由 bus） 或 backdoor（直接存取 RTL） 方法  
+2. Frontdoor: 透過bus存取
+- ctrl_reg.write()被翻譯成UVC的transaction(由adapter轉換)
+- 經由seqr -> driver -> bus傳到DUT
+- 需要一個UVM
+
+🔁 優點：
+
+模擬真實 bus 行為
+
+可檢查握手/時序錯誤
+
+✅ 3. Backdoor：直接寫入 RTL 層
+ctrl_reg.read(..., UVM_BACKDOOR) 表示不走 bus
+
+直接從 RTL 層的 hierarchical path 取值
+
+📍 需要：
+
+DUT 要有 hierarchical path（e.g. top.dut.ctrl_reg）
+
+⚠️ 注意：
+
+模擬速度快但不代表實際硬體運作
+
+通常用在 initialization 或 reset check
+
+✅ 4. Register Model（右側 YAPP Register Model）
+是 UVM 自動生成的 class 結構
+
+把 DUT 裡每個 register/memory 的資訊（名稱、地址、存取模式）建成 model
+
+每個 register 都會有 shadow copy 可驗證
+
+---
 # 建立register model流程
 ## 1. 建立一個 Register class
 這是你定義一個單獨 Register 的地方，使用 uvm_reg 來繼承。
@@ -76,7 +121,7 @@ add_reg() 把之前定義好的 register 放到 map 中並指定 address。
 這是讓你可以用 .ctrl_reg.write(...) 而不是 write_to_addr(0x1001) 的關鍵步驟。  
 
 
-## 3. 建立adapter
+## 3. 建立adapter (FRONT DOOR才需要)
 Adapter 的角色是：把 RAL 的讀寫請求，轉成 bus protocol 的 transaction，傳給seqr(後續透過seqr -> driver -> bus)，也就是連結 RAL 與 Bus UVC 的橋樑。
 ```systemverilog
 class router_reg_adapter extends uvm_reg_adapter;
@@ -110,6 +155,7 @@ reg2bus() 是 write/read 前會被呼叫，把 register 的操作轉換成 bus �
 bus2reg() 則是從 bus 收到回應時用來轉回 RAL 格式。  
 
 ## 4. 在 test 中用 .write() 與 .mirror() 來驗證
+*注意: write也可以直接以backdoor型式寫入DUT，如此就不用經過BUS。
 ```systemverilog
 initial begin
     router_reg_block reg_blk;
@@ -139,6 +185,7 @@ end
 .write()：會透過 adapter 呼叫 bus 去寫入 register。  
 .read()：同樣透過 adapter 讀出值。  
 .mirror()：自動比對 shadow copy 和真實 DUT 的 register 值是否一致，不用你自己寫 if/else 判斷式去比！  
+---
 
 # UVM register model架構
 🔍 功能總結：
