@@ -16,7 +16,13 @@ router_reg_block.sv：建構 reg block 與 memory
 router_reg_sequence.sv：示範如何用 sequence 測試 register  
 
 
-# 驗證register的流程如下
+# UVM對驗證register給出一些方法
+1. 會針對register，define出uvm_reg_block
+uvm_reg/uvm_mem，最小單位是uvm_field
+2. 並抓取register對應的屬性。e.g. RW / RO etc
+3. 可以使用reg名稱來代替address e.g. 使用en_reg來代替0x1001
+4. 可以支援位置mapping
+5. 可以包含coverage
 ![image](https://github.com/user-attachments/assets/0161159c-06aa-45e1-9b85-e967af7b7dcc)
 
 ## 1. 建立一個 Register class
