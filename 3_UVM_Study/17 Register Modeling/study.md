@@ -25,6 +25,9 @@ uvm_reg/uvm_mem，最小單位是uvm_field
 5. 可以包含coverage
 ![image](https://github.com/user-attachments/assets/0161159c-06aa-45e1-9b85-e967af7b7dcc)
 
+結論: UVM的register API可以讓你省去為每種bus寫專屬sequence的麻煩，直接用統一的方法存取register。
+---
+# 建立register model流程
 ## 1. 建立一個 Register class
 這是你定義一個單獨 Register 的地方，使用 uvm_reg 來繼承。
 ```systemverilog
@@ -74,7 +77,7 @@ add_reg() 把之前定義好的 register 放到 map 中並指定 address。
 
 
 ## 3. 建立adapter
-Adapter 的角色是：把 RAL 的讀寫請求，轉成 bus protocol 的 transaction，也就是連結 RAL 與 Bus UVC 的橋樑。
+Adapter 的角色是：把 RAL 的讀寫請求，轉成 bus protocol 的 transaction，傳給seqr(後續透過seqr -> driver -> bus)，也就是連結 RAL 與 Bus UVC 的橋樑。
 ```systemverilog
 class router_reg_adapter extends uvm_reg_adapter;
 
