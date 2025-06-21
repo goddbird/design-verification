@@ -17,7 +17,7 @@ router_reg_sequence.sv：示範如何用 sequence 測試 register
 
 
 # 驗證register的流程如下
-![image](https://github.com/user-attachments/assets/088a009b-e0d4-4f29-9032-37828ec39055)
+![image](https://github.com/user-attachments/assets/0161159c-06aa-45e1-9b85-e967af7b7dcc)
 
 ## 1. 建立一個 Register class
 這是你定義一個單獨 Register 的地方，使用 uvm_reg 來繼承。
