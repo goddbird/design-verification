@@ -181,10 +181,12 @@ initial begin
     reg_blk.en_reg_h.mirror(status, UVM_CHECK);
 end
 ```
+
 📌 重點說明：
 .write()：會透過 adapter 呼叫 bus 去寫入 register。  
 .read()：同樣透過 adapter 讀出值。  
 .mirror()：自動比對 shadow copy 和真實 DUT 的 register 值是否一致，不用你自己寫 if/else 判斷式去比！  
+
 ---
 
 # UVM register model架構
