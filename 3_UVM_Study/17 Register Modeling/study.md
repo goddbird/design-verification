@@ -212,7 +212,19 @@ UVM register model 讓你不用自己去記每個 register 在哪裡、初始值
 - 用 .read() / .write() 和 .mirror() 自動做驗證
 ---
 
-# Register API Access Methods
-![image](https://github.com/user-attachments/assets/2671798e-d67b-422d-908e-b4503e6be9a8)  
-![image](https://github.com/user-attachments/assets/a909abe3-8ce9-4dc4-9106-8beedad39ae5)
+# Address Map
+## 💡 什麼是 Address Map？
+![image](https://github.com/user-attachments/assets/5b18ed9c-b186-4427-95f3-039469266adb)
+是一個用來表示 某個介面 (interface) 如何看到 register address 的映射結構。
+一個 register 可以被 不同的介面（UVC）以不同位址存取。
 
+## 🔁 為什麼要有多個 Address Map？
+當 DUT 有多個 bus 介面（如 UVC1 與 UVC2）都能控制 registers。
+每個介面可能有自己的 base address 和地址編排。
+同一個 register（如 reg1）可能在 map1 是 0x040，在 map2 是 0x050。
+
+## 🧩 重點整理：
+✅ 每個介面都有對應的 address map。
+✅ reg1 可以同時存在於多個 map 中（不同地址）。
+✅ 如果只有一個 map，預設名稱叫 default_map。
+✅ 如果 register 存在於多個 map，執行 .write() 或 .read() 時就要明確指定 map 名稱。
