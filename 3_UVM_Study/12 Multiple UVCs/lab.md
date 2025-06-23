@@ -4,6 +4,15 @@
 YAPP 傳資料，HBUS 控制哪裡能收、何時送等，看 Router 是否能正確分配到 CH0~CH2。  
 
 
+# Summary
+driver: 
+
+# 問題
+1. 為什麼hbus master/slave不需要monitor?
+📌 為什麼不用 monitor？
+在 UVM 裡，monitor 主要是用來觀察 DUT 傳出來的資料、做 scoreboard、coverage、protocol check 等
+而 master/slave 都是主動參與傳輸的 agent，傳什麼、收什麼都在 driver 中明確定義了，不需要 monitor 來額外觀察，除非你有要做 bus snooping（像 AXI monitor），才需要加 monitor 來做 cross-check
+2. 
 
 # 進度
 1. 先讓run能動
@@ -28,12 +37,10 @@ YAPP 傳資料，HBUS 控制哪裡能收、何時送等，看 Router 是否能�
 |![image](https://github.com/user-attachments/assets/9551a378-e3e0-4df1-a353-7eccc4325576)|![image](https://github.com/user-attachments/assets/25adb8d4-f14e-46cd-b54b-43e0e52147bc)|![image](https://github.com/user-attachments/assets/d0d6eddd-7421-4f72-a90d-a7687411f487)|
 
 # 做到第10個步驟
-# Summary
-driver: 
+做waveform的確認，加入一些cmd到run裡面 :
+![image](https://github.com/user-attachments/assets/f02569ab-cede-4571-a50f-c196106b46e0)  
+發現sequence卡住了，gpt說是先確認driver/seqr有沒有接好
+但現在看起來有接好TLM，比較像是reset訊號沒振，造成卡住，但是現在simvision看不到波型
+![image](https://github.com/user-attachments/assets/ba41dd5d-e291-405f-83fb-96ed77d26d22)  
 
-# 問題
-1. 為什麼hbus master/slave不需要monitor?
-📌 為什麼不用 monitor？
-在 UVM 裡，monitor 主要是用來觀察 DUT 傳出來的資料、做 scoreboard、coverage、protocol check 等
-而 master/slave 都是主動參與傳輸的 agent，傳什麼、收什麼都在 driver 中明確定義了，不需要 monitor 來額外觀察，除非你有要做 bus snooping（像 AXI monitor），才需要加 monitor 來做 cross-check
-2. 
+
