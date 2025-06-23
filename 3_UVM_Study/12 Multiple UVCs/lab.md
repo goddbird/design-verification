@@ -42,5 +42,10 @@ driver:
 發現sequence卡住了，gpt說是先確認driver/seqr有沒有接好
 但現在看起來有接好TLM，比較像是reset訊號沒振，造成卡住，但是現在simvision看不到波型
 ![image](https://github.com/user-attachments/assets/ba41dd5d-e291-405f-83fb-96ed77d26d22)  
+找到問題了，確實是打seq時，那範例code需要reset訊號
+但reset訊號放進一個UVC (clock_and_reset)裡面做控管
+然後沒讓clock開始跑，就不會讓reset訊號做改變這樣 => 導致沒打sequence
+
+現在是運行好像有點問題
 
 
