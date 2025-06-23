@@ -15,7 +15,11 @@ router_reg.sv：包含所有寄存器
 router_reg_block.sv：建構 reg block 與 memory  
 router_reg_sequence.sv：示範如何用 sequence 測試 register  
 
+註: Shadow copy
+後面會介紹.write()的使用方式，當你用 .write() 去寫一個 DUT 裡的 register 時，RAL 除了透過 bus 把資料送進 DUT，自己也會記住你剛剛寫的是什麼值，這就是 shadow copy。
+同樣的，當你從 DUT 用 .read() 讀一個 register 時，RAL 可以拿這個值與 shadow copy 比對，看是不是你預期的結果（例如用 .mirror() 自動比較）。
 
+---
 # UVM對驗證register給出一些方法
 1. 會針對register，define出uvm_reg_block
 uvm_reg/uvm_mem，最小單位是uvm_field
