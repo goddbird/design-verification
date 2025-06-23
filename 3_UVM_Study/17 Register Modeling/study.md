@@ -224,7 +224,72 @@ UVM register model 讓你不用自己去記每個 register 在哪裡、初始值
 同一個 register（如 reg1）可能在 map1 是 0x040，在 map2 是 0x050。
 
 ## 🧩 重點整理：
-✅ 每個介面都有對應的 address map。
+✅ 每個介面都有`對應的 address map`。  
 ✅ reg1 可以同時存在於多個 map 中（不同地址）。
-✅ 如果只有一個 map，預設名稱叫 default_map。
-✅ 如果 register 存在於多個 map，執行 .write() 或 .read() 時就要明確指定 map 名稱。
+e.g.   
+```systemverilog
+reg1.write(status, data, UVM_FRONTDOOR, map1); // 指定使用 map1
+```  
+✅ 如果只有一個 map，預設名稱叫 default_map。  
+✅ 如果 register 存在於多個 map，執行 .write() 或 .read() 時就要明確指定 map 名稱。  
+
+---
+# Register Model自動產生
+1. 手動建立 register model 很麻煩  
+Register 可能有數千個。
+每個 register 的設定錯誤容易出錯，還會有很多程式碼依賴（dependencies）。  
+2. 可以從 register 規格自動產生 register model  
+根據規格輸入（如 XML、Excel、IP-XACT 等）自動生成。
+這樣一來，如果規格變動，model 也能快速更新，不用重新手刻。  
+3. 支援多種格式  
+標準格式：IEEE 1685 IP-XACT（基於 XML）。
+也支援一些非標準或客製格式（例如 Excel-based 的 spec）。  
+4. 使用工具自動產生 Model  
+利用 “Model Generator” 工具，輸入 spec，自動輸出 uvm_reg_block、uvm_reg、uvm_reg_field 等類別。
+
+註: ✅ IP-XACT 是什麼？
+IP-XACT 是由 IEEE 定義的標準（IEEE 1685），用來描述 IP（Intellectual Property）元件的資料，特別是：
+- 寄存器（registers）
+- 記憶體（memory maps）
+- 位元欄位（fields）
+- 模組介面等
+
+主要用途是：
+自動產生 RTL、驗證用的 Register Model（如 UVM RAL）
+支援工具間的 IP reuse 與整合，格式為 XML，可供第三方工具讀寫與轉換
+
+---
+# Cadence - Register Model Generator - reg_verifier
+🔧 功能說明：reg_verifier
+✅ 輸入（Input）
+IP-XACT XML 檔案
+遵循 IEEE 1685 標準
+可包含 Cadence 專屬的 extension（例如 backdoor path）
+
+🔍 驗證（Validation）
+自動檢查 XML 結構是否符合 IP-XACT 規範
+有錯誤會提醒，防止你用錯格式或漏欄位
+
+🧾 輸出（Output）
+產生一套 UVM Register Model
+如：class addr0_cnt_reg_c extends cdns_uvm_reg 等 code
+可以馬上拿去跑簡單的測試（快速驗證）
+
+## 如何使用reg_verifier?
+```bash
+reg_verifier -domain uvmreg -top <IP-XACT file> -dut_name <model name> [options]
+```
+
+🔑 常用選項 (Options)
+| 選項                   | 功能說明                                                                   |
+| -------------------- | ---------------------------------------------------------------------- |
+| `-target_dir <name>` | 指定產生的檔案要放到哪個資料夾中                                                       |
+| `-out_file <name>`   | 指定產出的 SystemVerilog 檔名                                                 |
+| `-pkg <name>`        | 指定產生的 SV package 名稱                                                    |
+| `-quicktest`         | 自動建立一個簡易的 testbench 來驗證 register model                                 |
+| `-cov`               | 在產生的 register model 中啟用 coverage 功能（需配合 IP-XACT 有寫 coverage extension） |
+
+---
+
+# 理解Register Model & Address Map Prints
+![image](https://github.com/user-attachments/assets/ef907296-6216-42ed-adfc-6e73db2a3ee8)
