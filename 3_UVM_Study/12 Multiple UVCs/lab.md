@@ -46,6 +46,7 @@ driver:
 但reset訊號放進一個UVC (clock_and_reset)裡面做控管
 然後沒讓clock開始跑，就不會讓reset訊號做改變這樣 => 導致沒打sequence
 
-現在是運行好像有點問題
+現在是運行好像有點問題，打中了這個assert
+![image](https://github.com/user-attachments/assets/ecd83cc0-1941-4b58-ab64-04bb682499f5)
 
 
