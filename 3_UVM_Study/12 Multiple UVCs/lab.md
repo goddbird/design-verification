@@ -63,3 +63,11 @@ clk = 10 ns
 |-|-|-|
 |![image](https://github.com/user-attachments/assets/4ecd654e-3042-41bd-a608-b3dc3fac211e)|![image](https://github.com/user-attachments/assets/032abd40-8f6e-4e59-9bd1-290cc520b88c)|![image](https://github.com/user-attachments/assets/3c8a89ee-b20f-4859-b81d-6b3a17b5ad5f)
 |
+看起來比較像state沒有如預期切換，in_data_vld舉high後，應該要切state至1
+![image](https://github.com/user-attachments/assets/8286a04f-cfd4-414f-898d-8003f09c15f4)
+
+後續發現state沒有切換到DATA_LOAD是因為fifo_empty2一直都為0，沒有變成1，就被assert卡住了，確認一下
+![image](https://github.com/user-attachments/assets/06ac032e-ee09-4b52-8b4d-09072a51e6a2)
+連寫了兩次ch2，確認一下ch2:
+1. 是不是滿了?
+2. wptr有對?
