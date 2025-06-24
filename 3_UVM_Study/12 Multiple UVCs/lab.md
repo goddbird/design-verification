@@ -53,5 +53,7 @@ driver:
 ---
 解讀
 ![image](https://github.com/user-attachments/assets/c990b655-84bd-4a6e-952c-4e5e992b9145)
+結論 : 觀察的 in_suspend 沒有在期望的 20 個 clock 後變為 0，是因為下面兩個條件之一可能沒有被滿足：
+in_suspend = !fifo_empty && in_data_vld組成
 
 
