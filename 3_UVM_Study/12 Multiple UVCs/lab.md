@@ -54,6 +54,12 @@ driver:
 解讀
 ![image](https://github.com/user-attachments/assets/c990b655-84bd-4a6e-952c-4e5e992b9145)
 結論 : 觀察的 in_suspend 沒有在期望的 20 個 clock 後變為 0，是因為下面兩個條件之一可能沒有被滿足：
-in_suspend = !fifo_empty && in_data_vld組成
+in_suspend = !fifo_empty && in_data_vld組成，fifo_empty=0   in_data_vld=1 才會一直讓in_suspend為1
+抓以下這些訊號出來看，先確認是否沒send_to_dut()
+![image](https://github.com/user-attachments/assets/72416c41-6847-4e06-a558-e6fb84b6b7c2)
+clk = 10 ns
 
-
+|1st|2nd|3rd|
+|-|-|-|
+|![image](https://github.com/user-attachments/assets/4ecd654e-3042-41bd-a608-b3dc3fac211e)|![image](https://github.com/user-attachments/assets/032abd40-8f6e-4e59-9bd1-290cc520b88c)|![image](https://github.com/user-attachments/assets/3c8a89ee-b20f-4859-b81d-6b3a17b5ad5f)
+|
