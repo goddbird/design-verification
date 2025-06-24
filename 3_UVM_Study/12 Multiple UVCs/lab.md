@@ -47,6 +47,11 @@ driver:
 然後沒讓clock開始跑，就不會讓reset訊號做改變這樣 => 導致沒打sequence
 
 現在是運行好像有點問題，打中了這個assert
-![image](https://github.com/user-attachments/assets/ecd83cc0-1941-4b58-ab64-04bb682499f5)
+先看lab6為什麼要加，並且了解assert
+![image](https://github.com/user-attachments/assets/ecd83cc0-1941-4b58-ab64-04bb682499f5)  
+
+---
+解讀
+![image](https://github.com/user-attachments/assets/c990b655-84bd-4a6e-952c-4e5e992b9145)
 
 
