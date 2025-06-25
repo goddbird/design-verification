@@ -67,7 +67,13 @@ clk = 10 ns
 ![image](https://github.com/user-attachments/assets/8286a04f-cfd4-414f-898d-8003f09c15f4)
 
 後續發現state沒有切換到DATA_LOAD是因為fifo_empty2一直都為0，沒有變成1，就被assert卡住了，確認一下
-![image](https://github.com/user-attachments/assets/06ac032e-ee09-4b52-8b4d-09072a51e6a2)
+![image](https://github.com/user-attachments/assets/ffd9a8b3-427f-4e1d-ae22-45de665674b8)
+Log
+
+
 連寫了兩次ch2，確認一下ch2:
-1. 是不是滿了?
-2. wptr有對?
+1. 是不是滿了?  為何full沒舉?
+2. wptr有對?  是對的! 
+但為什麼長度寫13，卻有15筆
+看起來是資料的payload有13 Byte，但卻送了15筆出來的概念
+4. 為何沒有read enable?
