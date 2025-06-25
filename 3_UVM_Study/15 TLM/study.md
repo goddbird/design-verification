@@ -36,7 +36,7 @@ Nonblocking: 不會消耗時間，使用try_get/try_put兩種
 |---|---|
 |保證資料傳輸且可以等待|put/get/peek|
 |不想被block，須及時處理|try_put/try_get/try_peek|
-|只想測試狀態|can_put/can_get/can_peek|
+|只想測試狀態，並不傳送txn|can_put/can_get/can_peek|
 
 #### 範例
 ![image](https://github.com/user-attachments/assets/785a2fd7-2a6f-488b-993b-5d7b516b5bdd)  
