@@ -38,7 +38,9 @@ Nonblocking: 不會消耗時間，使用try_get/try_put兩種
 |不想被block，須及時處理|try_put/try_get/try_peek|
 |只想測試狀態，並不傳送txn|can_put/can_get/can_peek|
 
-`註: peek是會從fifo或channel中讀出一筆資料，但不會把他移除，後續還是可以用get取出這筆資料`
+`註1: peek是會從fifo或channel中讀出一筆資料，但不會把他移除，後續還是可以用get取出這筆資料`
+`註2: 如果你定義的是 uvm_put_imp，你就必須提供 put(), try_put(), 和 can_put() 三個方法的實作，即使實際測試中只用到 put()。
+這是 UVM 的接口完整性要求：定義一個接口類型，就要把它的所有方法實作，否則會編譯錯誤或模擬期出錯。`
 
 ---
 #### 範例
