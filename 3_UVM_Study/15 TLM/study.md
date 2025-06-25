@@ -53,11 +53,28 @@ Nonblocking: 不會消耗時間，使用try_get/try_put兩種
 #### 實際的Put例子
 |Producer|Consumer|
 |---|---|
-|![image](https://github.com/user-attachments/assets/819b84f0-6c7c-41ce-8013-c0ad1800e923)|![image](https://github.com/user-attachments/assets/e0797e85-ae9f-4c14-8144-8c4d88483961)|
+|![image](https://github.com/user-attachments/assets/819b84f0-6c7c-41ce-8013-c0ad1800e923)|在imp端定義好put的task![image](https://github.com/user-attachments/assets/e0797e85-ae9f-4c14-8144-8c4d88483961)|
 
 #### ENV上的build/connect
-上述已經有producer/consumer的class，在env這層做build & connect
+上述已經有producer/consumer的class，在env這層做build & connect，都是從port端呼叫connect函式做連接，且imp端當作輸入使用。
 ![image](https://github.com/user-attachments/assets/73bc7cbc-f8a3-465b-b4f2-cbe070eaef29)
+
+### 用法統整
+![image](https://github.com/user-attachments/assets/79d8e892-5fc1-4c03-9cc7-72ab2b6dd07b)  
+
+## TLM 連接的三個重要規則
+1. 連接方向
+TLM 的連接遵循「資料流的方向」。
+所以要從 port 呼叫 .connect()，並傳入 imp 作為參數。
+2. 不能有未連接的 port（除了 analysis）
+如果有任何 TLM port 沒有被連接，會被視為錯誤（例外是 uvm_analysis）。
+3. 一對多 vs 多對一
+一個 port 只能連接到一個 imp（一對一）。
+但一個 imp 可以接收多個 port 的連接（多對一）。
+不允許一個 port 連接多個 imp（一對多），除了 uvm_analysis 的情況可以。
+![image](https://github.com/user-attachments/assets/bdfe1a66-46f9-4e6f-8fdb-1338211bde3d)
+
+
 
 ---
 ### 單向TLM的Data flow種類
@@ -70,29 +87,67 @@ Nonblocking: 不會消耗時間，使用try_get/try_put兩種
 
 #### C. 使用TLM FIFO
 使用uvm_put_port & uvm_get_port，來提供先進先出的資料流控制
----
-### uvm_tlm_fifo的架構與應用
+
+# uvm_tlm_fifo的架構與應用
 UVM提供內建的FIFO類別，用來緩衝producer & consumer的transaction資料
 
-#### 架構
-![image](https://github.com/user-attachments/assets/d7537fc5-b298-41e8-8abf-ac8e982f9573)
-- Producer
-使用 uvm_put_port
-呼叫 put() 把資料送進 FIFO
+## 架構
+![image](https://github.com/user-attachments/assets/d7537fc5-b298-41e8-8abf-ac8e982f9573)  
+![image](https://github.com/user-attachments/assets/d895b9b7-b06a-44ac-99aa-59a3b22b2b2d)
 
-- FIFO
-使用 put_export 暴露 put 功能（內部實作是 uvm_put_imp）
-使用 get_peek_export 暴露 get/peek 功能（內部實作是 uvm_get_peek_imp）
+## TLM FIFO的優缺點
+✅ 優點：
+不需要自己定義 imp 方法或通訊邏輯。
+提供資料緩衝功能（寫入 put → 暫存在 FIFO → 被 get/peek 取出）。
+提供許多內建方法來檢查 FIFO 狀態（例如 FIFO 是否為空、是否滿等）。
 
-- Consumer  
-使用 uvm_get_port 來 get() 或 peek() 取資料
+❌ 缺點：
+必須雙向都要接好連接（put 和 get/peek 都要連上），資料傳輸才完整。
+相較於普通 port/imp 只要連一次，FIFO 要進行 兩個連接（輸入、輸出）。
 
 #### TLM FIFO的運作機制
 |Producer|Consumer|
 |---|---|
 |宣告uvm_put_port，後續使用put方法![image](https://github.com/user-attachments/assets/1ef6f1e4-ecc0-43bd-94c0-cbb55b275a30)|宣告uvm_get_port，後續使用get方法![image](https://github.com/user-attachments/assets/2b285319-ed9e-479e-863b-dff61a52dc0d)|
 
-#### TLM FIFO的配置
+## TLM FIFO的配置
+🔷 架構圖說明（上方圖）  
+Producer（生產者）：
+有 send_txn（put_port），發送資料。  
+
+FIFO（資料緩衝區）：  
+接收端是 put_export，提供 put 方法給 producer。  
+傳送端是 get_peek_export，提供 get / peek 給 consumer。  
+
+Consumer（接收者）：  
+有 get_txn（get_port），從 FIFO 取資料。  
+
+## 解讀
+類別宣告
+```systemverilog
+uvm_tlm_fifo #(yapp_packet) fifo;
+```
+- 使用 uvm_tlm_fifo，資料型態是 yapp_packet（你自己定義的 transaction 類型）。
+- FIFO 是 template 型別的，所以你可以傳入任何 transaction 類型。
+  
+建構元初始化
+```systemverilog
+fifo = new("fifo", this, 5);
+```
+- 名稱 "fifo"，父物件是 this。
+- 第三個參數是 FIFO 的深度（容量為 5 筆），預設是 1，如果沒給會用 1。
+
+建立 producer / consumer 實例
+```systemverilog
+producer = yapp_prod::type_id::create("producer", this);
+consumer = yapp_con::type_id::create("consumer", this);
+```
+
+在 connect_phase 中建立 TLM 連接
+```systemverilog
+producer.send_txn.connect(fifo.put_export);
+consumer.get_txn.connect(fifo.get_peek_export);
+```
 ![image](https://github.com/user-attachments/assets/88aa4c43-40bf-4d5e-8607-25cfc17690fe)
 
 #### TLM FIFO Methods
