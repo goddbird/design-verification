@@ -5,9 +5,22 @@
 3. 實例化 & 連接TLM interface
 4. 使用TLM FIFO創建scoreboard
 
----
- 
+--- 
 ## 介紹
+🔷 什麼是 TLM API？
+是一種 class 之間通訊的標準機制
+由 Open SystemC Initiative (OSCI) 所開發
+允許 UVM component 之間 plug-and-play 式的溝通
+
+🔷 UVM 中 TLM 的用途：
+UVM 框架內建了 TLM 的實作，可用來在不同元件（例如 driver、monitor、sequencer、scoreboard）之間傳遞資料。
+
+🔎 補充（UVM 常用 TLM 實作）：
+uvm_blocking_put_port / uvm_blocking_put_imp → 有阻塞性單向傳輸  
+uvm_nonblocking_put_port / uvm_nonblocking_put_imp → 非阻塞單向  
+uvm_analysis_port / uvm_analysis_export → 廣播型態，不阻塞  
+uvm_tlm_fifo → 內建 FIFO buffer，雙向傳輸  
+
 ### Data & Control Flow
 Data流向: Producer -> Consumer  
 Control流向: Initiator -> Target (看是pull/push mode，get/put)
