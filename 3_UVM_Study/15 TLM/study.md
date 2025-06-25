@@ -38,6 +38,9 @@ Nonblocking: 不會消耗時間，使用try_get/try_put兩種
 |不想被block，須及時處理|try_put/try_get/try_peek|
 |只想測試狀態，並不傳送txn|can_put/can_get/can_peek|
 
+`註: peek是會從fifo或channel中讀出一筆資料，但不會把他移除，後續還是可以用get取出這筆資料`
+
+---
 #### 範例
 ![image](https://github.com/user-attachments/assets/785a2fd7-2a6f-488b-993b-5d7b516b5bdd)  
 1. 在initiator裡呼叫port.put(packet);
