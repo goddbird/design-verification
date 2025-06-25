@@ -154,8 +154,7 @@ consumer.get_txn.connect(fifo.get_peek_export);
 ![image](https://github.com/user-attachments/assets/0255bbc0-112e-446a-b7f8-402395ec2e2f)
 
 # TLM FIFO - Analysis FIFO
-它是 uvm_tlm_fifo 的一個專門化版本（specialization），用來搭配 uvm_analysis_port 使用，能在不定長度（unbounded）的情況下緩衝分析資料。
-uvm_tlm_analysis是一種uvm_tlm_fifo的特殊化版本
+它是 uvm_tlm_fifo 的一個專門化版本（specialization），用來搭配 uvm_analysis_port 使用，能在不定長度（unbounded）的情況下緩衝分析資料。uvm_tlm_analysis是一種uvm_tlm_fifo的特殊化版本，會把fifo宣告在scoreboard中，裡面會有analysis_export/get_peek_export  
 A. 架構
 ![image](https://github.com/user-attachments/assets/216f0b6b-bb31-4b51-92cd-6b7082a53247)
 ![image](https://github.com/user-attachments/assets/8b7f0805-a61c-4a1b-9038-189428fbb084)
