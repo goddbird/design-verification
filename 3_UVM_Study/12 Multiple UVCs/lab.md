@@ -84,3 +84,12 @@ Log
 
 
 現在看起來比較像是channel_rx_resp_seq沒辦法正常seq/driver之間溝通
+下面這個適合印log
+![image](https://github.com/user-attachments/assets/937e6e80-b9d9-4f06-895c-de03b2b555b7)
+
+
+有透過下方的log發現channel if會一直卡在send_response這隻函式裡面，因為resp_delay太大
+透過下圖把constraint改小後，就會pass了
+![image](https://github.com/user-attachments/assets/e7ef903e-ee3e-46c4-a567-6295b31ec0a9)
+
+![image](https://github.com/user-attachments/assets/875b0835-e4c2-4a44-aabe-96a9d0abab80)
