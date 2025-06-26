@@ -76,4 +76,11 @@ Log
 2. wptr有對?  是對的! 
 但為什麼長度寫13，卻有15筆
 看起來是資料的payload有13 Byte，但卻送了15筆出來的概念
-4. 為何沒有read enable?
+3. 為何沒有read enable?
+4. 為什麼fifo_empty0, `145ns可以從0->1，明明沒有read` => 因為fifo_empty = empty0 | addr[0]| addr[1]|
+=> 意思是，我想寫ch2的時候，我想看總fifo_empty是否可以push，所以想寫ch2就跟ch0沒關係，ch0的empty就會變1
+
+而fifo_empty, 155ns卻從1->0然後起不來
+
+
+現在看起來比較像是channel_rx_resp_seq沒辦法正常seq/driver之間溝通
