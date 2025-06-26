@@ -96,3 +96,32 @@ Log
 
 使用wildcard對UVC的ch0, ch1, ch2作全部的default sequence設定
 ![image](https://github.com/user-attachments/assets/b2159aa6-4a8b-44cc-9c2e-55c24d0c3b87)
+
+
+問題集錦: 
+1. YAPP router 透過 tx 發出 transaction（txn）後，UVC channel 的 rx 是怎麼知道要收數據的？
+yapp裡面有fifo，driver收到txn後，丟給DUT的input，會丟進DUT裡面的FIFO進行儲存，之後read_enb後會從FIFO拿出來。
+拿出來後，會當作DUT的output。
+DUT output會跟UVC ch0, ch1, ch2做連接 (用if去接)，變成它們的input，收到這些input後，monitor會宣告一個packet實例，並使用vif的collect_pkt去接這些input，最後顯示出來。
+
+
+
+✅ 精簡版流程總結（優化版）
+1. YAPP router 的 TX agent driver  
+透過 seq_item_port.get_next_item() 取得 sequence 送來的 transaction (txn)，並把資料送到 DUT 的輸入介面（通常是 FIFO 的 write port）。
+
+2. DUT 接收 TX 傳來的資料  
+TX driver 寫入資料到 DUT 的 input FIFO。等到 DUT 的讀取條件成立（例如 read enable asserted），DUT 就會把資料從 FIFO 讀出，並將其送到對應的 output port。
+
+3. DUT output port 對應到各個 channel interface  
+這些 output 資料會經由 channel_if interface 分別傳送給 channel_0, channel_1, channel_2 等不同的 UVC instance。
+
+4. UVC 的 monitor 偵測 channel_if 上的資料變化  
+monitor 呼叫 vif.collect_pkt() 來在 bus 上監控：
+  - data_vld 是否為 valid
+  - suspend 是否解除
+  - clock edge 到來
+當上述條件都符合時，monitor 就會抓取 DUT output 上的長度、地址、payload、parity 等資訊。
+
+5. monitor 將收集到的資料封裝成一個 channel_packet txn  
+透過 analysis_port.write(pkt)，將 packet 傳給下游的 component（例如 scoreboard 或 coverage collector）。
