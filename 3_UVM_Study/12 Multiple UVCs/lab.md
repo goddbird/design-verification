@@ -93,3 +93,6 @@ Log
 ![image](https://github.com/user-attachments/assets/e7ef903e-ee3e-46c4-a567-6295b31ec0a9)
 
 ![image](https://github.com/user-attachments/assets/875b0835-e4c2-4a44-aabe-96a9d0abab80)
+
+使用wildcard對UVC的ch0, ch1, ch2作全部的default sequence設定
+![image](https://github.com/user-attachments/assets/b2159aa6-4a8b-44cc-9c2e-55c24d0c3b87)
