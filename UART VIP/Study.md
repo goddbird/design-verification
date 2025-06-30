@@ -25,11 +25,15 @@ parity enable/disable 是否生效
 
 ### CTS/RTS
 CTS (Clear To Send)   : 
-- Receiver 根據其 FIFO 狀態來決定是否可以接受更多資料
-- 當 FIFO 滿到超過某個門檻時，RTS 拉高，表示「不要送了」
-- 由接收端主動控制 RTS（Mode 是 out 相對於接收器）
+- Transmitter 發送資料前會檢查 CTS 訊號。
+- 如果 CTS 為 High，表示 “不要發送”
+- 是由接收端控制（Mode: in 表示對 transmitter 而言這是輸入）
   
 RTS (Request To Send) :
 - Receiver 根據其 FIFO 狀態來決定是否可以接受更多資料
 - 當 FIFO 滿到超過某個門檻時，RTS 拉高，表示「不要送了」
 - 由接收端主動控制 RTS（Mode 是 out 相對於接收器）
+
+
+好像需要去安裝VIP?
+![image](https://github.com/user-attachments/assets/47f31472-3f4c-4c92-94e7-58324a994532)
