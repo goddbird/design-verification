@@ -228,7 +228,7 @@ Initiator：uvm_transport_port（主動端）
 Target：uvm_transport_imp（被動端） 
 雙向傳輸：傳送 REQ、接收 RSP，全部封裝在一個方法呼叫中。  
 ![image](https://github.com/user-attachments/assets/10941595-f1fd-4554-be88-e8c76c372934)
-可以有兩種方法
+可以有兩種方法  
 ![image](https://github.com/user-attachments/assets/41227956-61ba-44e2-8175-3e218eba83c4)
 
 
