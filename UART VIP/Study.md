@@ -37,3 +37,18 @@ RTS (Request To Send) :
 
 好像需要去安裝VIP?
 ![image](https://github.com/user-attachments/assets/47f31472-3f4c-4c92-94e7-58324a994532)
+
+---
+
+✅ 2. Terminology 重點對照表
+| 術語                                             | 定義                                   | 用途 / 備註                     |
+| ---------------------------------------------- | ------------------------------------ | --------------------------- |
+| **\$CDN\_VIP\_ROOT**                           | 環境變數，指定 VIPCAT 安裝目錄的 root 路徑         | 用於設置 VIP 模型執行環境             |
+| **\$DENALI**                                   | 環境變數，指向 `$CDN_VIP_ROOT/tools/denali` | 與 Denali VIP 工具路徑有關         |
+| **BFM (Bus Functional Model)**                 | 驗證軟體模擬的某個 protocol 或 device 行為       | 例如 UART BFM 就是模擬 UART 傳輸    |
+| **DDVAPI (Data-Driven Verification API)**      | 擴充 VIP 的應用層 API，允許模擬中整合外部應用程式        | 進階用法，例如 script 控制模擬         |
+| **DUT (Design Under Test)** / **DUV**          | 被驗證的實際設計電路                           | 例如你的 UART RTL               |
+| **PureView**                                   | Cadence 提供的 GUI，用來設定 VIP 產品          | 可產生 SOMA 與 HDL interface    |
+| **HDL Instantiation Interface**                | HDL 設計單元，用於在設計中實例化 VIP 模型並連接訊號       | 例：`uart_model u_uart(...);` |
+| **SOMA (Specification of Model Architecture)** | Cadence 自定的格式，用來配置模型參數化資訊            | 像 JSON 或 XML 檔，告訴 VIP 怎麼工作  |
+
