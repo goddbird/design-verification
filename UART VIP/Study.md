@@ -52,3 +52,9 @@ RTS (Request To Send) :
 | **HDL Instantiation Interface**                | HDL 設計單元，用於在設計中實例化 VIP 模型並連接訊號       | 例：`uart_model u_uart(...);` |
 | **SOMA (Specification of Model Architecture)** | Cadence 自定的格式，用來配置模型參數化資訊            | 像 JSON 或 XML 檔，告訴 VIP 怎麼工作  |
 
+
+
+這是個很好的問題！這份 **Cadence UART VIP 文件** 的確資訊很多，如果你希望快速理解並能實際動手驗證、寫 test case，建議採取 **「搭配文件 + 動手實驗 + 模組拆解學習」的策略**，以下是具體建議：
+
+---
+
