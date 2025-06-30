@@ -1,4 +1,4 @@
-# 目標
+![image](https://github.com/user-attachments/assets/a293c7e2-aab8-42e3-9bef-7f6d39d9ec7e)# 目標
  
 1. 使用Transaction Level Modeling
 2. 選擇TLM連接的種類
@@ -154,34 +154,84 @@ consumer.get_txn.connect(fifo.get_peek_export);
 ![image](https://github.com/user-attachments/assets/0255bbc0-112e-446a-b7f8-402395ec2e2f)
 
 # TLM FIFO - Analysis FIFO
-它是 uvm_tlm_fifo 的一個專門化版本（specialization），用來搭配 uvm_analysis_port 使用，能在不定長度（unbounded）的情況下緩衝分析資料。uvm_tlm_analysis是一種uvm_tlm_fifo的特殊化版本，會把fifo宣告在scoreboard中，裡面會有analysis_export/get_peek_export  
-A. 架構
+✅ 什麼是 uvm_tlm_analysis_fifo？  
+uvm_tlm_analysis_fifo 是 uvm_tlm_fifo 的一個專門子類，用來與 uvm_analysis_port 搭配使用。
+它是一個 無界（unbounded）FIFO（也就是 size = 0 表示不設大小限制），可以接收 write() 資料。  
+
+A. 架構  
+analysis_export 是用來接收 write() 呼叫的，它實際上是包裝了 put_export。  
+get_peek_export 提供 get() 與 peek() 方法讓 Scoreboard 讀取資料。  
+可以當作分析資料的 緩衝區（buffer） 使用，避免資料遺失。  
+
 ![image](https://github.com/user-attachments/assets/216f0b6b-bb31-4b51-92cd-6b7082a53247)
 ![image](https://github.com/user-attachments/assets/8b7f0805-a61c-4a1b-9038-189428fbb084)
 
 B. 實際配置
+如何在 Scoreboard 中使用 uvm_tlm_analysis_fifo (un-bounded) 作為分析資料的接收與緩衝。  
+✅ 架構與好處
+- Scoreboard可以直接用get()對FIFO存取
+- 可使用不同的export方法: get_export / blocking_get_export / nonblocking_get_export
+- Monitor不需要變動，只需要改scoreboard就能加上緩衝機制
+- unbounded，可安心緩衝高頻資料
+
 ![image](https://github.com/user-attachments/assets/ca6c0627-cddd-40e0-bc84-1ef65edcb476)
 
 C. Connect
+在大一階的router_tb.sv做連接，一樣也是在connect_phase做連接，使用monitor的connect function  
 ![image](https://github.com/user-attachments/assets/22897f8d-7613-4ec3-9cf8-9a13ce7f12a0)
 
-D-1. 與原本uvm_analysis_imp差別
-![image](https://github.com/user-attachments/assets/74b3c35b-9a86-4969-aa78-b0e4d836c68f)
-使用uvm_tlm_analysis_fifo的好處:
-1. 不需實作write()
-2. Scoreboard主動get()
-3. 可同時get多個FIFO做比對
 
-D-2. Analysis port的廣播範例
-使用一種write可以連結到"多個"monitor
+# 使用analysis FIFO的架構
+![image](https://github.com/user-attachments/assets/ac54d136-092c-400d-b3d6-974e229e2368)
+來源資料（YAPP UVC、HBUS UVC、Channel UVCs）透過 uvm_analysis_port 傳送封包。
+Scoreboard 內含多個 uvm_tlm_analysis_fifo：
+- yapp_fifo：接收來自 YAPP UVC 的封包。
+- hbus_fifo：接收 HBUS 控制封包（含設定指令）。
+- ch0_fifo, ch1_fifo, ch2_fifo：接收每個 Channel 輸出的封包。
+- Scoreboard 在 run_phase() 主動從 FIFO 取資料做比較。
+---
+
+# Analysis port的廣播範例
+使用一種write可以連結到"多個"monitor  
+  
+✅ Analysis Broadcast 架構  
+Producer/Initiator：一個 uvm_analysis_port
+Consumer/Target(s)：多個 uvm_analysis_imp
+當 producer 執行 write(packet)，同一筆資料會廣播到所有已連接的 target
 ![image](https://github.com/user-attachments/assets/b219e714-ae66-4143-88ea-1f9f5f46d03d)
+![image](https://github.com/user-attachments/assets/91dcedd9-156c-455e-962a-1e73deb19963)
 
-若使用的是FIFO，就沒辦法使用broadcast了
+## 連接實例
+analysis port 的一對多（one-to-many）broadcast 連線 的技術細節與使用規則。
+- send_yapp 是 uvm_analysis_port
+- mone_in、mtwo_in 是 uvm_analysis_imp
+- 在 connect_phase() 中將 一個 port 連接到多個 imp，形成 broadcast 機制
+  
+![image](https://github.com/user-attachments/assets/d7163fa8-36b1-4c76-8233-615443c26077)
 
-### 雙向的TLM傳輸
-這是另外一種port，叫做uvm_transport_port
+
+## 解析analysis_imp vs TLM FIFO
+| 分類         | `uvm_analysis_imp` 直連（Broadcast） | `uvm_tlm_analysis_fifo`（緩衝）        |
+| ---------- | -------------------------------- | ---------------------------------- |
+| 傳送模式       | Push                             | Pull                               |
+| 接收端是否主動讀取？ | 否（write() 主動送入）                  | 是（需呼叫 get()）                       |
+| 是否可支援一對多？  | ✅ 可多個 imp                        | FIFO 自身只支援一個輸出，但 port 可再 broadcast |
+| 是否有資料緩衝？   | ❌ 無                              | ✅ 有 FIFO 暫存                        |
+
+
+---
+
+# 雙向的TLM傳輸
+這張圖與說明介紹了 UVM 中的 雙向 TLM 傳輸通道（Bi-Directional TLM Transport Connection），是用來在模組之間傳遞請求 (REQ) 和獲取回應 (RSP) 的機制。這是另外一種port，叫做uvm_transport_port  
+✅ 雙向 TLM Transport 架構  
+Initiator：uvm_transport_port（主動端）  
+Target：uvm_transport_imp（被動端） 
+雙向傳輸：傳送 REQ、接收 RSP，全部封裝在一個方法呼叫中。  
 ![image](https://github.com/user-attachments/assets/10941595-f1fd-4554-be88-e8c76c372934)
 可以有兩種方法
-![image](https://github.com/user-attachments/assets/37d53de8-59e9-444a-aae4-b818fee2f099)
+![image](https://github.com/user-attachments/assets/41227956-61ba-44e2-8175-3e218eba83c4)
+
+
+
 
 
