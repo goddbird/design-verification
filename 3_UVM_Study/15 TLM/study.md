@@ -233,5 +233,20 @@ Target：uvm_transport_imp（被動端）
 
 
 
+---
+
+# 總結TLM
+![image](https://github.com/user-attachments/assets/b0a7193d-99b8-4948-a5e2-3b19b472702a)
+| 類型                        | TLM 元件名稱                                   | 使用情境 / 範例                                      | 備註                            |
+| ------------------------- | ------------------------------------------ | ---------------------------------------------- | ----------------------------- |
+| **Sequencer 與 Driver 之間** | `seq_item_port` / `seq_item_export`        | 驅動 Transaction，執行 transaction-based 模擬         | ✅ UVM 預設內建                    |
+| **資料廣播（push）**            | `uvm_analysis_port` / `uvm_analysis_imp`   | Monitor 廣播封包給 Scoreboard、Coverage 模組等          | ✅ 支援一對多 broadcast             |
+| **資料緩衝接收（pull）**          | `uvm_tlm_analysis_fifo`                    | Scoreboard 主動讀取封包（使用 `get()`）                  | ✅ 支援非同步處理                     |
+| **單向資料傳送**                | `uvm_put_port` / `uvm_put_imp`             | Transaction 傳遞，但無需回傳（ex: monitor 傳送樣本）         | ✅ 有 blocking / nonblocking 版本 |
+| **單向資料讀取**                | `uvm_get_port` / `uvm_get_imp`             | Target 主動從 source 拉資料（如 scoreboard pull data）  | ✅ 有 blocking / nonblocking 版本 |
+| **雙向命令/回應傳輸**             | `uvm_transport_port` / `uvm_transport_imp` | Master 發送 REQ，Slave 回應 RSP（如 memory 模型）        | ✅ 同步或非同步皆可                    |
+| **SystemC TLM2 整合**       | `tlm_initiator_socket`, `b_transport()`    | 與 SystemC 模型連接（如 SystemVerilog + SystemC 混合驗證） | ⚠️ 需 simulator 支援             |
+| **多語言環境橋接**               | `uvm_tlm_ml`, `multi-language sockets`     | 異語言整合（UVM + C/SystemC）                         | ⚠️ Vendor-specific 解決方案       |
+
 
 
