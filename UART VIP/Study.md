@@ -34,6 +34,11 @@ RTS (Request To Send) :
 - 當 FIFO 滿到超過某個門檻時，RTS 拉高，表示「不要送了」
 - 由接收端主動控制 RTS（Mode 是 out 相對於接收器）
 
+## 舉例
+AP與MODEM的流控這樣通訊的：
+AP串口可用時，將AP-RTS拉低，MODEM-CTS檢測到AP-RTS為低，知道AP串口已準備好，可以發送資料；
+AP串口不可用時，將AP-RTS拉高，MODEM-CTS檢測到AP-RTS為高，知道AP串口還未準備好，就不會放資料。
+
 
 好像需要去安裝VIP?
 ![image](https://github.com/user-attachments/assets/47f31472-3f4c-4c92-94e7-58324a994532)
