@@ -58,3 +58,6 @@ RTS (Request To Send) :
 
 ---
 
+1. 先理解UART VIP Agent
+build_phase:
+- __internal__isShallowAgent
