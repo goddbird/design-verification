@@ -63,10 +63,11 @@ AP串口不可用時，將AP-RTS拉高，MODEM-CTS檢測到AP-RTS為高，知道
 
 ---
 
+# 要怎麼跑起來
+![image](https://github.com/user-attachments/assets/5eb5c3c6-d704-464b-a238-04686059993d)
+
+
+# 先研究那個log
 1. 先理解UART VIP Agent
 build_phase:
 - __internal__isShallowAgent
-
-
-# 要怎麼跑起來
-![image](https://github.com/user-attachments/assets/5eb5c3c6-d704-464b-a238-04686059993d)
