@@ -1,3 +1,7 @@
+![image](https://github.com/user-attachments/assets/e11738fa-8d49-4841-b56f-97ba4e47d33a)  
+可以跑起來！  
+小馬建議先去了解不同mode對應的parity / length
+
 ## 🔰 建議閱讀與實作順序（快速理解路線）
 
 ### 🔹 Step 1：掌握 VIP 結構
