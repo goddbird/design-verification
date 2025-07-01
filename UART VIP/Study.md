@@ -68,6 +68,8 @@ AP串口不可用時，將AP-RTS拉高，MODEM-CTS檢測到AP-RTS為高，知道
 
 
 # 先研究那個log
-1. 先理解UART VIP Agent
-build_phase:
-- __internal__isShallowAgent
+Script中可以指定要跑哪個test (+UVM_TESTNAME)
+![image](https://github.com/user-attachments/assets/17f9fc54-1aaf-40b4-bdf8-7f5a40f2e839)
+
+# Build_phase
+1. class
