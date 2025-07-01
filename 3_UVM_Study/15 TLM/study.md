@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/a293c7e2-aab8-42e3-9bef-7f6d39d9ec7e)# 目標
+# 目標
  
 1. 使用Transaction Level Modeling
 2. 選擇TLM連接的種類
