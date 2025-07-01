@@ -69,3 +69,4 @@ build_phase:
 
 
 # 要怎麼跑起來
+![image](https://github.com/user-attachments/assets/5eb5c3c6-d704-464b-a238-04686059993d)
