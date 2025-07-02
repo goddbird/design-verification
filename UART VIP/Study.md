@@ -71,8 +71,16 @@ AP串口不可用時，將AP-RTS拉高，MODEM-CTS檢測到AP-RTS為高，知道
 Script中可以指定要跑哪個test (+UVM_TESTNAME)
 ![image](https://github.com/user-attachments/assets/17f9fc54-1aaf-40b4-bdf8-7f5a40f2e839)
 
-# Build_phase
-1. class
 
 # Topology
 ![image](https://github.com/user-attachments/assets/eb811a9c-1bf0-4dfe-a7dc-5827fe1478a5)
+
+
+# Virtual Sequence
+## cdnUartUvmVirSeqModeSwitchConfigTx
+
+A. 內部有兩種seq
+cdnUartUvmModeSwitchConfigSeq
+cdnUartUvmSeqTx
+
+B. virtual seqr: cdnUartUvmUserSequencer
