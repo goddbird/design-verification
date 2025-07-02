@@ -80,7 +80,16 @@ Script中可以指定要跑哪個test (+UVM_TESTNAME)
 ## cdnUartUvmVirSeqModeSwitchConfigTx
 
 A. 內部有兩種seq
-cdnUartUvmModeSwitchConfigSeq
+cdnUartUvmUserSequenceLib.sv / cdnUartUvmModeSwitchConfigSeq : 送這個的目的是什麼，研究一下register
+|步驟|Line|Register|用處|
+|-|-|-|-|
+|1|201|DENALI_UART_REG_CTRL_CONFIG_BEGIN|對vip初始化，設定後就可以開始配置UART|
+|2|202|DENALI_UART_REG_CTRL_INTERRUPT_ENABLE|讓Interrupt enable|
+|3|209|DENALI_UART_REG_CTRL_UART_CONTROL|![image](https://github.com/user-attachments/assets/f62d45d5-6e6d-4a9d-a79e-985d31eacc69)|
+|4|215|DENALI_UART_REG_CTRL_LINE_CONTROL|![image](https://github.com/user-attachments/assets/6e0c04fe-abb6-4a0a-b71b-031215f042b6)|
+
+
+
 cdnUartUvmSeqTx
 
 B. virtual seqr: cdnUartUvmUserSequencer
