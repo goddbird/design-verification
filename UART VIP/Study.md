@@ -84,11 +84,14 @@ cdnUartUvmUserSequenceLib.sv / cdnUartUvmModeSwitchConfigSeq : 送這個的目�
 Flow整理
 cdnUartUvmModeSwitchConfigSeq:
 1. config tx，送txn到sourceSeqr
-2. 
-先確認架構: 有哪些agent跟seqr?
+2. 先確認架構:
+有哪些agent跟seqr?
 如下圖，找到架構的檔案在cdnUartUvmAgent.sv，裡面有真的monitor/drive/sequnecer
 再上層就被cadence加密包起來了。
 ![image](https://github.com/user-attachments/assets/43a2007e-fc6a-4428-9abe-cc3439d8ff9e)
+3. Env裡有3個Agent: tx, rx, dut
+![image](https://github.com/user-attachments/assets/93e6fdd5-2c5f-4f8c-a59e-7d348a5be2bd)
+
 
 
 
