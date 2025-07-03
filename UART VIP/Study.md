@@ -81,14 +81,35 @@ Script中可以指定要跑哪個test (+UVM_TESTNAME)
 
 A. 內部有兩種seq
 cdnUartUvmUserSequenceLib.sv / cdnUartUvmModeSwitchConfigSeq : 送這個的目的是什麼，研究一下register
+Flow整理
+cdnUartUvmModeSwitchConfigSeq:
+1. config tx，送txn到sourceSeqr
+2. 
+先確認架構: 有哪些agent跟seqr?
+如下圖，找到架構的檔案在cdnUartUvmAgent.sv，裡面有真的monitor/drive/sequnecer
+再上層就被cadence加密包起來了。
+![image](https://github.com/user-attachments/assets/43a2007e-fc6a-4428-9abe-cc3439d8ff9e)
+
+
+
+
 |步驟|Line|Register|用處|
 |-|-|-|-|
 |1|201|DENALI_UART_REG_CTRL_CONFIG_BEGIN|對vip初始化，設定後就可以開始配置UART|
 |2|202|DENALI_UART_REG_CTRL_INTERRUPT_ENABLE|讓Interrupt enable|
-|3|209|DENALI_UART_REG_CTRL_UART_CONTROL|![image](https://github.com/user-attachments/assets/f62d45d5-6e6d-4a9d-a79e-985d31eacc69)|
-|4|215|DENALI_UART_REG_CTRL_LINE_CONTROL|![image](https://github.com/user-attachments/assets/6e0c04fe-abb6-4a0a-b71b-031215f042b6)|
-|*5|228|DENALI_UART_REG_CTRL_MODEM_CONTROL|控制RTS![image](https://github.com/user-attachments/assets/ae1457d3-b108-46ad-b23a-37d167879f2e)|
-|*6|234|DENALI_UART_REG_CTRL_FIFO_CONTROL|提問xsx6656.......伊  亞![image](https://github.com/user-attachments/assets/dd51042a-37be-4d7d-bb56-dfc40e5ba87f)|
+|3|209|DENALI_UART_REG_CTRL_UART_CONTROL|可傳可收![image](https://github.com/user-attachments/assets/f62d45d5-6e6d-4a9d-a79e-985d31eacc69)|
+|4|215|DENALI_UART_REG_CTRL_LINE_CONTROL|Enable parity![image](https://github.com/user-attachments/assets/6e0c04fe-abb6-4a0a-b71b-031215f042b6)|
+|*5|228|DENALI_UART_REG_CTRL_MODEM_CONTROL|控制RTS / 控制loop back![image](https://github.com/user-attachments/assets/ae1457d3-b108-46ad-b23a-37d167879f2e)|
+|*6|234|DENALI_UART_REG_CTRL_FIFO_CONTROL|清空FIFO。提問，感覺VIP設定的BIT345欄位跟code的1'b0有出入![image](https://github.com/user-attachments/assets/dd51042a-37be-4d7d-bb56-dfc40e5ba87f)|
+|7|241|DENALI_UART_REG_CTRL_CONFIG_DONE|把CONFIG推進config queue|
+|8|244|uvm_do_with|把CONFIG透過WRITE_REG推進config queue，藉此送txn可以讓VIP/monitor知道有這樣的設定行為|
+
+||||
+|-|-|-|
+|![image](https://github.com/user-attachments/assets/c7cc0b6a-4522-417c-9101-4573b9ca93af)|![image](https://github.com/user-attachments/assets/730634d3-3943-4c77-ac5e-1146c9d3c465)|![image](https://github.com/user-attachments/assets/a7aa6848-f759-4fb5-aedc-b8ec439318ef)|
+
+![image](https://github.com/user-attachments/assets/c9bb0421-2587-44c9-a71a-68e4d50d36ac)
+
 
 cdnUartUvmSeqTx
 
