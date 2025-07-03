@@ -87,8 +87,8 @@ cdnUartUvmUserSequenceLib.sv / cdnUartUvmModeSwitchConfigSeq : 送這個的目�
 |2|202|DENALI_UART_REG_CTRL_INTERRUPT_ENABLE|讓Interrupt enable|
 |3|209|DENALI_UART_REG_CTRL_UART_CONTROL|![image](https://github.com/user-attachments/assets/f62d45d5-6e6d-4a9d-a79e-985d31eacc69)|
 |4|215|DENALI_UART_REG_CTRL_LINE_CONTROL|![image](https://github.com/user-attachments/assets/6e0c04fe-abb6-4a0a-b71b-031215f042b6)|
-
-
+|*5|228|DENALI_UART_REG_CTRL_MODEM_CONTROL|控制RTS![image](https://github.com/user-attachments/assets/ae1457d3-b108-46ad-b23a-37d167879f2e)|
+|*6|234|DENALI_UART_REG_CTRL_FIFO_CONTROL|提問xsx6656.......伊  亞![image](https://github.com/user-attachments/assets/dd51042a-37be-4d7d-bb56-dfc40e5ba87f)|
 
 cdnUartUvmSeqTx
 
