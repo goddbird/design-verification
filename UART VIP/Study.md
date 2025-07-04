@@ -129,5 +129,5 @@ cdnUartUvmVirSeqModeSwitchConfigTx
 而註冊的callback，這點寫在VIP裡面，所以Packet完成後呼叫哪個callback我們不會知道。
 小馬說，其實每傳一個bit，現在的資料處理到哪裡，比如data or parity，這都會呼叫不同callback。
 ![image](https://github.com/user-attachments/assets/adb94888-c605-4250-b19f-4164da6d21d7)
-
+4. 818行開始要切換成Sync, FrontDoor mode  (RX )
 
