@@ -123,6 +123,11 @@ B. virtual seqr: cdnUartUvmUserSequencer
 cdnUartUvmVirSeqModeSwitchConfigTx
 1. 有兩個handle : config / Txn，分別的作用為 (把TX agent的UART control register寫好 / 實際發封包用的Sequence Handle)
 2. config seq會打transaction，且body內部會有對RAL的設定
-3. config sequence打出去後，會打正常的tx/rx封包，再monitor裡面若觀察到一個tx/rx行為完成，就會trigger_data()通知外界
-外面就會wait_trigger_data等他完成了
 ![image](https://github.com/user-attachments/assets/fb3ae5eb-0bb4-49ab-9a3d-f24e4dbc72ee)
+3. config sequence打出去後，會打正常的tx/rx封包，再monitor裡面若觀察到一個tx/rx行為完成，就會trigger_data()通知外界
+外面就會wait_trigger_data等他完成了。
+而註冊的callback，這點寫在VIP裡面，所以Packet完成後呼叫哪個callback我們不會知道。
+小馬說，其實每傳一個bit，現在的資料處理到哪裡，比如data or parity，這都會呼叫不同callback。
+![image](https://github.com/user-attachments/assets/adb94888-c605-4250-b19f-4164da6d21d7)
+
+
