@@ -175,3 +175,13 @@ baudrate = clk_freq / (16 * 0x49)
 |ier_tx_holding_reg_empty||
 |||
 |||
+
+
+![image](https://github.com/user-attachments/assets/30c9e69c-05d7-4e44-94c5-2edd68d69d9d)
+
+
+想要改跑EvenParity128000
+卻失敗了
+![image](https://github.com/user-attachments/assets/404251c7-8cf9-4ce2-91e5-341d2e56b491)
+![image](https://github.com/user-attachments/assets/1068ae57-74ce-4dc2-b669-d7e840be621c)
+
