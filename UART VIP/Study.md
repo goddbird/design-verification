@@ -71,6 +71,14 @@ AP串口不可用時，將AP-RTS拉高，MODEM-CTS檢測到AP-RTS為高，知道
 Script中可以指定要跑哪個test (+UVM_TESTNAME)
 ![image](https://github.com/user-attachments/assets/17f9fc54-1aaf-40b4-bdf8-7f5a40f2e839)
 
+## 使用Macro  CDN_UART_UVM_TEST
+0. 透過上方的script知道test name為cdnUartUvmTestModeSwitchExample
+1. 指定cdnUartUvmTestModeSwitchExample這個test要打特定virtual seq: cdnUartUvmVirSeqModeSwitchConfigTx
+![image](https://github.com/user-attachments/assets/59ba7e9b-dc1b-46ce-aff6-e6e497d10a12)  
+2. 這個virtual seq內部會執行cdnUartUvmModeSwitchConfigSeq / cdnUartUvmSeqTx
+![image](https://github.com/user-attachments/assets/5efea5bd-8dde-43a4-96e5-d181fda3f949)
+
+
 
 # Topology
 ![image](https://github.com/user-attachments/assets/eb811a9c-1bf0-4dfe-a7dc-5827fe1478a5)
@@ -131,3 +139,13 @@ cdnUartUvmVirSeqModeSwitchConfigTx
 ![image](https://github.com/user-attachments/assets/adb94888-c605-4250-b19f-4164da6d21d7)
 4. 818行開始要切換成Sync, Full Duplex mode  (RX )，後面會有half duplex mode
 
+
+實體sequence:
+cdnUartUvmModeSwitchConfigSeq
+cdnUartUvmSeqTx
+CDN_UART_UVM_TEST(className, sequenceName, testName, trCount)
+下圖有很多test
+![image](https://github.com/user-attachments/assets/f7972e6f-9924-46e6-883c-f96f632d7227)
+
+# 現階段要做的事情
+![image](https://github.com/user-attachments/assets/9f2f1655-0e11-4a91-bbbd-6dfa9c3c02fb)
