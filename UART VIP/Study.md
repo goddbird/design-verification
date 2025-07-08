@@ -73,7 +73,8 @@ Script中可以指定要跑哪個test (+UVM_TESTNAME)
 
 ## 使用Macro  CDN_UART_UVM_TEST
 0. 透過上方的script知道test name為cdnUartUvmTestModeSwitchExample
-1. 指定cdnUartUvmTestModeSwitchExample這個test要打特定virtual seq: cdnUartUvmVirSeqModeSwitchConfigTx
+1. 指定cdnUartUvmTestModeSwitchExample這個class要打特定virtual seq: cdnUartUvmVirSeqModeSwitchConfigTx
+要打uartModeSwitchExample這個test
 ![image](https://github.com/user-attachments/assets/59ba7e9b-dc1b-46ce-aff6-e6e497d10a12)  
 2. 這個virtual seq內部會執行cdnUartUvmModeSwitchConfigSeq / cdnUartUvmSeqTx
 ![image](https://github.com/user-attachments/assets/5efea5bd-8dde-43a4-96e5-d181fda3f949)
@@ -149,3 +150,28 @@ CDN_UART_UVM_TEST(className, sequenceName, testName, trCount)
 
 # 現階段要做的事情
 ![image](https://github.com/user-attachments/assets/9f2f1655-0e11-4a91-bbbd-6dfa9c3c02fb)
+
+# 了解cdnUartUvmTestEvenParity128000
+CDN_UART_UVM_TEST
+![image](https://github.com/user-attachments/assets/58c8f478-f8d6-4263-8058-2d8c79bda4ad)
+解釋 :  
+![image](https://github.com/user-attachments/assets/9fa18c7b-507c-4b01-8ea3-d781cfeb8907)
+
+## Sequence
+![image](https://github.com/user-attachments/assets/46068ff9-2d83-4141-a786-b2c8e25869d7)
+
+## Transaction
+下圖先用constraint把各個參數鎖死
+div_latch = 0x49 (這個跟Baudrate有關係)
+baudrate = clk_freq / (16 * 0x49)
+=> 128000 = clk_freq / (16 * 0x49) => clk得到6.7ns
+![image](https://github.com/user-attachments/assets/6f07e3db-b4dd-4ca5-a9db-26c463aa30bc)
+
+
+|Reg|意義|
+|-|-|
+|ier_modem_status||
+|ier_rx_line_status||
+|ier_tx_holding_reg_empty||
+|||
+|||
