@@ -109,10 +109,10 @@ cdnUartUvmModeSwitchConfigSeq:
 |-|-|-|-|
 |1|201|DENALI_UART_REG_CTRL_CONFIG_BEGIN|對vip初始化，設定後就可以開始配置UART|
 |2|202|DENALI_UART_REG_CTRL_INTERRUPT_ENABLE|讓Interrupt enable|
-|3|209|DENALI_UART_REG_CTRL_UART_CONTROL|設定可傳可收，並設定取樣精度![image](https://github.com/user-attachments/assets/f62d45d5-6e6d-4a9d-a79e-985d31eacc69)|
+|3|209|DENALI_UART_REG_CTRL_UART_CONTROL|設定可傳可收，並設定取樣精度(速度越快精度越低)![image](https://github.com/user-attachments/assets/f62d45d5-6e6d-4a9d-a79e-985d31eacc69)|
 |4|215|DENALI_UART_REG_CTRL_LINE_CONTROL|可指定資料位數，不包含parity bit, stop bit，可包含5-8bitsEnable parity![image](https://github.com/user-attachments/assets/6e0c04fe-abb6-4a0a-b71b-031215f042b6)|
 |*5|228|DENALI_UART_REG_CTRL_MODEM_CONTROL|控制RTS / 控制loop back![image](https://github.com/user-attachments/assets/ae1457d3-b108-46ad-b23a-37d167879f2e)|
-|*6|234|DENALI_UART_REG_CTRL_FIFO_CONTROL|清空FIFO。提問，感覺VIP設定的BIT345欄位跟code的1'b0有出入![image](https://github.com/user-attachments/assets/dd51042a-37be-4d7d-bb56-dfc40e5ba87f)|
+|*6|234|DENALI_UART_REG_CTRL_FIFO_CONTROL|清空FIFO，RXTRIG確認多少資料量(1B, 4B, 8B, 14B)觸發中斷。提問，感覺VIP設定的BIT345欄位跟code的1'b0有出入![image](https://github.com/user-attachments/assets/dd51042a-37be-4d7d-bb56-dfc40e5ba87f)|
 |7|241|DENALI_UART_REG_CTRL_CONFIG_DONE|把CONFIG推進config queue|
 |8|244|uvm_do_with|把CONFIG透過WRITE_REG推進config queue，藉此送txn可以讓VIP/monitor知道有這樣的設定行為|
 
