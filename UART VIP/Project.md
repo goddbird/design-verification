@@ -10,3 +10,8 @@ uart_env.sv有下面這些agent
 
 底層到上層
 uvm_test -> uart_test_base -> uart_common -> ipsim_uart_common -> (uart_func_uart_txrx_trans, uart_ral_test, uart_func_lin_txrx_trans)
+
+# Sequence種類 : uart_run_dut
+1. write2dut__cpu_mode
+2. write2dut__pdmav1_mode
+3. write2dut__pdmav2_mode
