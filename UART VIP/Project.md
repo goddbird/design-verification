@@ -30,3 +30,8 @@ uvm_test -> uart_test_base -> uart_common -> ipsim_uart_common -> (uart_func_uar
 同步初始化一些 UART VIP 的設定（例如 IRQ, control 設定, watchdog）。
 使用 fork...join_none 讓這些任務平行啟動。
 確保在 NBA 結束之後才讓主要流程繼續進行，避免 race condition。
+
+3. setup_cfg
+產生config sequence，從RAL中取得所有register，並且排除m_bypass_rgs裡面的reg，剩下的放進mrgs後做shuffle，最後用update寫進DUT。
+
+4. 
