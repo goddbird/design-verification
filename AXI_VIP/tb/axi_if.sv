@@ -6,18 +6,34 @@ interface axi_if #(
 	input logic ACLK,
 	input logic ARESETn
 );
+	// ---------------------
 	// Write Address Channel
-	logic [3:0]		AWID;
-	logic [31:0] 	AWADDR;
+	// ---------------------	
+	logic [ADDR_WIDTH - 1 : 0] 	AWADDR;	
+	logic						AWVALID;
+	logic						AWREADY;
+
+	// ---------------------
+	// Write Data Channel
+	// ---------------------		
+	logic [DATA_WIDTH - 1 : 0]	WDATA;
+	logic						WVALID;
+	logic						WREADY;
 	
-	logic			AWVALID;
-	logic			AWREADY;
+	// ---------------------
+	// Write Response Channel
+	// ---------------------			
+	logic [1:0]					BRESP; 
+	logic						BVALID;
+	logic						BREADY;
 	
+	// ---------------------
+	// Master Modport (Driver)	
+	// ---------------------	
+	modport master(input AWREADY, WREADY, BRESP, BVALID, output AWADDR, AWVALID, WDATA, WVALID, BREADY)
 	
-	logic [31:0]	WDATA;
-	logic			WVALID;
-	logic			WREADY;
-	logic [1:0]		BRESP;
-	logic			BVALID;
-	logic			BREADY;
+	// ---------------------
+	// Slave Modport (DUT)	
+	// ---------------------	
+	modport slave(input AWADDR, AWVALID, WDATA, WVALID, BREADY, output AWREADY, WREADY, BRESP, BVALID)	
 endinterface
