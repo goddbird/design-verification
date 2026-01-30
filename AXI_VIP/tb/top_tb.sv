@@ -22,7 +22,7 @@ module top_tb;
 	end
 	
 	// Interface
-	axi_if.slave  axi_s(
+	axi_if  axi_s(
 		.ACLK		(ACLK),
 		.ARESETn	(ARESETn)
 	);

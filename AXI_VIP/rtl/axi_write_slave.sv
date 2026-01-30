@@ -22,7 +22,7 @@ module axi_write_slave #(
 );
 	typedef enum logic [1:0]{
 		IDLE, ADDR_ACCEPTED, RESP_SENT
-	}state_t
+	}state_t;
 
 	state_t		state;
 	

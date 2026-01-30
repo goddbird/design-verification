@@ -1,0 +1,1 @@
+xrun -timescale 1ns/1ps -uvm +access+rwc -f ./axi_write_filelist.f
