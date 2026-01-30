@@ -8,7 +8,43 @@ module top_tb;
 	logic ACLK;
 	logic ARESETn;
 	
-	// 10ns period clock
-	initial ACLK = 0;
-	always #5 ACLK = ~ACLK;
+	// 100MHz
+	initial begin
+		ACLK = 0;
+		forever #5 ACLK = ~ACLK; // 100MHz
+	end
+	
+	// Resetn
+	initial begin
+		ARESETn = 0;
+		repeat (5) @(posedge ACLK);
+		ARESETn = 1;
+	end
+	
+	// Interface
+	axi_if.slave  axi_s(
+		.ACLK		(ACLK),
+		.ARESETn	(ARESETn)
+	);
+	
+	// DUT
+	axi_write_slave dut(
+		.ACLK		(axi_s.ACLK),
+		.ARESETn	(axi_s.ARESETn),
+		.AWADDR		(axi_s.AWADDR),
+		.AWVALID	(axi_s.AWVALID),
+		.AWREADY	(axi_s.AWREADY),
+		.WDATA		(axi_s.WDATA),
+		.WVALID		(axi_s.WVALID),
+		.WREADY		(axi_s.WREADY),
+		.BRESP		(axi_s.BRESP),		
+		.BVALID		(axi_s.BVALID),
+		.BREADY		(axi_s.BREADY)	
+	);
+	
+	// Dump waveform
+	initial begin
+		$dumpfile("axi_write.vcd");
+		$dumpvars(0, top_tb);
+	end
 endmodule

@@ -30,10 +30,10 @@ interface axi_if #(
 	// ---------------------
 	// Master Modport (Driver)	
 	// ---------------------	
-	modport master(input AWREADY, WREADY, BRESP, BVALID, output AWADDR, AWVALID, WDATA, WVALID, BREADY)
+	modport master(input ACLK, ARESETn, AWREADY, WREADY, BRESP, BVALID, output AWADDR, AWVALID, WDATA, WVALID, BREADY)
 	
 	// ---------------------
 	// Slave Modport (DUT)	
 	// ---------------------	
-	modport slave(input AWADDR, AWVALID, WDATA, WVALID, BREADY, output AWREADY, WREADY, BRESP, BVALID)	
+	modport slave(input ACLK, ARESETn, AWADDR, AWVALID, WDATA, WVALID, BREADY, output AWREADY, WREADY, BRESP, BVALID)	
 endinterface
