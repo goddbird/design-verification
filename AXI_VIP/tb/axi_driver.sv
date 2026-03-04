@@ -6,8 +6,9 @@ class axi_driver extends uvm_driver#(axi_txn);
     endfunction
 
     function void run_phase(uvm_phase phase);
-        super.run_phase(phase);
         axi_txn     tr;
+        super.run_phase(phase);
+
 
         
         seq_item_port.get_next_item(tr);
