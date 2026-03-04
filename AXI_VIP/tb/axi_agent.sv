@@ -1,4 +1,4 @@
-class axi_agent extends uvm agent;
+class axi_agent extends uvm_agent;
     `uvm_component_utils(axi_agent)
     
     axi_seqr        seqr_a;
@@ -23,7 +23,7 @@ class axi_agent extends uvm agent;
 
     function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
-        driver_a.item_port.connect(seqr_a.item_export);
+        driver_a.seq_item_port.connect(seqr_a.seq_item_export);
     endfunction
 
 endclass
