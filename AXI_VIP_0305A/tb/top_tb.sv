@@ -1,4 +1,7 @@
 `timescale 1ns/1ps
+import uvm_pkg::*;
+import axi_write_pkg::*;
+`include "uvm_macros.svh"
 
 module top_tb;
 	// -----------------------------------------------
@@ -44,7 +47,8 @@ module top_tb;
 	
 	// Dump waveform
 	initial begin
-		$dumpfile("axi_write.vcd");
-		$dumpvars(0, top_tb);
+		$fsdbDumpfile("axi.fsdb");
+		$fsdbDumpvars(0, top_tb);		
+		run_test("axi_test");
 	end
 endmodule
