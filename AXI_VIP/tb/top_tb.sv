@@ -48,7 +48,9 @@ module top_tb;
 	// Dump waveform
 	initial begin
 		$fsdbDumpfile("axi.fsdb");
-		$fsdbDumpvars(0, top_tb);		
+		$fsdbDumpvars(0, top_tb);	
+
+		uvm_config_db#(virtual interface axi_if)::set(null, "*", "vif", axi_s);
 		run_test("axi_test");
 	end
 endmodule
