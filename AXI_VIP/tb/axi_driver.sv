@@ -26,6 +26,11 @@ task axi_driver::run_phase(uvm_phase phase);
     axi_txn     tr;
     super.run_phase(phase);
 
+	wait (vif.ARESETn === 1'b1)
+	repeat (2) @(posedge vif.ACLK)
+	vif.AWVALID	<= 0;
+	vif.WVALID	<= 0;
+	vif.BREADY	<= 0;
 
     forever begin
 		seq_item_port.get_next_item(tr);
@@ -40,19 +45,29 @@ task axi_driver::drive_write(axi_txn tr);
 
 	@(posedge vif.ACLK);
 	
+	`uvm_info(get_type_name(), "[drive_write] AW write", UVM_NONE)
 	vif.AWADDR 		<= tr.addr;
 	vif.AWVALID 	<= 1;
 	
-	wait(vif.AWREADY);
-	
+	do @(posedge vif.ACLK);
+	while(!vif.AWREADY);
+
+	`uvm_info(get_type_name(), "[drive_write] W write", UVM_NONE)	
 	vif.AWVALID		<= 0;
 	vif.WDATA		<= tr.data[0];
 	vif.WVALID		<= 1;
 	
-	wait(vif.WREADY);
+	do @(posedge vif.ACLK);
+	while(!vif.WREADY);
 	
 	@(posedge vif.ACLK);
-	
+	`uvm_info(get_type_name(), "[drive_write] BREADY", UVM_NONE)	
 	vif.WVALID		<= 0;
+	vif.BREADY		<= 1;
+	
+	do @(posedge vif.ACLK);
+	while(!vif.BVALID);
 
+	@(posedge vif.ACLK);	
+	vif.BREADY 		<= 0;
 endtask
