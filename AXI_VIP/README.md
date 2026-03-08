@@ -1,3 +1,8 @@
+<img width="801" height="554" alt="image" src="https://github.com/user-attachments/assets/11a22ad9-3f7e-4386-8950-f2aa92292e7f" />
+<img width="853" height="583" alt="image" src="https://github.com/user-attachments/assets/0ed45c55-7a7c-4cec-ac0e-694ec7d14ca3" />
+
+
+```
 axi_vip/
 ├── axi_if.sv                ←【介面】實體訊號、modport、clocking
 │
@@ -24,3 +29,4 @@ axi_vip/
 │
 └── top/
     └── tb_top.sv            ←【最上層】DUT + VIP + clock/reset
+```
