@@ -1,6 +1,9 @@
 class axi_txn extends uvm_sequence_item;	
     rand bit [3:0]           id;
     rand bit [31:0]          addr;
+	rand bit [7:0]			 awlen;
+	rand bit [2:0]			 awsize;
+	rand bit [1:0]			 awburst;	
     rand bit [31:0]          data[$];   
     rand bit [7:0]           burst_len;
     rand bit [2:0]           burst_size;
