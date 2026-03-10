@@ -34,6 +34,9 @@ axi_vip/
 ├── test/
 │   └── axi_write_test.sv    ←【測試】選 sequence 跑
 │
+├── sva/
+│   └── axi_assertions.sv    ←【SVA】確認WLAST訊號如預期變化
+│
 └── top/
     └── tb_top.sv            ←【最上層】DUT + VIP + clock/reset
 ```
