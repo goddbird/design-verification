@@ -22,6 +22,8 @@ module axi_assertions (axi_if vif);
 	endproperty
 	
 	assert property (wlast_check)
-	else
+	else begin
 		$error("AXI protocol violation: WLAST missing");
+		$finish;
+	end
 endmodule

@@ -48,7 +48,7 @@ task axi_driver::drive_write(axi_txn tr);
 	`uvm_info(get_type_name(), "[drive_write] AW write", UVM_NONE)
 	vif.AWADDR 		<= tr.addr;
 	vif.AWLEN 		<= tr.data.size() - 1;
-	vif.AWSIZE 		<= 3'b010; // 4 byte
+	vif.AWSIZE 		<= 3'b010; // 0: 1byte / 1: 2byte / 2: 4byte
 	vif.AWBURST		<= 2'b01;	
 	vif.AWVALID 	<= 1;
 	
