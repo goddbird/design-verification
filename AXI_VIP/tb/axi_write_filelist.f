@@ -6,4 +6,5 @@
 
 # TB component
 ./interface/axi_if.sv
+./checker/axi_assertions.sv
 ./top_tb.sv

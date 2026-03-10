@@ -8,6 +8,7 @@ class axi_txn extends uvm_sequence_item;
     rand bit [7:0]           burst_len;
     rand bit [2:0]           burst_size;
     rand bit [1:0]           burst_type;
+	rand bit				 wlast;
     rand bit                 is_write;
     rand bit                 lock;
     rand bit [3:0]           qos;

@@ -36,14 +36,21 @@ module top_tb;
 		.ARESETn	(axi_s.ARESETn),
 		.AWADDR		(axi_s.AWADDR),
 		.AWVALID	(axi_s.AWVALID),
+		.AWLEN		(axi_s.AWLEN),
+		.AWSIZE		(axi_s.AWSIZE),
+		.AWBURST	(axi_s.AWBURST),
 		.AWREADY	(axi_s.AWREADY),
 		.WDATA		(axi_s.WDATA),
 		.WVALID		(axi_s.WVALID),
+		.WLAST		(axi_s.WLAST),
 		.WREADY		(axi_s.WREADY),
 		.BRESP		(axi_s.BRESP),		
 		.BVALID		(axi_s.BVALID),
 		.BREADY		(axi_s.BREADY)	
 	);
+	
+	// Assertions
+	axi_assertions axi_assert_inst(.vif(axi_s));
 	
 	// Dump waveform
 	initial begin

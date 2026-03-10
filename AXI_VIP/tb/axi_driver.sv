@@ -41,12 +41,15 @@ endtask
 
 task axi_driver::drive_write(axi_txn tr);
 
-	`uvm_info(get_type_name(), "[drive_write]", UVM_NONE)
+	`uvm_info(get_type_name(), $sformatf("[drive_write] addr = 0x%h, beats = %0d", tr.addr, tr.data.size()), UVM_NONE)
 
 	@(posedge vif.ACLK);
 	
 	`uvm_info(get_type_name(), "[drive_write] AW write", UVM_NONE)
 	vif.AWADDR 		<= tr.addr;
+	vif.AWLEN 		<= tr.data.size() - 1;
+	vif.AWSIZE 		<= 3'b010; // 4 byte
+	vif.AWBURST		<= 2'b01;	
 	vif.AWVALID 	<= 1;
 	
 	do @(posedge vif.ACLK);
@@ -54,15 +57,25 @@ task axi_driver::drive_write(axi_txn tr);
 
 	`uvm_info(get_type_name(), "[drive_write] W write", UVM_NONE)	
 	vif.AWVALID		<= 0;
-	vif.WDATA		<= tr.data[0];
-	vif.WVALID		<= 1;
+	foreach (tr.data[i]) begin
+		vif.WDATA		<= tr.data[0];
+		vif.WVALID		<= 1;
+		
+		`uvm_info(get_type_name(), $sformatf("[drive_write] W write[%0d] = 0x%0h", i, tr.data[i]), UVM_NONE)
+		if(i == tr.data.size() - 1) vif.WLAST <= 1;
+		else vif.WLAST <= 0;
+		
+		do @(posedge vif.ACLK);
+		while(!vif.WREADY);
+	end
+
 	
-	do @(posedge vif.ACLK);
-	while(!vif.WREADY);
+
 	
 	@(posedge vif.ACLK);
 	`uvm_info(get_type_name(), "[drive_write] BREADY", UVM_NONE)	
 	vif.WVALID		<= 0;
+	vif.WLAST		<= 0;
 	vif.BREADY		<= 1;
 	
 	do @(posedge vif.ACLK);
