@@ -1,7 +1,10 @@
+# AXI Introduce
 <img width="801" height="554" alt="image" src="https://github.com/user-attachments/assets/11a22ad9-3f7e-4386-8950-f2aa92292e7f" />
+
+# My AXI VIP Architecture
 <img width="853" height="583" alt="image" src="https://github.com/user-attachments/assets/0ed45c55-7a7c-4cec-ac0e-694ec7d14ca3" />
 
-
+# My AXI VIP Topology
 ```
 axi_vip/
 ├── axi_if.sv                ←【介面】實體訊號、modport、clocking
@@ -30,3 +33,12 @@ axi_vip/
 └── top/
     └── tb_top.sv            ←【最上層】DUT + VIP + clock/reset
 ```
+
+
+
+# My AXI VIP Waveform
+<img width="1828" height="521" alt="image" src="https://github.com/user-attachments/assets/9c62d751-7c0b-4dc1-8ab2-1f4de420d8b7" />
+
+# My AXI VIP xrun.log
+<img width="1312" height="712" alt="image" src="https://github.com/user-attachments/assets/0173dd1a-1868-46eb-8865-ccf7dfed1049" />
+
