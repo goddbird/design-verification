@@ -19,7 +19,7 @@ function void axi_driver::build_phase(uvm_phase phase);
 	super.build_phase(phase);
 	
 	if(!uvm_config_db#(virtual interface axi_if)::get(this, "", "vif", vif))
-		`uvm_fatal("NOVIF", "virtual interface not set")
+		`uvm_fatal("NOVIF", "axi_driver : virtual interface not set")
 endfunction
 
 task axi_driver::run_phase(uvm_phase phase);
