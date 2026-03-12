@@ -15,7 +15,7 @@ class axi_write_seq extends uvm_sequence#(axi_txn);
 			
 			assert(tr.randomize() with {
 				is_write 	== 1;
-				data.size() == 4;
+				data.size() inside {[1:5]};
 				burst_len	== data.size() - 1;
 			} );
 			`uvm_info(get_type_name(), tr.sprint(), UVM_NONE)

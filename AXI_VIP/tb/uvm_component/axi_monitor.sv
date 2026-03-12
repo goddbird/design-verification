@@ -28,10 +28,22 @@ task axi_monitor::run_phase(uvm_phase phase);
 			tr = axi_txn::type_id::create("tr");
 			tr.addr = vif.AWADDR;
 			tr.burst_len = vif.AWLEN;
-		end
-		
-		if(vif.WVALID && vif.WREADY) begin
-			tr.data = vif.WDATA;
+			
+			tr.data.delete();
+			
+			//collect burst data
+			for(int i = 0; i <= vif.AWLEN; i++) begin
+				@(posedge vif.ACLK);
+				wait(vif.WVALID && vif.WREADY);
+				
+				tr.data.push_back(vif.WDATA);
+				
+				if(vif.WLAST)
+					break;
+			end
+			
+			ap.write(tr);
+			`uvm_info(get_type_name(), tr.sprint(), UVM_NONE)			
 		end
 	end
 endtask
