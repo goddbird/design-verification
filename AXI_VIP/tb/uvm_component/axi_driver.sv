@@ -58,7 +58,7 @@ task axi_driver::drive_write(axi_txn tr);
 	`uvm_info(get_type_name(), "[drive_write] W write", UVM_NONE)	
 	vif.AWVALID		<= 0;
 	foreach (tr.data[i]) begin
-		vif.WDATA		<= tr.data[0];
+		vif.WDATA		<= tr.data[i];
 		vif.WVALID		<= 1;
 		
 		`uvm_info(get_type_name(), $sformatf("[drive_write] W write[%0d] = 0x%0h", i, tr.data[i]), UVM_NONE)
