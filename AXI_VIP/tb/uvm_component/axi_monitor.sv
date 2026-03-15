@@ -3,7 +3,7 @@ class axi_monitor extends uvm_monitor;
 
 	virtual interface axi_if	  vif;
     uvm_analysis_port #(axi_txn)  ap;    
-	covergroup burst_cg;
+	covergroup burst_cg with function sample(axi_txn   tr);
 		coverpoint tr.burst_len{
 			bins single = {0};
 			bins short  = {[1:3]};
