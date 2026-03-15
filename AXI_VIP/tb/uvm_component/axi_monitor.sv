@@ -3,11 +3,34 @@ class axi_monitor extends uvm_monitor;
 
 	virtual interface axi_if	  vif;
     uvm_analysis_port #(axi_txn)  ap;    
+	covergroup burst_cg;
+		coverpoint tr.burst_len{
+			bins single = {0};
+			bins short  = {[1:3]};
+		}
+		
+		coverpoint tr.burst_type{
+			bins FIXED 	= {0};
+			bins INCR 	= {1};
+			bins WRAP 	= {2};			
+		}
+		
+		coverpoint tr.burst_size{
+			bins size_1B = {0};
+			bins size_2B = {1};
+			bins size_4B = {2};
+			bins size_8B = {3};
+		}
+	endgroup
+
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
         ap = new("ap", this);
+		burst_cg = new();
     endfunction
+
+
 
 	extern function void build_phase(uvm_phase phase);
 	extern task 		 run_phase(uvm_phase phase);
@@ -41,7 +64,7 @@ task axi_monitor::run_phase(uvm_phase phase);
 				if(vif.WLAST)
 					break;
 			end
-			
+			burst_cg.sample(tr);
 			ap.write(tr);
 			`uvm_info(get_type_name(), tr.sprint(), UVM_NONE)			
 		end
