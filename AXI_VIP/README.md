@@ -53,6 +53,12 @@ axi_vip/
 ---
 # Coverage
 ![coverage](./Coverage.png)
+| Feature           | Description         | Coverage Method |
+| ----------------- | ------------------- | --------------- |
+| Burst Type        | FIXED / INCR / WRAP | coverpoint      |
+| Burst Length      | 1~16 beats          | coverpoint      |
+| Transfer Size     | 1B / 2B / 4B / 8B   | coverpoint      |
+| Address Alignment | aligned / unaligned | coverpoint      |
 
 
 
