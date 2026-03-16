@@ -19,4 +19,38 @@ interface ahb_if #(
 	
 	logic						HREADY;
 	logic						HRESP;
+	
+	modport master (
+		input HCLK, HRESETn, HREADY, HRDATA, HRESP,
+		output HADDR, HTRANS, HWRITE, HSIZE, HBURST, HPROT, HWDATA
+	);
+	
+	modport slave (
+		input HCLK, HRESETn, HADDR, HTRANS, HWRITE, HSIZE, HBURST, HPROT, HWDATA,
+		output HREADY, HRDATA, HRESP
+	);
 endinterface
+
+/*         AHB BUS
+
+        +------------------+
+        |      MASTER      |
+        |                  |
+        | HADDR   -------> |
+        | HTRANS  -------> |
+        | HWRITE  -------> |
+        | HSIZE   -------> |
+        | HBURST  -------> |
+        | HWDATA  -------> |
+        |                  |
+        | HRDATA  <------- |
+        | HREADY  <------- |
+        | HRESP   <------- |
+        +------------------+
+                   |
+                   |
+                   v
+        +------------------+
+        |      SLAVE       |
+        +------------------+
+*/		
