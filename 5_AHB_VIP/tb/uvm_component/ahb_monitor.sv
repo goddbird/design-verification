@@ -1,14 +1,15 @@
-class ahb_driver extends uvm_driver;
-    `uvm_component_utils(ahb_driver)
+class ahb_monitor extends uvm_monitor;
+    `uvm_component_utils(ahb_monitor)
 	
 	virtual interface ahb_if		vif;
+	uvm_analysis_port				ap;
 	
 	function new(string name, uvm_component parent);
 		super.new(name, parent);
+		ap = new();
 	endfunction	
 	
 	extern function void build_phase(uvm_phase phase);
-	extern task send_to_dut();
 endclass
 
 function void ahb_agent::build_phase(uvm_phase phase);
@@ -16,7 +17,3 @@ function void ahb_agent::build_phase(uvm_phase phase);
 	supre.build_phase(phase);	
 endfunction
 
-function void ahb_agent::send_to_dut();
-	//address phase
-	//data phase
-endfunction
