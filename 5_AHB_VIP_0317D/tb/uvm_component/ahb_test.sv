@@ -18,6 +18,9 @@ function void ahb_test::build_phase(uvm_phase phase);
 endfunction
 
 task ahb_test::run_phase(uvm_phase phase);
-	//scoreboard
-	//ahb_agent.monitor_a.ap.connect();
+	ahb_seq		seq;
+	phase.raise_objection(this);
+	seq = ahb_seq::type_id::create("seq");
+	seq.start(env_a.agent_a.seqr_a);
+	phase.drop_objection(this);
 endtask
