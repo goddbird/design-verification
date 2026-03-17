@@ -1,4 +1,4 @@
-class ahb_driver extends uvm_driver;
+class ahb_driver extends uvm_driver #(ahb_txn);
     `uvm_component_utils(ahb_driver)
 	
 	virtual interface ahb_if		vif;
@@ -8,15 +8,31 @@ class ahb_driver extends uvm_driver;
 	endfunction	
 	
 	extern function void build_phase(uvm_phase phase);
-	extern task send_to_dut();
+	extern task run_phase(uvm_phase phase);	
+	extern task drive_write();
 endclass
 
-function void ahb_agent::build_phase(uvm_phase phase);
-	uvm_config_db#(virtual interface ahb_if)::get(this, "vif", vif);
-	supre.build_phase(phase);	
+function void ahb_driver::build_phase(uvm_phase phase);
+	super.build_phase(phase);	
+	if(!uvm_config_db#(virtual interface ahb_if)::get(this, "", "vif", vif))
+		`uvm_fatal("NOVIF", "ahb_driver : virtual interface not set")
 endfunction
 
-function void ahb_agent::send_to_dut();
+task ahb_driver::run_phase(uvm_phase phase);	
+	ahb_txn		tr;
+	super.run_phase(phase);
+	
+	wait (vif.HRESETn === 1'b1);
+	
+	forever begin
+		seq_item_port.get_next_item(tr);
+		seq_item_port.item_done();
+	end
+endtask
+
+task ahb_driver::drive_write();
 	//address phase
 	//data phase
-endfunction
+endtask
+
+
