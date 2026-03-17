@@ -16,6 +16,7 @@ class ahb_agent extends uvm_agent;
 endclass
 
 function void ahb_agent::build_phase(uvm_phase phase);
+	super.build_phase(phase);
 	monitor_a	 = ahb_monitor::type_id::create("monitor_a", this);
 	if(is_active) begin
 		driver_a = ahb_driver::type_id::create("driver_a", this);
