@@ -16,13 +16,13 @@ class ahb_agent extends uvm_agent;
 endclass
 
 function void ahb_agent::build_phase(uvm_phase phase);
-	monitor_a	 = ahb_monitor::type_id::create("monitor_a");
+	monitor_a	 = ahb_monitor::type_id::create("monitor_a", this);
 	if(is_active) begin
-		driver_a = ahb_driver::type_id::create("driver_a");
-		seqr_a	 = ahb_seqr::type_id::create("seqr_a");
+		driver_a = ahb_driver::type_id::create("driver_a", this);
+		seqr_a	 = ahb_seqr::type_id::create("seqr_a", this);
 	end
 endfunction
 
-function void ahb_agent::connect_phase_phase(uvm_phase phase);
+function void ahb_agent::connect_phase(uvm_phase phase);
 	driver_a.seq_item_port.connect(seqr_a.seq_item_export);
 endfunction
