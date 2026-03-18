@@ -14,9 +14,7 @@ task ahb_seq::body();
 		tr = ahb_txn::type_id::create("tr");
 		start_item(tr);
 		
-		assert(tr.randomize() with {		
-		}
-		);
+		assert(tr.randomize());
 		
 		`uvm_info(get_type_name(), tr.sprint(), UVM_NONE)
 		finish_item(tr);
