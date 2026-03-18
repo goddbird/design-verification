@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 import uvm_pkg::*;
-import ahb_write_pkg::*;
+import ahb_pkg::*;
 `include "uvm_macros.svh"
 
 module top_tb;
@@ -8,49 +8,46 @@ module top_tb;
 	// Clock / Reset
 	// -----------------------------------------------	
 	
-	logic ACLK;
-	logic ARESETn;
+	logic HCLK;
+	logic HRESETn;
 	
 	// 100MHz
 	initial begin
-		ACLK = 0;
-		forever #5 ACLK = ~ACLK; // 100MHz
+		HCLK = 0;
+		forever #5 HCLK = ~HCLK; // 100MHz
 	end
 	
 	// Resetn
 	initial begin
-		ARESETn = 0;
-		repeat (5) @(posedge ACLK);
-		ARESETn = 1;
+		HRESETn = 0;
+		repeat (5) @(posedge HCLK);
+		HRESETn = 1;
 	end
 	
 	// Interface
 	ahb_if  ahb_s(
-		.ACLK		(ACLK),
-		.ARESETn	(ARESETn)
+		.HCLK		(HCLK),
+		.HRESETn	(HRESETn)
 	);
 	
 	// DUT
-	ahb_write_slave dut(
-		.ACLK		(ahb_s.ACLK),
-		.ARESETn	(ahb_s.ARESETn),
-		.AWADDR		(ahb_s.AWADDR),
-		.AWVALID	(ahb_s.AWVALID),
-		.AWLEN		(ahb_s.AWLEN),
-		.AWSIZE		(ahb_s.AWSIZE),
-		.AWBURST	(ahb_s.AWBURST),
-		.AWREADY	(ahb_s.AWREADY),
-		.WDATA		(ahb_s.WDATA),
-		.WVALID		(ahb_s.WVALID),
-		.WLAST		(ahb_s.WLAST),
-		.WREADY		(ahb_s.WREADY),
-		.BRESP		(ahb_s.BRESP),		
-		.BVALID		(ahb_s.BVALID),
-		.BREADY		(ahb_s.BREADY)	
+	ahb_slave dut(
+		.HCLK		(ahb_s.HCLK),
+		.HRESETn	(ahb_s.HRESETn),
+		.HADDR		(ahb_s.HADDR),
+		.HTRANS		(ahb_s.HTRANS),
+		.HWRITE		(ahb_s.HWRITE),
+		.HSIZE		(ahb_s.HSIZE),
+		.HBURST		(ahb_s.HBURST),
+		.HPROT		(ahb_s.HPROT),
+		.HWDATA		(ahb_s.HWDATA),
+		.HRDATA		(ahb_s.HRDATA),
+		.HREADY		(ahb_s.HREADY),
+		.HRESP		(ahb_s.HRESP)
 	);
 	
 	// Assertions
-	ahb_assertions ahb_assert_inst(.vif(ahb_s));
+	//ahb_assertions ahb_assert_inst(.vif(ahb_s));
 	
 	// Dump waveform
 	initial begin

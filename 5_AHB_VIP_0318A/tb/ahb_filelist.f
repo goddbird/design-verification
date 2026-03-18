@@ -7,4 +7,4 @@
 # TB component
 ./interface/ahb_if.sv
 #./checker/ahb_assertions.sv
-#./top_tb.sv
+./top_tb.sv
