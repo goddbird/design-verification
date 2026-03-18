@@ -9,18 +9,18 @@ module ahb_write_slave #(
 	input logic [ADDR_WIDTH - 1 : 0] 	HADDR,
 	input logic	[1:0]					HTRANS,
 	input logic 						HWRITE,	
-	input logic [2:0]					HSIZE;
-	input logic [2:0]					HBURST;
-	input logic [3:0]					HPROT;	
-	input logic [DATA_WIDTH- 1 : 0]		HWDATA;
+	input logic [2:0]					HSIZE,
+	input logic [2:0]					HBURST,
+	input logic [3:0]					HPROT,	
+	input logic [DATA_WIDTH- 1 : 0]		HWDATA,
 	
-	output logic [DATA_WIDTH- 1 : 0]	HRDATA;	
-	output logic						HREADY;
-	output logic						HRESP;
+	output logic [DATA_WIDTH- 1 : 0]	HRDATA,	
+	output logic						HREADY,
+	output logic						HRESP
 );
 
 	// memory	
-	logic [DATA_WIDTH - 1 : 0]			mem [0:1023] // Depth 1024
+	logic [DATA_WIDTH - 1 : 0]			mem [0:1023]; // Depth 1024
 	//pipeline register
 	logic [ADDR_WIDTH - 1 : 0]			addr_reg;
 	logic								write_reg;
@@ -67,8 +67,6 @@ module ahb_write_slave #(
 	always_ff @(posedge HCLK or negedge HRESETn) begin
 		if(valid_reg && write_reg && HREADY) begin
 			mem[addr_reg[11:2]]	<= HWDATA;
-			write_reg			<= 0;
-			valid_reg			<= 0;
 		end	
 	end	
 	
@@ -81,8 +79,6 @@ module ahb_write_slave #(
 		end
 		else if(valid_reg && write_reg == 0 && HREADY) begin
 			HRDATA			<= mem[addr_reg[11:2]];
-			write_reg		<= 0;
-			valid_reg		<= 0;
 		end	
 	end		
 endmodule

@@ -2,7 +2,7 @@
 ./ahb_pkg.sv
 
 # RTL
-#../rtl/ahb_slave.sv
+../rtl/ahb_slave.sv
 
 # TB component
 ./interface/ahb_if.sv
