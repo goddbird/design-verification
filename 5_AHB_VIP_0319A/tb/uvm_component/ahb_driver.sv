@@ -26,7 +26,7 @@ task ahb_driver::run_phase(uvm_phase phase);
 	
 	forever begin
 		seq_item_port.get_next_item(tr);
-		drive_write();
+		drive_write(tr);
 		seq_item_port.item_done();
 	end
 endtask
@@ -41,18 +41,18 @@ task ahb_driver::drive_write(ahb_txn  tr);
 	vif.HTRANS	<= 2'b10;  //NONSEQ
 
 	// burst loop
-	for(int i = 0 ; i < burst_len; i++) begin
+	for(int i = 0 ; i < tr.burst_len; i++) begin
 		// wait ready
 		while (!vif.HREADY)
-			@(posedge vif.HCLK)
+			@(posedge vif.HCLK);
 
-		@(posedge vif.HCLK)
+		@(posedge vif.HCLK);
 
 		//data phase (previous address)
-		vif.HWDATA	<= tr.data[i]
+		vif.HWDATA	<= tr.data[i];
 
 		//next address
-		vif.HADDR	<= tr.addr + (i+1)(1<<tr.size);
+		vif.HADDR	<= tr.addr + (i+1)*(1<<tr.size);
 
 		//next HTRANS
 		if(i == 0)
@@ -60,7 +60,7 @@ task ahb_driver::drive_write(ahb_txn  tr);
 	end
 
 	// end transfer
-	@(posedge vif.HCLK)
+	@(posedge vif.HCLK);
 	vif.HTRANS		<= 2'b00; // IDLE
 endtask
 
