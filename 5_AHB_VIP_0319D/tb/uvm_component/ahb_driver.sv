@@ -36,13 +36,14 @@ task ahb_driver::drive_write(ahb_txn  tr);
 	`uvm_info(get_type_name(), $sformatf("[drive_write]"), UVM_NONE)
 	`uvm_info(get_type_name(), tr.sprint(), UVM_NONE)
 	// first cycle 
-	@(posedge vif.HCLK);
+	
 	vif.HADDR 	<= tr.addr;
 	vif.HWRITE	<= 1;
 	vif.HSIZE	<= tr.size;
 	vif.HBURST	<= tr.hburst;
 	vif.HTRANS	<= 2'b10;  //NONSEQ
-
+	@(posedge vif.HCLK);
+	
 	// burst loop
 	for(int i = 0 ; i < tr.burst_len; i++) begin
 		// wait ready

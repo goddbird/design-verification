@@ -8,7 +8,9 @@ class ahb_txn extends uvm_sequence_item;
     rand bit [3:0]			 hprot;	
 
 	constraint hburst_c {
-		hburst inside {0, 3, 5, 7};
+		hburst inside {0, 3, 5, 7}; 
+		// SINGLE, INCR4, INCR8, INCR16, 
+		//1 beat, 4 beat, 8 beat, 16 beat 
 	}
 
 	constraint burst_len_c {
@@ -21,6 +23,10 @@ class ahb_txn extends uvm_sequence_item;
 	constraint addr_align_c {
 		if(size == 3'b001) addr % 2 == 0;
 		if(size == 3'b010) addr % 4 == 0;
+	}
+
+	constraint data_len_c {
+		data.size() == burst_len;
 	}
 
     `uvm_object_utils_begin(ahb_txn)
