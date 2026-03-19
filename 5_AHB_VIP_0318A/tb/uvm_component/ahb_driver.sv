@@ -9,7 +9,7 @@ class ahb_driver extends uvm_driver #(ahb_txn);
 	
 	extern function void build_phase(uvm_phase phase);
 	extern task run_phase(uvm_phase phase);	
-	extern task drive_write();
+	extern task drive_write(ahb_txn  tr);
 endclass
 
 function void ahb_driver::build_phase(uvm_phase phase);
@@ -26,13 +26,42 @@ task ahb_driver::run_phase(uvm_phase phase);
 	
 	forever begin
 		seq_item_port.get_next_item(tr);
+		drive_write();
 		seq_item_port.item_done();
 	end
 endtask
 
-task ahb_driver::drive_write();
-	//address phase
-	//data phase
+task ahb_driver::drive_write(ahb_txn  tr);
+	// first cycle 
+	@(posedge vif.HCLK);
+	vif.HADDR 	<= tr.addr;
+	vif.HWRITE	<= 1;
+	vif.HSIZE	<= tr.size;
+	vif.HBURST	<= tr.hburst;
+	vif.HTRANS	<= 2'b10;  //NONSEQ
+
+	// burst loop
+	for(int i = 0 ; i < burst_len; i++) begin
+		// wait ready
+		while (!vif.HREADY)
+			@(posedge vif.HCLK)
+
+		@(posedge vif.HCLK)
+
+		//data phase (previous address)
+		vif.HWDATA	<= tr.data[i]
+
+		//next address
+		vif.HADDR	<= tr.addr + (i+1)(1<<tr.size);
+
+		//next HTRANS
+		if(i == 0)
+		vif.HTRANS	<= 2'b11; //SEQ
+	end
+
+	// end transfer
+	@(posedge vif.HCLK)
+	vif.HTRANS		<= 2'b00; // IDLE
 endtask
 
 
