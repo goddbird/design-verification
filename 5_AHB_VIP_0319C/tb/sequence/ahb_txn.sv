@@ -7,6 +7,10 @@ class ahb_txn extends uvm_sequence_item;
     rand bit [31:0]          data[$];   
     rand bit [3:0]			 hprot;	
 
+	constraint hburst_c {
+		hburst inside {0, 3, 5, 7};
+	}
+
 	constraint burst_len_c {
 		if(hburst == 3'b000) burst_len == 1;
 		if(hburst == 3'b011) burst_len == 4;
