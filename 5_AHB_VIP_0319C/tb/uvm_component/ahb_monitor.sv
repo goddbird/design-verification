@@ -23,8 +23,19 @@ task ahb_monitor::run_phase(uvm_phase phase);
 	ahb_txn		tr;
 	forever begin
 		@(posedge vif.HCLK);
-		if (1) begin
+		if (vif.HTRANS == 2'b10 && vif.HTRANS) begin
 			tr = ahb_txn::type_id::create("tr");
+			tr.addr			<= vif.HADDR;
+			tr.write		<= vif.HWRITE;
+			tr.size			<= vif.HSIZE;
+			tr.hburst		<= vif.HBURST;
+
+			// wait next cycle 
+			@(posedge vif.HCLK);
+			while(!vif.HREADY)
+			@(posedge vif.HCLK);
+
+			tr.data.push_back(vif.HWDATA);
 			ap.write(tr);
 			`uvm_info(get_type_name(), $sformatf("[Monitor] tr.write"), UVM_NONE)
 		end
