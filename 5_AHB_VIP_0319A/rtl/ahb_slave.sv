@@ -1,4 +1,4 @@
-module ahb_write_slave #(
+module ahb_slave #(
 	parameter ADDR_WIDTH = 32,
 	parameter DATA_WIDTH = 32
 )(
