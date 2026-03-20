@@ -8,11 +8,18 @@
 |---|---|---|
 |HCLK|Clock Source|Bus Clock(posedge edge trigger)|
 |HRESETn|Reset Controller|Bus reset(active low)|
-|HADDR|Master|32 bit address bus|
-|HTRANS|Master|transmission type: NONSEQ, SEQ, IDLE, BUSY|
+|HADDR[31:0]|Master|32 bit address bus|
+|HTRANS[1:0]|Master|transmission type 00:IDLE, 01:BUSY, 10:NONSEQ , 11:SEQ |
 |HWRITE|Master|indicate direction of tranmission|
-|HSIZE|Master|inicate width of every transmission|
-|HBURST|Master||
+|HSIZE[2:0]|Master|indicate width of every transmission|
+|HBURST[2:0]|Master|AHB has 8 type of burst, indicate different length of burst|
+|HPROT[3:0]|Master|indicate which is data / instruction|
+|HWDATA[31:0]|Master|write data|
+|HRDATA[31:0]|Slave|read data|
+|HREADY|Slave|1 : slave is ready for next cmd|
+|HRESP[1:0]|Slave|response from slave, which indicate the status of bus execution|
+|HSELx|Decoder|choose slave|
+
 
 ---
 # My AHB VIP Architecture
