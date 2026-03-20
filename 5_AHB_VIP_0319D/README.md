@@ -1,40 +1,40 @@
-# AXI Introduce
+# AHB Introduce
 <img width="801" height="554" alt="image" src="https://github.com/user-attachments/assets/11a22ad9-3f7e-4386-8950-f2aa92292e7f" />
 
 ---
 
-# My AXI VIP Architecture
+# My AHB VIP Architecture
 <img width="853" height="583" alt="image" src="https://github.com/user-attachments/assets/0ed45c55-7a7c-4cec-ac0e-694ec7d14ca3" />
 
 ---
 
-# My AXI VIP Topology
+# My AHB VIP Topology
 ```
-axi_vip/
-├── axi_if.sv                ←【介面】實體訊號、modport
+AHB_vip/
+├── AHB_if.sv                ←【介面】實體訊號、modport
 │
-├── axi_pkg.sv               ←【總入口】import 所有 class
+├── AHB_pkg.sv               ←【總入口】import 所有 class
 │
 ├── transaction/
-│   └── axi_txn.sv     ←【交易】抽象的一次 write 行為
+│   └── AHB_txn.sv     ←【交易】抽象的一次 write 行為
 │
 ├── sequence/
-│   └── axi_write_seq.sv     ←【刺激】產生一堆 write txn
+│   └── AHB_write_seq.sv     ←【刺激】產生一堆 write txn
 │
 ├── agent/
-│   ├── axi_driver.sv        ←【執行者】把 txn 變成 pin-level AXI
-│   ├── axi_monitor.sv       ←【觀察者】從 pin-level 還原 txn
-│   ├── axi_sequencer.sv     ←【排程器】管理 sequence
-│   └── axi_agent.sv         ←【整合】driver + monitor
+│   ├── AHB_driver.sv        ←【執行者】把 txn 變成 pin-level AHB
+│   ├── AHB_monitor.sv       ←【觀察者】從 pin-level 還原 txn
+│   ├── AHB_sequencer.sv     ←【排程器】管理 sequence
+│   └── AHB_agent.sv         ←【整合】driver + monitor
 │
 ├── env/
-│   └── axi_env.sv           ←【環境】放一個或多個 agent
+│   └── AHB_env.sv           ←【環境】放一個或多個 agent
 │
 ├── test/
-│   └── axi_write_test.sv    ←【測試】選 sequence 跑 
+│   └── AHB_write_test.sv    ←【測試】選 sequence 跑 
 │
 ├── sva/
-│   └── axi_assertions.sv    ←【SVA】確認WLAST訊號如預期變化
+│   └── AHB_assertions.sv    ←【SVA】確認WLAST訊號如預期變化
 │
 └── top/
     └── tb_top.sv            ←【最上層】DUT + VIP + vif config_db + clock/reset
@@ -42,12 +42,13 @@ axi_vip/
 
 ---
 
-# My AXI VIP Waveform
-<img width="1828" height="521" alt="image" src="https://github.com/user-attachments/assets/9c62d751-7c0b-4dc1-8ab2-1f4de420d8b7" />
+# My AHB VIP Waveform
+<img width="1833" height="772" alt="image" src="https://github.com/user-attachments/assets/5fbc0dc1-2e37-410b-881e-8ca9b372b08a" />
+
 
 ---
 
-# My AXI VIP xrun.log
+# My AHB VIP xrun.log
 <img width="1312" height="712" alt="image" src="https://github.com/user-attachments/assets/0173dd1a-1868-46eb-8865-ccf7dfed1049" />
 
 ---
