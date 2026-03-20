@@ -1,8 +1,20 @@
 # AHB Introduce
-<img width="801" height="554" alt="image" src="https://github.com/user-attachments/assets/11a22ad9-3f7e-4386-8950-f2aa92292e7f" />
+<img width="770" height="707" alt="image" src="https://github.com/user-attachments/assets/42b0e25c-b3f7-43ce-b8dd-770508140e5e" />
+
 
 ---
+# AHB Spec
+|Name|Source|Description|
+|---|---|---|
+|HCLK|Clock Source|Bus Clock(posedge edge trigger)|
+|HRESETn|Reset Controller|Bus reset(active low)|
+|HADDR|Master|32 bit address bus|
+|HTRANS|Master|transmission type: NONSEQ, SEQ, IDLE, BUSY|
+|HWRITE|Master||
+|HSIZE|||
+|HBURST|||
 
+---
 # My AHB VIP Architecture
 <img width="853" height="583" alt="image" src="https://github.com/user-attachments/assets/0ed45c55-7a7c-4cec-ac0e-694ec7d14ca3" />
 
@@ -53,7 +65,7 @@ AHB_vip/
 
 ---
 # Coverage
-![coverage](./Coverage.png)
+
 | Feature           | Description         | Coverage Method |
 | ----------------- | ------------------- | --------------- |
 | Burst Type        | FIXED / INCR / WRAP | coverpoint      |
