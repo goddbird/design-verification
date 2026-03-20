@@ -10,9 +10,9 @@
 |HRESETn|Reset Controller|Bus reset(active low)|
 |HADDR|Master|32 bit address bus|
 |HTRANS|Master|transmission type: NONSEQ, SEQ, IDLE, BUSY|
-|HWRITE|Master||
-|HSIZE|||
-|HBURST|||
+|HWRITE|Master|indicate direction of tranmission|
+|HSIZE|Master|inicate width of every transmission|
+|HBURST|Master||
 
 ---
 # My AHB VIP Architecture
