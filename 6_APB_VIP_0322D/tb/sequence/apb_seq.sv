@@ -1,7 +1,7 @@
-class apb_seq extends uvm_sequence;
+class apb_seq extends uvm_sequence #(apb_txn);
 	`uvm_object_utils(apb_seq)
 
-	function void new(string name = "apb_seq");
+	function new(string name = "apb_seq");
 		super.new(name);
 	endfunction
 
@@ -13,7 +13,7 @@ task apb_seq::body();
 	repeat(10)  begin
 		tr = apb_txn::type_id::create("tr");
 		start_item(tr);
-		assert(randomize(tr));
+		assert(tr.randomize());
 		`uvm_info(get_type_name(), tr.sprint(), UVM_NONE)
 		finish_item(tr);
 	end

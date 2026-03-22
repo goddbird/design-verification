@@ -4,7 +4,7 @@ class apb_env extends uvm_env;
 	apb_agent		agent_a;
 	apb_scoreboard	scoreboard_a;
 
-	function new(string name = "apb_env", uvm_component parent)
+	function new(string name = "apb_env", uvm_component parent);
 		super.new(name, parent);
 	endfunction
 
@@ -13,9 +13,12 @@ class apb_env extends uvm_env;
 endclass
 
 function void apb_env::build_phase(uvm_phase phase);
+	super.build_phase(phase);
 	agent_a = apb_agent::type_id::create("agent_a", this);
+	scoreboard_a = apb_scoreboard::type_id::create("scoreboard_a", this);
 endfunction
 
 function void apb_env::connect_phase(uvm_phase phase);
-	agent_a.apb_monitor.ap.connect(scoreboard_a.sb_port);
+	super.connect_phase(phase);
+	agent_a.monitor_a.ap.connect(scoreboard_a.sb_port);
 endfunction

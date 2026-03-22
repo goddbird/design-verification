@@ -1,14 +1,16 @@
 class apb_monitor extends uvm_monitor;
 	`uvm_component_utils(apb_monitor)
 	uvm_analysis_port#(apb_txn)		ap;
+	virtual interface apb_if		vif;
+
 
 	function new(string name = "apb_monitor", uvm_component parent);
         super.new(name, this);
-		ap = new("ap");
+		ap = new("ap", this);
     endfunction
 
 	extern function void build_phase(uvm_phase phase);
-	extern task run_phase();
+	extern task run_phase(uvm_phase phase);
 endclass
 
 function void apb_monitor::build_phase(uvm_phase phase);
@@ -17,14 +19,14 @@ function void apb_monitor::build_phase(uvm_phase phase);
 		`uvm_fatal("NOVIF", "apb_monitor : virtual interface not set")
 endfunction
 
-task apb_monitor::run_phase();
+task apb_monitor::run_phase(uvm_phase phase);
 	apb_txn			tr;
 	forever begin
 		@(posedge vif.PCLK)
 		if(vif.PENABLE && vif.PWRITE) begin
 			tr = apb_txn::type_id::create("tr");
 			tr.addr <= vif.PADDR;
-			tr.data <= vif.PDATA;
+			tr.data <= vif.PWDATA;
 
 			//scoreboard
 			ap.write(tr);			

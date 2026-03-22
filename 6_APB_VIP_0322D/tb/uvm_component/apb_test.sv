@@ -7,7 +7,7 @@ class apb_test extends uvm_test;
 	endfunction
 
 	extern function void build_phase(uvm_phase phase);
-	extern task run_phase();
+	extern task run_phase(uvm_phase phase);
 endclass
 
 function void apb_test::build_phase(uvm_phase phase);
@@ -15,10 +15,10 @@ function void apb_test::build_phase(uvm_phase phase);
 	env_a = apb_env::type_id::create("env_a", this);
 endfunction
 
-task apb_test::run_phase();
+task apb_test::run_phase(uvm_phase phase);
 	apb_seq		seq;
-	this.raise_objection()
+	phase.raise_objection(this);
 	seq = apb_seq::type_id::create("seq", this);
-	seq.start_item(env_a.agent_a.seqr_a);
-	this.drop_objection()
+	seq.start(env_a.agent_a.seqr_a);
+	phase.drop_objection(this);
 endtask

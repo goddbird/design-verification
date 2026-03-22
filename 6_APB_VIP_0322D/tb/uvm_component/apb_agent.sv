@@ -21,6 +21,6 @@ function void apb_agent::build_phase(uvm_phase phase);
 endfunction
 
 function void apb_agent::connect_phase(uvm_phase phase);
-	super.build_phase(phase);
+	super.connect_phase(phase);
 	driver_a.seq_item_port.connect(seqr_a.seq_item_export);
 endfunction

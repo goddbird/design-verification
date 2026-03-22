@@ -13,7 +13,7 @@ module apb_slave#(
 
 	output logic		PRDATA,
 	output logic		PREADY,
-	output logic		PSLVERR,
+	output logic		PSLVERR
 );
 	logic [DATA_WIDTH-1:0]	mem [0:3]; //FIFO [0:3]
 
