@@ -8,7 +8,7 @@ class apb_txn  extends uvm_sequence_item;
 		`uvm_field_int(data, UVM_DEFAULT)
 	`uvm_object_utils_end
 
-	function void new(string name = "apb_txn");
+	function new(string name = "apb_txn");
 		super.new(name);
 	endfunction
 endclass
