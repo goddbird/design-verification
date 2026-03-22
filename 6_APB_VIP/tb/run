@@ -1,1 +1,2 @@
-xrun -timescale 1ns/1ps -uvm -coverage all  +access+rwc -f ./ahb_filelist.f
+xrun -timescale 1ns/1ps -uvm   +access+rwc -f ./ahb_filelist.f
+//-coverage all

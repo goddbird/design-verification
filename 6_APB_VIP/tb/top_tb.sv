@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 import uvm_pkg::*;
-import ahb_pkg::*;
+import apb_pkg::*;
 `include "uvm_macros.svh"
 
 module top_tb;
@@ -8,53 +8,52 @@ module top_tb;
 	// Clock / Reset
 	// -----------------------------------------------	
 	
-	logic HCLK;
-	logic HRESETn;
+	logic PCLK;
+	logic PRESETn;
 	
 	// 100MHz
 	initial begin
-		HCLK = 0;
-		forever #5 HCLK = ~HCLK; // 100MHz
+		PCLK = 0;
+		forever #5 PCLK = ~PCLK; // 100MHz
 	end
 	
 	// Resetn
 	initial begin
-		HRESETn = 0;
-		repeat (5) @(posedge HCLK);
-		HRESETn = 1;
+		PRESETn = 0;
+		repeat (5) @(posedge PCLK);
+		PRESETn = 1;
 	end
 	
 	// Interface
-	ahb_if  ahb_s(
-		.HCLK		(HCLK),
-		.HRESETn	(HRESETn)
+	apb_if  apb_s(
+		.PCLK		(PCLK),
+		.PRESETn	(PRESETn)
 	);
 	
 	// DUT
-	ahb_slave dut(
-		.HCLK		(ahb_s.HCLK),
-		.HRESETn	(ahb_s.HRESETn),
-		.HADDR		(ahb_s.HADDR),
-		.HTRANS		(ahb_s.HTRANS),
-		.HWRITE		(ahb_s.HWRITE),
-		.HSIZE		(ahb_s.HSIZE),
-		.HBURST		(ahb_s.HBURST),
-		.HPROT		(ahb_s.HPROT),
-		.HWDATA		(ahb_s.HWDATA),
-		.HRDATA		(ahb_s.HRDATA),
-		.HREADY		(ahb_s.HREADY),
-		.HRESP		(ahb_s.HRESP)
+	apb_slave  dut(
+		.PCLK		(apb_s.PCLK),
+		.PRESETn	(apb_s.PRESETn),
+		.PADDR		(apb_s.PADDR),
+		.PENABLE	(apb_s.PENABLE),
+		.PWRITE		(apb_s.PWRITE),
+		.PWDATA		(apb_s.PWDATA),
+		.PPROT		(apb_s.PPROT),
+		.PSTRB		(apb_s.PSTRB),
+		.PRDATA		(apb_s.PRDATA),
+		.PREADY		(apb_s.PREADY),
+		.PSLVERR	(apb_s.PSLVERR)
 	);
 	
 	// Assertions
-	//ahb_assertions ahb_assert_inst(.vif(ahb_s));
+	//apb_assertions apb_assert_inst(.vif(apb_s));
 	
 	// Dump waveform
 	initial begin
-		$fsdbDumpfile("ahb.fsdb");
+		$fsdbDumpfile("apb.fsdb");
 		$fsdbDumpvars(0, top_tb);	
 
-		uvm_config_db#(virtual interface ahb_if)::set(null, "*", "vif", ahb_s);
-		run_test("ahb_test");
+		uvm_config_db#(virtual interface apb_if)::set(null, "*", "vif", apb_s);
+		run_test("apb_test");
 	end
 endmodule
