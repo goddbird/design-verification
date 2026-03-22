@@ -1,13 +1,13 @@
-package ahb_pkg;
+package apb_pkg;
 	import uvm_pkg::*;
 	`include "uvm_macros.svh"
-	`include "./sequence/ahb_txn.sv"
-	`include "./uvm_component/ahb_driver.sv"
-	`include "./uvm_component/ahb_monitor.sv"
-	`include "./uvm_component/ahb_seqr.sv"
-	`include "./uvm_component/ahb_agent.sv"
-	`include "./uvm_component/ahb_scoreboard.sv"	
-	`include "./uvm_component/ahb_env.sv"
-	`include "./sequence/ahb_seq.sv"
-	`include "./uvm_component/ahb_test.sv"
+	`include "./sequence/apb_txn.sv"
+	`include "./uvm_component/apb_driver.sv"
+	`include "./uvm_component/apb_monitor.sv"
+	`include "./uvm_component/apb_seqr.sv"
+	`include "./uvm_component/apb_agent.sv"
+	`include "./uvm_component/apb_scoreboard.sv"	
+	`include "./uvm_component/apb_env.sv"
+	`include "./sequence/apb_seq.sv"
+	`include "./uvm_component/apb_test.sv"
 endpackage
