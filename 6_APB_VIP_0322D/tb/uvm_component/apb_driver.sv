@@ -14,7 +14,7 @@ endclass
 
 function void apb_driver::build_phase(uvm_phase phase);
 	super.build_phase(phase);
-	if(!uvm_config_db#(apb_txn)::get(this, "", "vif", vif))
+	if(!uvm_config_db#(virtual interface apb_if)::get(this, "", "vif", vif))
 		`uvm_fatal("NOVIF", "apb_driver : virtual interface not set")
 endfunction
 

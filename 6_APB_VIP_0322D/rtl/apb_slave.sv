@@ -2,18 +2,18 @@ module apb_slave#(
 	parameter ADDR_WIDTH = 32,
 	parameter DATA_WIDTH = 32
 )(
-	input logic 		PCLK,
-	input logic 		PRESETn,
-	input logic			PADDR,
-	input logic			PENABLE,
-	input logic			PWRITE,
-	input logic			PWDATA,
-	input logic			PPROT,
-	input logic			PSTRB,
+	input logic 						PCLK,
+	input logic 						PRESETn,
+	input logic	[ADDR_WIDTH-1 : 0]		PADDR,
+	input logic							PENABLE,
+	input logic							PWRITE,
+	input logic	[DATA_WIDTH-1 : 0]		PWDATA,
+	input logic	[2:0]					PPROT,
+	input logic							PSTRB,
 
-	output logic		PRDATA,
-	output logic		PREADY,
-	output logic		PSLVERR
+	output logic [DATA_WIDTH-1 : 0]		PRDATA,
+	output logic						PREADY,
+	output logic						PSLVERR
 );
 	logic [DATA_WIDTH-1:0]	mem [0:3]; //FIFO [0:3]
 
