@@ -38,9 +38,13 @@ task apb_driver::drive_write(apb_txn  tr);
 	@(posedge vif.PCLK);
 	// APB setup phase
 	vif.PENABLE <= 0;
-	vif.PWRITE	<= 1;
+	vif.PWRITE	<= tr.is_write;
 	vif.PADDR	<= tr.addr;
-	vif.PWDATA	<= tr.data;
+
+	if (tr.is_write)
+		vif.PWDATA	<= tr.data;
+	else
+		vif.PWDATA	<= 0;
 
 	// APB access phase
 	@(posedge vif.PCLK);
@@ -49,6 +53,8 @@ task apb_driver::drive_write(apb_txn  tr);
 	// wait for slave
 	@(posedge vif.PCLK)
 	wait(vif.PREADY === 1);
+	if(!tr.is_write) tr.data = vif.PRDATA;
+
 
 	// back to  idle
 	vif.PENABLE <= 0;

@@ -9,5 +9,6 @@ package apb_pkg;
 	`include "./uvm_component/apb_scoreboard.sv"	
 	`include "./uvm_component/apb_env.sv"
 	`include "./sequence/apb_seq.sv"
+	`include "./sequence/apb_read_seq.sv"	
 	`include "./uvm_component/apb_test.sv"
 endpackage

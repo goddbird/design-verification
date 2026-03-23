@@ -1,7 +1,7 @@
 class apb_txn  extends uvm_sequence_item;
 	rand bit [31:0]		addr;
 	rand bit [31:0]		data;
-
+	rand bit 			is_write;
 
 	`uvm_object_utils_begin(apb_txn)
 		`uvm_field_int(addr, UVM_DEFAULT)
