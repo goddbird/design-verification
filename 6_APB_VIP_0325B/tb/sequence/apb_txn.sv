@@ -9,6 +9,8 @@ class apb_txn  extends uvm_sequence_item;
 		`uvm_field_int(is_write, UVM_DEFAULT)
 	`uvm_object_utils_end
 
+	constraint addr_c {addr >= 0; addr <= 32'h40;}
+
 	function new(string name = "apb_txn");
 		super.new(name);
 	endfunction

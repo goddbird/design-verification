@@ -10,11 +10,11 @@ endclass
 
 task apb_seq::body();
 	apb_txn		tr;
-	repeat(10)  begin
+	repeat(30)  begin
 		tr = apb_txn::type_id::create("tr");
 		start_item(tr);
 		assert(tr.randomize());
-		tr.is_write = 0;
+		tr.is_write = 1;
 		
 		`uvm_info(get_type_name(), $sformatf("WRITE DATA %s", tr.sprint()), UVM_NONE)
 		finish_item(tr);

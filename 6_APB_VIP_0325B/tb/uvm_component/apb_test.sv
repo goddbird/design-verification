@@ -24,8 +24,9 @@ task apb_test::run_phase(uvm_phase phase);
 	seq 	= apb_seq::type_id::create("seq", this);
 	seq_r 	= apb_read_seq::type_id::create("seq_r", this);
 
-	seq.start(env_a.agent_a.seqr_a);
-	seq_r.start(env_a.agent_a.seqr_a);
-
+	fork 
+		seq.start(env_a.agent_a.seqr_a);
+		seq_r.start(env_a.agent_a.seqr_a);
+	join
 	phase.drop_objection(this);
 endtask
