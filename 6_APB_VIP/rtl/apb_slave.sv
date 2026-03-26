@@ -15,25 +15,25 @@ module apb_slave#(
 	output logic						PREADY,
 	output logic						PSLVERR
 );
-	logic [DATA_WIDTH-1:0]	mem [0:3]; //FIFO [0:3]
+	logic [DATA_WIDTH-1:0]	mem [0:63]; //FIFO [0:3]
 
 	assign PREADY 	= 1'b1;
 	assign PSLVERR	= 1'b0;
 
 	always_ff @(posedge PCLK or negedge PRESETn) begin
-		if(PRESETn) begin
+		if(!PRESETn) begin
 			for (int i = 0; i < 4; i++) mem[i] <= '0;
 		end
 		else begin
 			if(PENABLE && PWRITE) begin
-				mem[PADDR]		<= PWDATA;
+				mem[PADDR[31:2]]		<= PWDATA;
 			end
 		end
 	end
 
 	always_comb begin
 		if(!PWRITE) begin
-			PRDATA		= mem[PADDR];
+			PRDATA		= mem[PADDR[31:2]];
 		end
 		else begin
 			PRDATA = '0;

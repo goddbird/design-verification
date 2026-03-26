@@ -59,6 +59,6 @@ task apb_driver::drive_write(apb_txn  tr);
 	// back to  idle
 	vif.PENABLE <= 0;
 
-	`uvm_info(get_type_name(), tr.sprint, UVM_NONE)
+	//`uvm_info(get_type_name(), tr.sprint, UVM_NONE)
 endtask
 

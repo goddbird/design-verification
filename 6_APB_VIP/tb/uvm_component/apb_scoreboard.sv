@@ -19,10 +19,10 @@ task apb_scoreboard::write(apb_txn  tr);
 	else begin
 		if(mem.exists(tr.addr)) begin
 			if (mem[tr.addr] == tr.data) begin
-				`uvm_info(get_type_name(), $sformatf("PASS: Addr=0x%0h, Data=0x%0h", tr.addr, tr.data))
+				`uvm_info(get_type_name(), $sformatf("PASS: Addr=0x%0h, Data=0x%0h", tr.addr, tr.data), UVM_NONE)
 			end
 			else begin
-				`uvm_fatal(get_type_name(), $sformatf("FAIL: Addr=0x%0h, Expected Data=0x%0h, dut read", tr.addr, mem[tr.addr], tr.data), UVM_NONE)
+				`uvm_fatal(get_type_name(), $sformatf("FAIL: Addr=0x%0h, Expected Data=0x%0h, dut read", tr.addr, mem[tr.addr], tr.data))
 			end
 		end
 		else begin

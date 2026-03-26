@@ -25,8 +25,16 @@ task apb_monitor::run_phase(uvm_phase phase);
 		@(posedge vif.PCLK)
 		if(vif.PENABLE && vif.PWRITE) begin
 			tr = apb_txn::type_id::create("tr");
-			tr.addr <= vif.PADDR;
-			tr.data <= vif.PWDATA;
+			tr.addr = vif.PADDR;			
+			tr.data = vif.PWDATA;
+
+			//scoreboard
+			ap.write(tr);			
+		end
+		else if(vif.PENABLE && !vif.PWRITE) begin
+			tr = apb_txn::type_id::create("tr");
+			tr.addr = vif.PADDR;			
+			tr.data = vif.PRDATA;
 
 			//scoreboard
 			ap.write(tr);			

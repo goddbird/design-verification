@@ -21,7 +21,7 @@ task apb_test::run_phase(uvm_phase phase);
 
 
 	phase.raise_objection(this);
-	vs.p_apb_seqr = env_a.agent_a.seqr_a;
+	vseq.p_apb_seqr = env_a.agent_a.seqr_a;
 	vseq.start(null);
 	phase.drop_objection(this);
 endtask
