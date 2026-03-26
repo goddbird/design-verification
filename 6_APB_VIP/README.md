@@ -21,7 +21,7 @@
 
 ---
 # My APB VIP Architecture
-<img width="853" height="583" alt="image" src="https://github.com/user-attachments/assets/0ed45c55-7a7c-4cec-ac0e-694ec7d14ca3" />
+
 
 ---
 
@@ -73,14 +73,8 @@ APB_vip/
 
 
 ---
-# Coverage
 
-| Feature           | Description         | Coverage Method |
-| ----------------- | ------------------- | --------------- |
-| Burst Type        | FIXED / INCR / WRAP | coverpoint      |
-| Burst Length      | 1~16 beats          | coverpoint      |
-| Transfer Size     | 1B / 2B / 4B / 8B   | coverpoint      |
-| Address Alignment | aligned / unaligned | coverpoint      |
+
 
 
 
