@@ -1,24 +1,22 @@
 # APB Introduce
-<img width="770" height="707" alt="image" src="https://github.com/user-attachments/assets/42b0e25c-b3f7-43ce-b8dd-770508140e5e" />
+<img width="722" height="501" alt="image" src="https://github.com/user-attachments/assets/be413808-ce4e-4e76-b67f-16556a6e8cec" />
+
 
 
 ---
 # APB Spec
 |Name|Source|Description|
 |---|---|---|
-|HCLK|Clock Source|Bus Clock(posedge edge trigger)|
-|HRESETn|Reset Controller|Bus reset(active low)|
-|HADDR[31:0]|Master|32 bit address bus|
-|HTRANS[1:0]|Master|transmission type 00:IDLE, 01:BUSY, 10:NONSEQ , 11:SEQ |
-|HWRITE|Master|indicate direction of tranmission|
-|HSIZE[2:0]|Master|indicate width of every transmission|
-|HBURST[2:0]|Master|APB has 8 type of burst, indicate different length of burst|
-|HPROT[3:0]|Master|indicate which is data / instruction|
-|HWDATA[31:0]|Master|write data|
-|HRDATA[31:0]|Slave|read data|
-|HREADY|Slave|1 : slave is ready for next cmd|
-|HRESP[1:0]|Slave|response from slave, which indicate the status of bus execution|
-|HSELx|Decoder|choose slave|
+|PCLK|Clock Source|Bus Clock(posedge edge trigger)|
+|PRESETn|Reset Controller|Bus reset(active low)|
+|PADDR[31:0]|Master|32 bit address bus|
+|PENABLE|Master|1 : indicate master can transfer data to slave|
+|PWRITE|Master|indicate direction of tranmission|
+|PWDATA[31:0]|Master|write data|
+|PPROT[2:0]|Master|indicate which is data / instruction|
+|PRDATA[31:0]|Slave|read data|
+|PREADY|Slave|1 : slave is ready for next cmd|
+|PSLVERR|Slave|show response result|
 
 
 ---
@@ -38,7 +36,9 @@ APB_vip/
 │   └── APB_txn.sv     ←【交易】抽象的一次 write 行為
 │
 ├── sequence/
-│   └── APB_write_seq.sv     ←【刺激】產生一堆 write txn
+│   ├── APB_virtual_seq        ← 裝seq的容器，並同步addr
+│       └── APB_seq.sv         ←【刺激】產生write txn
+│       └── APB_read_seq.sv    ←【刺激】產生read txn
 │
 ├── agent/
 │   ├── APB_driver.sv        ←【執行者】把 txn 變成 pin-level APB
