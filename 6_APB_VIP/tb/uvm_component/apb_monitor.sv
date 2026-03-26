@@ -27,7 +27,7 @@ task apb_monitor::run_phase(uvm_phase phase);
 			tr = apb_txn::type_id::create("tr");
 			tr.addr = vif.PADDR;			
 			tr.data = vif.PWDATA;
-
+			tr.is_write = 1;
 			//scoreboard
 			ap.write(tr);			
 		end
@@ -35,7 +35,7 @@ task apb_monitor::run_phase(uvm_phase phase);
 			tr = apb_txn::type_id::create("tr");
 			tr.addr = vif.PADDR;			
 			tr.data = vif.PRDATA;
-
+			tr.is_write = 0;
 			//scoreboard
 			ap.write(tr);			
 		end
