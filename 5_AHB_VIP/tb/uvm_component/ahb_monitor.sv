@@ -50,24 +50,32 @@ endfunction
 
 task ahb_monitor::run_phase(uvm_phase phase);
 	ahb_txn		tr;
+	wait(vif.HRESETn == 1);
+
 	forever begin
 		@(posedge vif.HCLK);
-		if (vif.HTRANS == 2'b10 && vif.HTRANS) begin
+		if (vif.HTRANS == 2'b10 || vif.HTRANS == 2'b11) begin
 			tr = ahb_txn::type_id::create("tr");
-			tr.addr			<= vif.HADDR;
-			tr.write		<= vif.HWRITE;
-			tr.size			<= vif.HSIZE;
-			tr.hburst		<= vif.HBURST;
+			tr.addr			= vif.HADDR;
+			tr.write		= vif.HWRITE;
+			tr.size			= vif.HSIZE;
+			tr.hburst		= vif.HBURST;
+			tr.data			= {};
 
 			// wait next cycle 
 			@(posedge vif.HCLK);
 			while(!vif.HREADY)
 			@(posedge vif.HCLK);
 
-			tr.data.push_back(vif.HWDATA);
+			if (vif.HWRITE) begin
+				tr.data.push_back(vif.HWDATA);
+			end
+			else begin
+				tr.data.push_back(vif.HRDATA);
+			end
 			ahb_cov.sample(tr, vif.HTRANS);
 			ap.write(tr);
-
+			
 			`uvm_info(get_type_name(), $sformatf("[Monitor] tr.write"), UVM_NONE)
 		end
 	end

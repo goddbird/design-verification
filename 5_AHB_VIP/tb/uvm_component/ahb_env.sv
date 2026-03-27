@@ -2,7 +2,7 @@ class ahb_env extends uvm_env;
     `uvm_component_utils(ahb_env)
     
     ahb_agent		agent_a;
-	//ahb_scoreboard
+	ahb_scoreboard	scoreboard_a;
 	
 	function new(string name, uvm_component parent);
 		super.new(name, parent);
@@ -15,9 +15,11 @@ endclass
 function void ahb_env::build_phase(uvm_phase phase);
 	super.build_phase(phase);
 	agent_a	 = ahb_agent::type_id::create("agent_a", this);
+	scoreboard_a = ahb_scoreboard::type_id::create("scoreboard_a", this);
 endfunction
 
 function void ahb_env::connect_phase(uvm_phase phase);
 	//scoreboard
-	//ahb_agent.monitor_a.ap.connect();
+	super.connect_phase(phase);
+	agent_a.monitor_a.ap.connect(scoreboard_a.sb_port);
 endfunction

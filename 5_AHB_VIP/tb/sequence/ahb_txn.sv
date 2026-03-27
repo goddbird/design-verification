@@ -23,6 +23,9 @@ class ahb_txn extends uvm_sequence_item;
 	constraint addr_align_c {
 		if(size == 3'b001) addr % 2 == 0;
 		if(size == 3'b010) addr % 4 == 0;
+		if(size == 3'b011) addr % 8 == 0;
+		if(size == 3'b100) addr % 16 == 0;
+
 	}
 
 	constraint data_len_c {
