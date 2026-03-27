@@ -225,4 +225,140 @@ Study note
 8.	如何驗證一個FIFO
 
 
-9.
+9.	寫一個counter的verilog，input inverse，output 4 bit的counter
+	
+	module counter(
+		input clk,
+		input rstn,
+		input inverse,
+		output bit [3:0] result
+	);
+		logic [3:0] count;		
+		assign result = count;
+		
+		
+		always_ff @(posedge clk) begin
+			if(!rstn) begin
+				count <= 0;
+			end
+			else begin
+				if(inverse==1'b0) begin
+					count <= count + 1;
+				end
+				else begin
+					count <= count - 1;
+				end
+			end
+		end
+		
+
+	endmodule
+	
+
+10.	寫出驗證上題的seq / seqr / monitor / driver
+	//---IF---//
+	interface counter_if(input logic clk);
+		logic rstn;
+		logic inverse;
+		logic [3:0] result;
+	endinterface
+	
+	
+	//---TXN---//
+	class counter_transaction extends uvm_sequence_item;
+		`uvm_object_utils(counter_transaction)
+
+		rand logic         inverse;
+		logic [3:0]        result; // 這是從 DUT 讀回來的，不需要 rand
+
+		function new(string name = "counter_transaction");
+			super.new(name);
+		endfunction
+	endclass
+	
+	
+	
+	//---Seqr---//
+	// Sequencer
+	typedef uvm_sequencer #(counter_transaction) counter_sequencer;
+
+	// Sequence: 隨機測試 20 次計數
+	class counter_base_sequence extends uvm_sequence #(counter_transaction);
+		`uvm_object_utils(counter_base_sequence)
+
+		task body();
+			repeat(20) begin
+				req = counter_transaction::type_id::create("req");
+				start_item(req);
+				if (!req.randomize()) `uvm_error("SEQ", "Randomization failed")
+				finish_item(req);
+			end
+		endtask
+	endclass
+	
+	
+	//---Driver---//
+	class counter_driver extends uvm_driver #(counter_transaction);
+		`uvm_component_utils(counter_driver)
+		
+		virtual counter_if vif;
+
+		function new(string name, uvm_component parent);
+			super.new(name, parent);
+		endfunction
+
+		// 從 config_db 取得虛擬介面
+		virtual function void build_phase(uvm_phase phase);
+			super.build_phase(phase);
+			if (!uvm_config_db#(virtual counter_if)::get(this, "", "vif", vif))
+				`uvm_fatal("DRV", "Could not get vif")
+		endfunction
+
+		virtual task run_phase(uvm_phase phase);
+			// 初始化信號
+			vif.inverse <= 0;
+			vif.rstn    <= 0;
+			#20 vif.rstn <= 1; // 釋放重置
+
+			forever begin
+				seq_item_port.get_next_item(req);
+				@(posedge vif.clk);
+				vif.inverse <= req.inverse; // 將驅動信號上到 Pin
+				seq_item_port.item_done();
+			end
+		endtask
+	endclass
+	
+	
+	//---Monitor---//
+	class counter_monitor extends uvm_monitor;
+		`uvm_component_utils(counter_monitor)
+
+		virtual counter_if vif;
+		uvm_analysis_port #(counter_transaction) ap;
+
+		function new(string name, uvm_component parent);
+			super.new(name, parent);
+			ap = new("ap", this);
+		endfunction
+
+		virtual function void build_phase(uvm_phase phase);
+			super.build_phase(phase);
+			if (!uvm_config_db#(virtual counter_if)::get(this, "", "vif", vif))
+				`uvm_fatal("MON", "Could not get vif")
+		endfunction
+
+		virtual task run_phase(uvm_phase phase);
+			counter_transaction tr;
+			forever begin
+				@(posedge vif.clk);
+				tr = counter_transaction::type_id::create("tr");
+				tr.inverse = vif.inverse;
+				tr.result  = vif.result; // 取回當前 DUT 的輸出值
+				ap.write(tr);            // 廣播給 Scoreboard
+			end
+		endtask
+	endclass
+	
+	
+	
