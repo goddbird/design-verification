@@ -93,5 +93,136 @@ Study note
 	
 	class parent extends base;
 		function void hi();
+			$display("Parent");
 		endfunction
 	endclass
+	
+	class child extend parent;
+		virtual function void hi();
+			$display("Child");
+		endfunction
+	endclass
+	
+	//test1.sv
+	`include "class1_lib.svh"
+	module test1();
+		base 		b;
+		parent 		p;
+		child 		c;
+		initial begin
+			p = new();
+			c = new();
+			b = p;
+			b.hi();
+			p = c;
+			p.hi();
+		end
+		
+		initial begin
+			#1;
+		end
+	endmodule
+	
+	
+	A : 這段程式碼會依序印出：
+	Parent
+	Child
+	
+	結論 : 有virtual看物件 => base如果有virtual，就看物件是誰。
+	沒virtual，看handle是誰。
+	
+6.	OOP相關問題 : 請問下面的code compile會display出什麼?
+	class animal;
+		static int 	cnt;
+		int 		id;
+		string 		name;
+		
+		function new(string name, int id);
+			this.name 	= name;
+			this.id		= id;
+			cnt++;
+			show();
+		endfunction
+		
+		function void show();
+			$display("[%d]/%d animal name = %s", id, cnt, name);
+		endfunction
+	endclass
+	
+	class cat extends animal;
+		int id;
+		
+		function new(string name, int id);
+			super.new(name, id);			
+		endfunction
+		function void show();
+			$display("[%d]/%d cat name = %s", id, cnt, name);
+		endfunction
+	endclass
+	
+	//test2.sv
+	`include "class2_lib.svh"
+	module test2();
+		animal 		ani;
+		cat			c1;
+		cat			c2;
+		
+		initial begin
+			c1.new("alice", 1);
+			c1.show();
+			
+			c1.id = 3;
+			c1.show();
+			
+			ani = c1;
+			c2 = c1;
+			ani.show();
+			c1.show();
+			c2.show();
+			
+			ani.name = "bob"
+			ani.id = 2;
+			ani.new("daddy", 9);
+			c2 = new c1;
+			c2.name = "cindy";
+			ani.show();
+			c1.show();
+			c2.show();			
+		end
+		
+		initial begin
+			#1;
+		end
+	endmodule
+	
+	最終 Display 結果彙整	
+	[1]/1 animal name = alice
+	[0]/1 cat name = alice
+	[3]/1 cat name = alice
+	[1]/1 animal name = alice
+	[3]/1 cat name = alice
+	[3]/1 cat name = alice
+	[9]/2 animal name = daddy
+	[9]/2 animal name = daddy
+	[3]/2 cat name = daddy
+	[3]/2 cat name = cindy
+	
+	在情境 B 中，你使用的語法是 c2 = new c1;。根據 SystemVerilog 的定義，new 加上另一個物件 Handle 就是淺拷貝。
+	雖然在你的例子中 c2.name 改了之後 c1.name 沒變，那是因為 name 是一個 String (字串)。字串在 SystemVerilog 的淺拷貝中會被當作獨立的值複製一份。
+	
+	這題只有c2 = new c1; 這邊真的有使用建構子
+	結論:我覺得只要知道 
+	1.	沒有virtual就使用handle的方法
+	2.	父類跟子類有同一個名字的參數A時，假如在子類呼叫super來改動參數A
+		只會改到父類的，子類不會改動。 e.g. 如上面的0/1 cat name = alice
+		
+
+7.	給write size, len，畫出所有aw, w, b和read出來的ar, r channel waveform
+	上網研究相關波型
+	https://zhuanlan.zhihu.com/p/641978200
+	https://www.cnblogs.com/gujiangtaoFuture/articles/10137170.html
+
+8.	如何驗證一個FIFO
+
+
+9.
