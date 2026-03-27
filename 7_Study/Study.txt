@@ -1,0 +1,97 @@
+Study note
+
+1.	AXI 為什麼write有3個channel，read只有兩個?
+
+	因為slave需要處理寫入的時間，可以先去處理其他事情，等到收到BRESP才算是完成這筆寫入。
+	read操作則是slave會回傳data給master，response是合併在read channel裡的，除了有RDATA還有RRESP，拿到資料的同時就知道這筆讀取是成功還是失敗。
+	
+2.	什麼情況不能out of order?	
+
+	a. 相同ID的txn : 必須跟發送req的順序一致，避免寫入的是舊資料。
+	b. 具有相依性的address : 避免讀到舊資料 / 或是寫到舊資料
+	c. exclusive access : 當使用AxLock進行atomic操作，這段期間的txn必須照順序執行。
+	
+3.	天平問題 : 有八個球，只有一顆重量不一樣，給你一個天平，請設計演算法找出那顆球。
+	
+	我的解 : 如果球變多，或者重量都一樣，會抓不到錯。而且這種code是把邊界狀況寫死
+	i = 0;
+	found 	= 0;
+	target 	= 0;
+	while (i<8)
+		if(found == 1)			
+			break;
+		else if (ball[0] == ball[i+1])  //keep finding
+			if(i == 6)
+				target = i+1;
+			i++;
+		else //found
+			if(ball[0] != ball[i+2])
+				target = 0;
+			else
+				target = i+1;
+			found = 1;
+			
+			
+	
+	GPT解 :
+	int standard = (ball[0] == ball[1]) ? ball[0] : ball[2];
+	for (int j = 0; j < 8; j++){
+		if(ball[j] != standard) {
+			target = j;
+		}
+	}
+	
+4.	寫印出小於某數的質數?
+	
+	邏輯 : 假設某數為N，弄一個迴圈次數為根號N，e.g. 數字為23，只要找數字從2到根號23，也就是2~4
+	然後把2~4的倍數全部刪掉，剩下沒被刪掉的數字，就是質數。
+	
+	GPT code:
+	#include <stdio.h>
+	#include <stdbool.h>
+	#include <string.h>
+
+	void findPrimes(int n) {
+		// 建立一個布林陣列，初始化為 true
+		bool is_prime[n + 1];
+		memset(is_prime, true, sizeof(is_prime));
+
+		is_prime[0] = is_prime[1] = false; // 0 和 1 不是質數
+
+		for (int p = 2; p * p <= n; p++) {
+			// 如果 is_prime[p] 沒有被劃掉，那它就是質數
+			if (is_prime[p] == true) {
+				// 劃掉所有 p 的倍數 (從 p*p 開始優化效率)
+				for (int i = p * p; i <= n; i += p)
+					is_prime[i] = false;
+			}
+		}
+
+		// 印出結果
+		printf("小於等於 %d 的質數有:\n", n);
+		for (int p = 2; p <= n; p++) {
+			if (is_prime[p]) {
+				printf("%d ", p);
+			}
+		}
+		printf("\n");
+	}
+
+	int main() {
+		int limit = 50;
+		findPrimes(limit);
+		return 0;
+	}
+	
+	
+5.	OOP相關問題 : 請問下面的code compile會display出什麼?
+	class base;
+		virtual function void hi();
+			$display("Base");
+		endfunction		
+	endclass
+	
+	class parent extends base;
+		function void hi();
+		endfunction
+	endclass
