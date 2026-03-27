@@ -43,40 +43,63 @@ class ahb_monitor extends uvm_monitor;
 endclass
 
 function void ahb_monitor::build_phase(uvm_phase phase);
-	super.build_phase(phase);	
+	super.build_phase(phase);
 	if(!uvm_config_db#(virtual interface ahb_if)::get(this, "", "vif", vif))
 		`uvm_fatal("NOVIF", "ahb_monitor : virtual interface not set")
 endfunction
 
+function automatic int unsigned ahb_burst_length(bit [2:0] hburst);
+    case (hburst)
+        3'b000: return 1;
+        3'b011: return 4;
+        3'b101: return 8;
+        3'b111: return 16;
+        default: return 1;
+    endcase
+endfunction
+
 task ahb_monitor::run_phase(uvm_phase phase);
 	ahb_txn		tr;
-	wait(vif.HRESETn == 1);
+	int unsigned stride;
+	int unsigned beat;
+	bit [31:0] addr;
+	
+	wait (vif.HRESETn === 1);
 
 	forever begin
 		@(posedge vif.HCLK);
-		if (vif.HTRANS == 2'b10 || vif.HTRANS == 2'b11) begin
+		if ((vif.HTRANS == 2'b10 || vif.HTRANS == 2'b11) && vif.HREADY) begin
 			tr = ahb_txn::type_id::create("tr");
-			tr.addr			= vif.HADDR;
-			tr.write		= vif.HWRITE;
-			tr.size			= vif.HSIZE;
-			tr.hburst		= vif.HBURST;
-			tr.data			= {};
+			tr.addr		= vif.HADDR;
+			tr.write	= vif.HWRITE;
+			tr.size		= vif.HSIZE;
+			tr.hburst	= vif.HBURST;
+			tr.hprot	= vif.HPROT;
+			tr.data		= {};
+			tr.burst_len = ahb_burst_length(vif.HBURST);
 
-			// wait next cycle 
-			@(posedge vif.HCLK);
-			while(!vif.HREADY)
-			@(posedge vif.HCLK);
+			stride = (1 << tr.size);
+			beat = 0;
+			addr = tr.addr;
 
-			if (vif.HWRITE) begin
-				tr.data.push_back(vif.HWDATA);
+			while (beat < tr.burst_len) begin
+				if (vif.HREADY && (vif.HTRANS == 2'b10 || vif.HTRANS == 2'b11)) begin
+					if (tr.write)
+						tr.data.push_back(vif.HWDATA);
+					else
+						tr.data.push_back(vif.HRDATA);
+
+					`uvm_info(get_type_name(), $sformatf("[Monitor] tr beat=%0d addr=0x%0h data=0x%0h", beat, addr, tr.data[beat]), UVM_LOW);
+
+					beat++;
+					addr += stride;
+				end
+				@(posedge vif.HCLK);
 			end
-			else begin
-				tr.data.push_back(vif.HRDATA);
-			end
+
 			ahb_cov.sample(tr, vif.HTRANS);
 			ap.write(tr);
-			
-			`uvm_info(get_type_name(), $sformatf("[Monitor] tr.write"), UVM_NONE)
+			`uvm_info(get_type_name(), $sformatf("[Monitor] txn done addr=0x%0h write=%0b size=%0d burst_len=%0d", tr.addr, tr.write, tr.size, tr.burst_len), UVM_LOW);
 		end
 	end
 endtask

@@ -37,6 +37,7 @@ task ahb_driver::drive_write(ahb_txn  tr);
 	`uvm_info(get_type_name(), tr.sprint(), UVM_NONE)
 	// first cycle 
 	
+	// first cycle - NONSEQ (only 1 clock cycle)
 	vif.HADDR 	<= tr.addr;
 	vif.HWRITE	<= 1;
 	vif.HSIZE	<= tr.size;
@@ -50,8 +51,6 @@ task ahb_driver::drive_write(ahb_txn  tr);
 		while (!vif.HREADY)
 			@(posedge vif.HCLK);
 
-		@(posedge vif.HCLK);
-
 		//data phase (previous address)
 		vif.HWDATA	<= tr.data[i];
 
@@ -60,11 +59,12 @@ task ahb_driver::drive_write(ahb_txn  tr);
 
 		//next HTRANS
 		if(i == 0)
-		vif.HTRANS	<= 2'b11; //SEQ
+			vif.HTRANS	<= 2'b11; //SEQ
+		
+		@(posedge vif.HCLK);
 	end
 
 	// end transfer
-	@(posedge vif.HCLK);
 	vif.HTRANS		<= 2'b00; // IDLE
 endtask
 
