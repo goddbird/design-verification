@@ -64,6 +64,9 @@ AHB_vip/
 # My AHB VIP Waveform
 <img width="1833" height="772" alt="image" src="https://github.com/user-attachments/assets/5fbc0dc1-2e37-410b-881e-8ca9b372b08a" />
 
+<img width="1892" height="307" alt="image" src="https://github.com/user-attachments/assets/b696f63c-6b04-4f2c-a11f-c8c1e9e8cfe2" />
+
+
 
 ---
 
