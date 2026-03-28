@@ -83,6 +83,7 @@ task ahb_monitor::run_phase(uvm_phase phase);
 			addr = tr.addr;
 
 			while (beat < tr.burst_len) begin
+				@(posedge vif.HCLK);
 				if (vif.HREADY && (vif.HTRANS == 2'b10 || vif.HTRANS == 2'b11)) begin
 					if (tr.write)
 						tr.data.push_back(vif.HWDATA);
@@ -94,7 +95,7 @@ task ahb_monitor::run_phase(uvm_phase phase);
 					beat++;
 					addr += stride;
 				end
-				@(posedge vif.HCLK);
+				
 			end
 
 			ahb_cov.sample(tr, vif.HTRANS);
