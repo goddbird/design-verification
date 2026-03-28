@@ -64,10 +64,10 @@ endtask
 task ahb_driver::drive_data_phase(ahb_txn tr);
 	// Data phase: 寫入 HWDATA
 	for(int i = 0; i < tr.burst_len; i++) begin
+		@(posedge vif.HCLK);
 		while (!vif.HREADY)
 			@(posedge vif.HCLK);
-		vif.HWDATA <= tr.data[i];
-		@(posedge vif.HCLK);
+		vif.HWDATA <= tr.data[i];		
 	end
 endtask
 
