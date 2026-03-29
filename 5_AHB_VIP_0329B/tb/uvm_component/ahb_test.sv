@@ -18,9 +18,9 @@ function void ahb_test::build_phase(uvm_phase phase);
 endfunction
 
 task ahb_test::run_phase(uvm_phase phase);
-	ahb_seq		seq;
+	ahb_virtual_seq vseq;
 	phase.raise_objection(this);
-	seq = ahb_seq::type_id::create("seq");
-	seq.start(env_a.agent_a.seqr_a);
+	vseq = ahb_virtual_seq::type_id::create("vseq");
+	vseq.start(env_a.agent_a.seqr_a);
 	phase.drop_objection(this);
 endtask

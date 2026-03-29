@@ -49,7 +49,7 @@ endtask
 task ahb_driver::drive_address_phase(ahb_txn tr);
 	// Address phase: 設定 address, control, HTRANS
 	vif.HADDR  <= tr.addr;
-	vif.HWRITE <= 1;
+	vif.HWRITE <= tr.write;
 	vif.HSIZE  <= tr.size;
 	vif.HBURST <= tr.hburst;
 	vif.HTRANS <= 2'b10; // NONSEQ
@@ -62,12 +62,29 @@ task ahb_driver::drive_address_phase(ahb_txn tr);
 endtask
 
 task ahb_driver::drive_data_phase(ahb_txn tr);
-	// Data phase: 寫入 HWDATA
-	for(int i = 0; i < tr.burst_len; i++) begin
+	// Data phase: 根據 write 決定讀寫
+	if (tr.write) begin
+		// 寫入 HWDATA
+		for(int i = 0; i < tr.burst_len; i++) begin
+			@(posedge vif.HCLK);
+			while (!vif.HREADY)
+				@(posedge vif.HCLK);
+			vif.HWDATA <= tr.data[i];
+		end
+	end else begin
+		// 讀取 HRDATA (AHB pipeline: 第一拍不取，之後才開始收資料)
+		int i;
+		// 等待第一個 data phase
 		@(posedge vif.HCLK);
 		while (!vif.HREADY)
 			@(posedge vif.HCLK);
-		vif.HWDATA <= tr.data[i];		
+		// 之後每一拍收資料
+		for(i = 0; i < tr.burst_len; i++) begin
+			@(posedge vif.HCLK);
+			while (!vif.HREADY)
+				@(posedge vif.HCLK);
+			tr.data[i] = vif.HRDATA;
+		end
 	end
 endtask
 

@@ -13,19 +13,23 @@ class ahb_txn extends uvm_sequence_item;
 		//1 beat, 4 beat, 8 beat, 16 beat 
 	}
 
+    // 限制 address 在 0x100 以內
+    constraint addr_range_c {
+        addr inside {[0:32'hff]};
+    }
+
 	constraint burst_len_c {
 		if(hburst == 3'b000) burst_len == 1;
 		if(hburst == 3'b011) burst_len == 4;
 		if(hburst == 3'b101) burst_len == 8;
-		if(hburst == 3'b111) burst_len == 16;		
+		if(hburst == 3'b111) burst_len == 16;
+
+		// burst_len 只允許 1, 4, 8, 16
+		burst_len inside {1, 4, 8, 16};
 	}
 	
 	constraint addr_align_c {
-		if(size == 3'b001) addr % 2 == 0;
-		if(size == 3'b010) addr % 4 == 0;
-		if(size == 3'b011) addr % 8 == 0;
-		if(size == 3'b100) addr % 16 == 0;
-
+		addr % (burst_len * (1 << size)) == 0;
 	}
 
 	constraint data_len_c {

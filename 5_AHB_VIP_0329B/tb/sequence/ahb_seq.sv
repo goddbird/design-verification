@@ -15,7 +15,7 @@ task ahb_seq::body();
 		start_item(tr);
 		
 		assert(tr.randomize());
-		
+		tr.write   = 1;             
 		`uvm_info(get_type_name(), tr.sprint(), UVM_NONE)
 		finish_item(tr);
 	end
