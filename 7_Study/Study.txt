@@ -361,4 +361,72 @@ Study note
 	endclass
 	
 	
+11.	請設計一個sync fifo
 	
+	
+	module sync_fifo #(
+    parameter DATA_WIDTH = 32,
+    parameter DEPTH      = 8,
+    parameter ADDR_WIDTH = $clog2(DEPTH)
+)(
+    input  logic                   clk,
+    input  logic                   rst_n,
+    
+    // Write Interface
+    input  logic                   wr_en,
+    input  logic [DATA_WIDTH-1:0]  wr_data,
+    output logic                   full,
+    
+    // Read Interface
+    input  logic                   rd_en,
+    output logic [DATA_WIDTH-1:0]  rd_data,
+    output logic                   empty,
+    
+    // Status
+    output logic [ADDR_WIDTH:0]    fifo_cnt
+);
+
+		// Memory array
+		logic [DATA_WIDTH-1:0] fifo_mem [DEPTH];
+		
+		logic [2:0] wr_ptr; //index = 0-7
+		logic [2:0] rd_ptr; //index = 0-7
+
+		// --- Write Logic ---
+		always_ff @(posedge clk or negedge rst_n) begin
+			if (!rst_n) begin
+				wr_ptr <= 0;
+			end else if (wr_en && !full) begin
+				fifo_mem[wr_ptr] <= wr_data;
+				wr_ptr <= wr_ptr + 1;
+			end
+		end
+
+		// --- Read Logic ---
+		always_ff @(posedge clk or negedge rst_n) begin
+			if (!rst_n) begin
+				rd_ptr  <= 0;
+				rd_data <= 0;
+			end else if (rd_en && !empty) begin
+				rd_data <= fifo_mem[rd_ptr];
+				rd_ptr  <= rd_ptr + 1;
+			end
+		end
+
+		// --- Counter & Status Flags ---
+		always_ff @(posedge clk or negedge rst_n) begin
+			if (!rst_n) begin
+				fifo_cnt <= 0;
+			end else begin
+				case ({wr_en && !full, rd_en && !empty})
+					2'b10: fifo_cnt <= fifo_cnt + 1; // 只寫不讀
+					2'b01: fifo_cnt <= fifo_cnt - 1; // 只讀不寫
+					default: fifo_cnt <= fifo_cnt;   // 不動或同時讀寫
+				endcase
+			end
+		end
+
+		assign full  = (fifo_cnt == DEPTH);
+		assign empty = (fifo_cnt == 0);
+
+	endmodule
