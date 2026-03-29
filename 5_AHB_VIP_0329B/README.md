@@ -68,6 +68,8 @@ AHB_vip/
 => do fork join : address phase & data phase
 <img width="1709" height="373" alt="image" src="https://github.com/user-attachments/assets/86c00f88-ec52-4203-b53b-cc005b63c6a1" />
 
+## AHB read compare
+<img width="1879" height="328" alt="image" src="https://github.com/user-attachments/assets/da2f8a3d-8169-4e83-ac97-e5acc070389e" />
 
 
 
