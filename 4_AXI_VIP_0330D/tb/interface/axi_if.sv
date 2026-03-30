@@ -28,6 +28,25 @@ interface axi_if #(
 	logic [1:0]					BRESP; 
 	logic						BVALID;
 	logic						BREADY;
+
+	// ---------------------
+	// Read Address Channel
+	// ---------------------
+	logic [ADDR_WIDTH - 1 : 0]	ARADDR;
+	logic						ARVALID;
+	logic						ARREADY;
+	logic [7:0]					ARLEN;
+	logic [2:0]					ARSIZE;
+	logic [1:0]					ARBURST;
+
+	// ---------------------
+	// Read Data Channel
+	// ---------------------
+	logic [DATA_WIDTH - 1 : 0]	RDATA;
+	logic						RVALID;
+	logic						RREADY;
+	logic						RLAST;
+	logic [1:0]					RRESP;
 		
 	// ---------------------
 	// Master Modport (Driver)	
@@ -36,6 +55,12 @@ interface axi_if #(
 	output AWADDR, AWLEN, AWSIZE, AWBURST, AWVALID,
 	output WDATA, WVALID, WLAST,
 	output BREADY
+	);
+
+	// Read Master Modport (Driver)
+	modport read_master(input ACLK, ARESETn, ARREADY, RDATA, RVALID, RLAST, RRESP,
+		output ARADDR, ARLEN, ARSIZE, ARBURST, ARVALID,
+		output RREADY
 	);
 	
 	// ---------------------
@@ -46,4 +71,10 @@ interface axi_if #(
 	input BREADY, 
 	output AWREADY, WREADY, BRESP, BVALID
 	);	
+
+	// Read Slave Modport (DUT)
+	modport read_slave(input ACLK, ARESETn, ARADDR, ARLEN, ARSIZE, ARBURST, ARVALID,
+		input RREADY,
+		output ARREADY, RDATA, RVALID, RLAST, RRESP
+	);
 endinterface

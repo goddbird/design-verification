@@ -1,16 +1,16 @@
 class axi_driver extends uvm_driver#(axi_txn);
-    `uvm_component_utils(axi_driver)
+	`uvm_component_utils(axi_driver)
 
-	virtual interface axi_if	vif;
+	virtual interface axi_if vif;
 
 	function new(string name, uvm_component parent);
-	    super.new(name, parent);
+		super.new(name, parent);
 	endfunction
-	
-	
+
 	extern function void build_phase(uvm_phase phase);
 	extern task run_phase(uvm_phase phase);
 	extern task drive_write(axi_txn tr);
+	extern task drive_read(axi_txn tr);
 endclass
 
 
@@ -23,21 +23,55 @@ function void axi_driver::build_phase(uvm_phase phase);
 endfunction
 
 task axi_driver::run_phase(uvm_phase phase);
-    axi_txn     tr;
-    super.run_phase(phase);
+	axi_txn tr;
+	super.run_phase(phase);
 
-	wait (vif.ARESETn === 1'b1)
-	repeat (2) @(posedge vif.ACLK)
-	vif.AWVALID	<= 0;
-	vif.WVALID	<= 0;
-	vif.BREADY	<= 0;
+	wait (vif.ARESETn === 1'b1);
+	repeat (2) @(posedge vif.ACLK);
+	vif.AWVALID <= 0;
+	vif.WVALID  <= 0;
+	vif.BREADY  <= 0;
+	vif.ARVALID <= 0;
+	vif.RREADY  <= 0;
 
-    forever begin
+	forever begin
 		seq_item_port.get_next_item(tr);
-		drive_write(tr); // send to dut
-		seq_item_port.item_done();        
+		if(tr.is_write)
+			drive_write(tr);
+		else
+			drive_read(tr);
+		seq_item_port.item_done();
 	end
 endtask
+
+task axi_driver::drive_read(axi_txn tr);
+	int i;
+	`uvm_info(get_type_name(), $sformatf("[drive_read] addr = 0x%h, arlen = %0d", tr.addr, tr.arlen), UVM_NONE)
+	// AR channel handshake
+	vif.ARADDR   <= tr.addr;
+	vif.ARLEN    <= tr.arlen;
+	vif.ARSIZE   <= tr.arsize;
+	vif.ARBURST  <= tr.arburst;
+	vif.ARVALID  <= 1'b1;
+	@(posedge vif.ACLK);
+	wait(vif.ARREADY);
+	vif.ARVALID  <= 1'b0;
+	// 讀取資料
+	tr.rdata.delete();
+	tr.rresp.delete();
+	i = 0;
+	do begin
+		wait(vif.RVALID);
+		tr.rdata.push_back(vif.RDATA);
+		tr.rresp.push_back(vif.RRESP);
+		if(vif.RLAST) break;
+		vif.RREADY <= 1'b1;
+		@(posedge vif.ACLK);
+		vif.RREADY <= 1'b0;
+		i++;
+	end while (1);
+endtask
+
 
 task axi_driver::drive_write(axi_txn tr);
 
