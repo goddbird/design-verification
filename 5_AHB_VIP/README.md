@@ -35,7 +35,9 @@ AHB_vip/
 │   └── AHB_txn.sv     ←【交易】抽象的一次 write 行為
 │
 ├── sequence/
-│   └── AHB_write_seq.sv     ←【刺激】產生一堆 write txn
+│   └── AHB_virtual_seq.sv     ←【容器】裝
+│        └── AHB_write_seq.sv     ←【刺激】產生一堆 write txn
+│        └── AHB_read_seq.sv     ←【刺激】產生一堆 read txn
 │
 ├── agent/
 │   ├── AHB_driver.sv        ←【執行者】把 txn 變成 pin-level AHB
@@ -45,12 +47,9 @@ AHB_vip/
 │
 ├── env/
 │   └── AHB_env.sv           ←【環境】放一個或多個 agent
-│
+│          └── AHB_scoreboard←【記分板】有內部mem在read的時候做比對
 ├── test/
-│   └── AHB_write_test.sv    ←【測試】選 sequence 跑 
-│
-├── sva/
-│   └── AHB_assertions.sv    ←【SVA】確認WLAST訊號如預期變化
+│   └── AHB_test.sv    ←【測試】選 sequence 跑 
 │
 └── top/
     └── tb_top.sv            ←【最上層】DUT + VIP + vif config_db + clock/reset
