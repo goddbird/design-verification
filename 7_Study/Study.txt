@@ -254,6 +254,28 @@ Study note
 
 	endmodule
 	
+9-1.寫一個grey counter，	gray code的特性，從最高位到最低位，每一位是當前位 & 上一位進行XOR運算的結果。
+	module grey_counter(input logic clk, input logic rstn, input logic enable, output logic [31:0] out)
+		reg [7:0] count;
+		always_ff @(posedge clk) begin
+			if(!rstn)  out <= 0;
+			else if(enable) count <= count + 1;								
+			end
+		end
+		
+		assign out ={count[7],
+		count[7] ^ count[6],
+		count[6] ^ count[5],
+		count[5] ^ count[4],
+		count[4] ^ count[3],
+		count[3] ^ count[2],
+		count[2] ^ count[1],
+		count[1] ^ count[0],
+		}
+	endmodule
+	
+
+	
 
 10.	寫出驗證上題的seq / seqr / monitor / driver
 	//---IF---//
@@ -429,4 +451,59 @@ Study note
 		assign full  = (fifo_cnt == DEPTH);
 		assign empty = (fifo_cnt == 0);
 
+	endmodule
+	
+	
+
+12.	設計一個除頻器 => 1/2 頻率
+
+	想像一個水龍頭，輸入端 clk_in 是每秒滴水一次（頻率 $1\text{Hz}$）。
+	這個除頻器的邏輯是：「看到一次滴水，就切換一次開關」。
+	第 1 次滴水：開關從「關」變成「開」。
+	第 2 次滴水：開關從「開」變成「關」。
+	結果是：輸出端 clk_out 完成「一開一關」的完整循環需要 2 次 滴水。
+	所以，輸出的頻率就變成了輸入的一半（$0.5\text{Hz}$），這就是 二除頻 (Divide-by-2)。
+
+	module clk_div(
+		input wire clk_in, 
+		input wire enable,
+		input wire reset,
+		output reg clk_out
+	);
+		always_ff @(posedge clk_in)
+			if(!reset) clk_out <= 1'b0;
+			else if(enable) clk_out <= !clk_out;		
+	endmodule
+	
+	
+12-1.設計一個除頻器 => 1/3 頻率
+	概念上是使用正緣 & 負緣都增加切換開關的"時間"
+	之前是每正緣數一次就切換開關，但現在是數三次才切換開關
+	
+	module clk_div_3(
+		input logic clk_in;
+		input logic rst_n,
+		output logic clk_out
+	);
+		logic [1:0] pos_cnt;
+		logic [1:0] neg_cnt;
+		
+		// pos counter
+		always_ff @(posedge clk_in or negedge rst_n) begin
+			if(!rst_n) pos_cnt <= 2'b0;
+			else begin
+				if(pos_cnt == 2'd2) pos_cnt <= 2'd0;
+				else pos_cnt <= pos_cnt + 1'b1;
+			end
+		end	
+		
+		always_ff @(negedge clk_in or negedge rst_n) begin
+			if(!rst_n) neg_cnt <= 2'b0;
+			else begin
+				if(neg_cnt == 2'd2) neg_cnt <= 2'd0;
+				else neg_cnt <= neg_cnt + 1'b1;
+			end
+		end	
+		
+		assign clk_out = (pos_cnt != 2) && (neg_cnt != 2);
 	endmodule
