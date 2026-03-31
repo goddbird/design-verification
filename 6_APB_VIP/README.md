@@ -61,18 +61,6 @@ APB_vip/
 
 ---
 
-# My APB VIP Waveform
-<img width="1910" height="257" alt="image" src="https://github.com/user-attachments/assets/140a1113-cd40-426a-b0c0-75edefef6067" />
-
-
-
----
-
-# My APB VIP xrun.log
-<img width="1876" height="760" alt="image" src="https://github.com/user-attachments/assets/18dfb0b5-9b3d-4a42-a773-f272fe7aa64d" />
-
-
----
 
 
 
