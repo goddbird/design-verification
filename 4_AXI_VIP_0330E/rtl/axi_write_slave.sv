@@ -22,7 +22,26 @@ module axi_write_slave #(
 	// Write Response
 	input logic							BREADY,
 	output logic [1:0]					BRESP,	
-	output logic						BVALID
+	output logic						BVALID,
+
+	// ---------------------
+	// Read Address Channel
+	// ---------------------
+	input logic [ADDR_WIDTH - 1 : 0]	ARADDR,
+	input logic						ARVALID,
+	output logic						ARREADY,
+	input logic [7:0]					ARLEN,
+	input logic [2:0]					ARSIZE,
+	input logic [1:0]					ARBURST,
+
+	// ---------------------
+	// Read Data Channel
+	// ---------------------
+	output logic [DATA_WIDTH - 1 : 0]	RDATA,
+	output logic						RVALID,
+	input logic							RREADY,
+	output logic						RLAST,
+	output logic [1:0]					RRESP
 );
 	typedef enum logic [1:0]{
 		IDLE, WRITE_DATA, RESP

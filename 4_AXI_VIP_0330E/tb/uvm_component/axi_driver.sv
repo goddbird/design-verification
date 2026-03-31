@@ -33,6 +33,13 @@ task axi_driver::run_phase(uvm_phase phase);
 	vif.BREADY  <= 0;
 	vif.ARVALID <= 0;
 	vif.RREADY  <= 0;
+	//READ
+	vif.ARADDR  <= 0;
+	vif.ARVALID <= 0;
+	vif.ARLEN   <= 0;
+	vif.ARSIZE  <= 0;
+	vif.ARBURST <= 0;
+	vif.RREADY  <= 0;
 
 	forever begin
 		seq_item_port.get_next_item(tr);

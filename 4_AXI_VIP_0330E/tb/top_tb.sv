@@ -46,7 +46,18 @@ module top_tb;
 		.WREADY		(axi_s.WREADY),
 		.BRESP		(axi_s.BRESP),		
 		.BVALID		(axi_s.BVALID),
-		.BREADY		(axi_s.BREADY)	
+		.BREADY		(axi_s.BREADY),
+		.ARADDR		(axi_s.ARADDR),
+		.ARVALID	(axi_s.ARVALID),
+		.ARREADY	(axi_s.ARREADY),
+		.ARLEN		(axi_s.ARLEN),	
+		.ARSIZE		(axi_s.ARSIZE),
+		.ARBURST	(axi_s.ARBURST),
+		.RDATA		(axi_s.RDATA),
+		.RVALID		(axi_s.RVALID),
+		.RREADY		(axi_s.RREADY),
+		.RLAST		(axi_s.RLAST),
+		.RRESP		(axi_s.RRESP)
 	);
 	
 	// Assertions
