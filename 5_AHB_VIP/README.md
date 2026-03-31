@@ -57,27 +57,7 @@ AHB_vip/
 
 ---
 
-# My AHB VIP Waveform
-<img width="1833" height="772" alt="image" src="https://github.com/user-attachments/assets/5fbc0dc1-2e37-410b-881e-8ca9b372b08a" />
 
-## get_next_item twice would yield wrong transaction
-=> do fork join : address phase & data phase
-<img width="1709" height="373" alt="image" src="https://github.com/user-attachments/assets/86c00f88-ec52-4203-b53b-cc005b63c6a1" />
-
-## AHB read compare
-<img width="1879" height="328" alt="image" src="https://github.com/user-attachments/assets/da2f8a3d-8169-4e83-ac97-e5acc070389e" />
-
-
-
----
-
-# My AHB VIP xrun.log
-<img width="1730" height="982" alt="image" src="https://github.com/user-attachments/assets/d48aaefd-f497-4cf6-bc23-d137b8ccdb93" />
-
-
----
-# Coverage
-<img width="1694" height="824" alt="image" src="https://github.com/user-attachments/assets/87f8e957-5341-4d31-a49e-fcd2b7059ad6" />
 
 | Feature           | Description         | Coverage Method |
 | ----------------- | ------------------- | --------------- |
