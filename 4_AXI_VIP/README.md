@@ -42,23 +42,6 @@ axi_vip/
 
 ---
 
-# My AXI VIP Waveform
-<img width="1828" height="521" alt="image" src="https://github.com/user-attachments/assets/9c62d751-7c0b-4dc1-8ab2-1f4de420d8b7" />
-
----
-
-# My AXI VIP xrun.log
-<img width="1312" height="712" alt="image" src="https://github.com/user-attachments/assets/0173dd1a-1868-46eb-8865-ccf7dfed1049" />
-
----
-# Coverage
-![coverage](./Coverage.png)
-| Feature           | Description         | Coverage Method |
-| ----------------- | ------------------- | --------------- |
-| Burst Type        | FIXED / INCR / WRAP | coverpoint      |
-| Burst Length      | 1~16 beats          | coverpoint      |
-| Transfer Size     | 1B / 2B / 4B / 8B   | coverpoint      |
-| Address Alignment | aligned / unaligned | coverpoint      |
 
 
 
