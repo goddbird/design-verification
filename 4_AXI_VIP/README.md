@@ -44,6 +44,10 @@ axi_vip/
 Why do we need outstanding transaction on AXI?
 There is latency due to bus interconnects and slave internal processing. Without outstanding, the Master would remain idle while waiting for responses.
 With outstanding capabilities, the Master can utilize a pipeline to hide/cover the latency.
+
+# Compare AXI - AHB
+<img width="671" height="670" alt="image" src="https://github.com/user-attachments/assets/9b38076d-5007-460a-86c2-6c035edaf00f" />
+
 ---
 
 
