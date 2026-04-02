@@ -48,6 +48,26 @@ With outstanding capabilities, the Master can utilize a pipeline to hide/cover t
 # Compare AXI - AHB
 <img width="671" height="670" alt="image" src="https://github.com/user-attachments/assets/9b38076d-5007-460a-86c2-6c035edaf00f" />
 
+TODO
+transaction物件（axi_txn）
+確認有id欄位，能區分不同transaction（你已經有id欄位）。
+
+driver/monitor支援多筆追蹤
+
+driver：能同時送出多個AW/W或AR，並追蹤每筆id。
+monitor：能同時記錄多個id的write/read，並正確配對response。
+scoreboard比對
+
+scoreboard要能根據id比對每筆transaction的response。
+sequence產生多筆同時的transaction
+
+sequence可隨機產生多個id、同時送出多筆write/read。
+建議步驟：
+
+先從monitor下手，讓它能同時追蹤多個id的write/read（用queue或hash table記錄每個id的狀態）。
+driver再調整，支援同時送出多筆AW/W或AR。
+最後調整scoreboard與sequence。
+
 ---
 
 
