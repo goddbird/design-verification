@@ -23,7 +23,13 @@ function void axi_driver::build_phase(uvm_phase phase);
 endfunction
 
 task axi_driver::run_phase(uvm_phase phase);
+	// Outstanding transaction queue
+	axi_txn outstanding_q[$];
+	axi_txn tr;
+	
 	super.run_phase(phase);
+
+
 	wait (vif.ARESETn === 1'b1);
 	repeat (2) @(posedge vif.ACLK);
 	vif.AWVALID <= 0;
@@ -38,9 +44,7 @@ task axi_driver::run_phase(uvm_phase phase);
 	vif.ARBURST <= 0;
 	vif.RREADY  <= 0;
 
-	// Outstanding transaction queue
-	axi_txn outstanding_q[$];
-	axi_txn tr;
+
 	fork
 		// 發送transaction
 		forever begin
