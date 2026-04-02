@@ -1,5 +1,9 @@
-class axi_txn extends uvm_sequence_item;	
-    rand bit [3:0]           id;
+class axi_txn extends uvm_sequence_item;
+    rand bit [3:0]           id;           // AXI transaction ID
+    rand bit [3:0]           tag;          // Outstanding tag for tracking (可用於自訂追蹤)
+    bit                      issued;       // 是否已送出
+    bit                      completed;    // 是否已完成
+    bit [3:0]                response_id;  // 回應時的ID（可用於比對）
     rand bit [31:0]          addr;
     // write channel
     rand bit [7:0]           awlen;
@@ -24,6 +28,10 @@ class axi_txn extends uvm_sequence_item;
 
     `uvm_object_utils_begin(axi_txn)
         `uvm_field_int(id, UVM_DEFAULT)
+        `uvm_field_int(tag, UVM_DEFAULT)
+        `uvm_field_int(issued, UVM_DEFAULT)
+        `uvm_field_int(completed, UVM_DEFAULT)
+        `uvm_field_int(response_id, UVM_DEFAULT)
         `uvm_field_int(addr, UVM_DEFAULT)
         // write
         `uvm_field_queue_int(data, UVM_DEFAULT)

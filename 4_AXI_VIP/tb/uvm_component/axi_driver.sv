@@ -23,9 +23,7 @@ function void axi_driver::build_phase(uvm_phase phase);
 endfunction
 
 task axi_driver::run_phase(uvm_phase phase);
-	axi_txn tr;
 	super.run_phase(phase);
-
 	wait (vif.ARESETn === 1'b1);
 	repeat (2) @(posedge vif.ACLK);
 	vif.AWVALID <= 0;
@@ -33,7 +31,6 @@ task axi_driver::run_phase(uvm_phase phase);
 	vif.BREADY  <= 0;
 	vif.ARVALID <= 0;
 	vif.RREADY  <= 0;
-	//READ
 	vif.ARADDR  <= 0;
 	vif.ARVALID <= 0;
 	vif.ARLEN   <= 0;
@@ -41,14 +38,40 @@ task axi_driver::run_phase(uvm_phase phase);
 	vif.ARBURST <= 0;
 	vif.RREADY  <= 0;
 
-	forever begin
-		seq_item_port.get_next_item(tr);
-		if(tr.is_write)
-			drive_write(tr);
-		else
-			drive_read(tr);
-		seq_item_port.item_done();
-	end
+	// Outstanding transaction queue
+	axi_txn outstanding_q[$];
+	axi_txn tr;
+	fork
+		// 發送transaction
+		forever begin
+			seq_item_port.get_next_item(tr);
+			outstanding_q.push_back(tr);
+			if(tr.is_write)
+				fork drive_write(tr); join_none
+			else
+				fork drive_read(tr); join_none
+			seq_item_port.item_done();
+		end
+		// 處理response (write response)
+		forever begin
+			@(posedge vif.ACLK);
+			if(vif.BVALID) begin
+				vif.BREADY <= 1;
+				// 根據需求可在此比對id，或通知scoreboard
+			end else begin
+				vif.BREADY <= 0;
+			end
+		end
+		// 處理read response
+		forever begin
+			@(posedge vif.ACLK);
+			if(vif.RVALID) begin
+				vif.RREADY <= 1;
+			end else begin
+				vif.RREADY <= 0;
+			end
+		end
+	join
 endtask
 
 task axi_driver::drive_read(axi_txn tr);
