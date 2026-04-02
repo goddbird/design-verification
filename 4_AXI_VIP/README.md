@@ -40,7 +40,10 @@ axi_vip/
 └── top/
     └── tb_top.sv            ←【最上層】DUT + VIP + vif config_db + clock/reset
 ```
-
+# Feature - outstanding
+Why do we need outstanding transaction on AXI?
+There is latency due to bus interconnects and slave internal processing. Without outstanding, the Master would remain idle while waiting for responses.
+With outstanding capabilities, the Master can utilize a pipeline to hide/cover the latency.
 ---
 
 
