@@ -55,6 +55,7 @@ module axi_write_slave #(
 	logic [DATA_WIDTH - 1 : 0] write_data;// to receive data
 	logic [7:0] beat_cnt;
 	logic [ADDR_WIDTH - 1 : 0] curr_addr;
+	logic [ADDR_WIDTH - 1 : 0] read_addr;
 	
 	always @(posedge ACLK or negedge ARESETn) begin
 		if (!ARESETn) begin
@@ -97,38 +98,22 @@ module axi_write_slave #(
 		if (!ARESETn) begin
 			rstate <= R_IDLE;
 			r_cnt <= 0;
-			ARREADY <= 0;
-			RVALID <= 0;
-			RDATA <= 0;
-			RLAST <= 0;
-			RRESP <= 0;
+			read_addr <= '0;
 		end else begin
 			case (rstate)
 				R_IDLE: begin
-					ARREADY <= 1;
-					RVALID <= 0;
-					RLAST <= 0;
-					if (ARVALID && ARREADY) begin
+					if (ARVALID) begin
 						r_cnt <= ARLEN;
+						read_addr <= ARADDR;
 						rstate <= R_SEND;
-						ARREADY <= 0;
 					end
 				end
 				R_SEND: begin
-					RVALID <= 1;
-					RDATA <= mem[curr_addr[11:2]];
-					RRESP <= 2'b00;
-					if (r_cnt == 0)
-						RLAST <= 1;
-					else
-						RLAST <= 0;
-					if (RVALID && RREADY) begin
-						curr_addr <= curr_addr + 4;
+					if (RREADY) begin
 						if (r_cnt == 0) begin
 							rstate <= R_IDLE;
-							RVALID <= 0;
-							RLAST <= 1;
 						end else begin
+							read_addr <= read_addr + 4;
 							r_cnt <= r_cnt - 1;
 						end
 					end
@@ -136,4 +121,10 @@ module axi_write_slave #(
 			endcase
 		end
 	end
+
+	assign ARREADY = (rstate == R_IDLE);
+	assign RVALID  = (rstate == R_SEND);
+	assign RDATA   = mem[read_addr[11:2]];
+	assign RLAST   = (rstate == R_SEND) && (r_cnt == 0);
+	assign RRESP   = 2'b00;
 endmodule

@@ -23,8 +23,6 @@ function void axi_driver::build_phase(uvm_phase phase);
 endfunction
 
 task axi_driver::run_phase(uvm_phase phase);
-	// Outstanding transaction queue
-	axi_txn outstanding_q[$];
 	axi_txn tr;
 	
 	super.run_phase(phase);
@@ -45,65 +43,46 @@ task axi_driver::run_phase(uvm_phase phase);
 	vif.RREADY  <= 0;
 
 
-	fork
-		// 發送transaction
-		forever begin
-			seq_item_port.get_next_item(tr);
-			outstanding_q.push_back(tr);
-			if(tr.is_write)
-				fork drive_write(tr); join_none
-			else
-				fork drive_read(tr); join_none
-			seq_item_port.item_done();
-		end
-		// 處理response (write response)
-		forever begin
-			@(posedge vif.ACLK);
-			if(vif.BVALID) begin
-				vif.BREADY <= 1;
-				// 根據需求可在此比對id，或通知scoreboard
-			end else begin
-				vif.BREADY <= 0;
-			end
-		end
-		// 處理read response
-		forever begin
-			@(posedge vif.ACLK);
-			if(vif.RVALID) begin
-				vif.RREADY <= 1;
-			end else begin
-				vif.RREADY <= 0;
-			end
-		end
-	join
+	forever begin
+		seq_item_port.get_next_item(tr);
+		if(tr.is_write)
+			drive_write(tr);
+		else
+			drive_read(tr);
+		seq_item_port.item_done();
+	end
 endtask
 
 task axi_driver::drive_read(axi_txn tr);
-	int i;
 	`uvm_info(get_type_name(), $sformatf("[drive_read] addr = 0x%h, arlen = %0d", tr.addr, tr.arlen), UVM_NONE)
 	// AR channel handshake
+	@(posedge vif.ACLK);
 	vif.ARADDR   <= tr.addr;
 	vif.ARLEN    <= tr.arlen;
 	vif.ARSIZE   <= tr.arsize;
 	vif.ARBURST  <= tr.arburst;
 	vif.ARVALID  <= 1'b1;
-	@(posedge vif.ACLK);
-	wait(vif.ARREADY);
+
+	do @(posedge vif.ACLK);
+	while(!(vif.ARVALID && vif.ARREADY));
 	vif.ARVALID  <= 1'b0;
-	// 讀取資料
+
+	// R channel - assert RREADY and capture data
 	tr.rdata.delete();
 	tr.rresp.delete();
-	i = 0;
-	do begin
-		wait(vif.RVALID);
-		tr.rdata.push_back(vif.RDATA);
-		tr.rresp.push_back(vif.RRESP);
-		if(vif.RLAST) break;
-		vif.RREADY <= 1'b1;
+	vif.RREADY <= 1'b1;
+
+	forever begin
 		@(posedge vif.ACLK);
-		vif.RREADY <= 1'b0;
-		i++;
-	end while (1);
+		if(vif.RVALID) begin
+			tr.rdata.push_back(vif.RDATA);
+			tr.rresp.push_back(vif.RRESP);
+			if(vif.RLAST) break;
+		end
+	end
+
+	@(posedge vif.ACLK);
+	vif.RREADY <= 1'b0;
 endtask
 
 
