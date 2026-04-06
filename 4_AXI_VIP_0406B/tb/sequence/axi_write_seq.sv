@@ -14,7 +14,7 @@ class axi_write_seq extends uvm_sequence#(axi_txn);
 			id = $urandom_range(0,7);
 			assert(tr.randomize() with {
 				is_write == 1;
-				id == id;
+				id == local::id;
 				data.size() inside {[1:5]};
 				burst_len == data.size() - 1;
 			} );
@@ -29,7 +29,7 @@ class axi_write_seq extends uvm_sequence#(axi_txn);
 			id = $urandom_range(0,7);
 			assert(tr.randomize() with {
 				is_write == local_write;
-				id == id;
+				id == local::id;
 				// write transaction
 				is_write -> data.size() inside {[1:5]};
 				is_write -> burst_len == data.size() - 1;
