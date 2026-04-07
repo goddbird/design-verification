@@ -42,6 +42,7 @@ task axi_driver::run_phase(uvm_phase phase);
 	vif.AWLEN   <= 0;
 	vif.AWSIZE  <= 0;
 	vif.AWBURST <= 0;
+	vif.DBG_AWID <= 0;
 	vif.AWVALID <= 0;
 	vif.WDATA   <= 0;
 	vif.WVALID  <= 0;
@@ -178,12 +179,14 @@ task axi_driver::drive_aw(axi_txn tr);
 	vif.AWLEN 		<= tr.data.size() - 1;
 	vif.AWSIZE 		<= 3'b010; // 0: 1byte / 1: 2byte / 2: 4byte
 	vif.AWBURST		<= 2'b01;
+	vif.DBG_AWID	<= tr.id;
 	vif.AWVALID 	<= 1;
 
 	do @(posedge vif.ACLK);
 	while(!vif.AWREADY);
 
 	vif.AWVALID		<= 0;
+	vif.DBG_AWID	<= 0;
 endtask
 
 task axi_driver::drive_w(axi_txn tr);

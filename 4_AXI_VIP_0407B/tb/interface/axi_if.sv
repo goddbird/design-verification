@@ -15,6 +15,7 @@ interface axi_if #(
 	logic [7:0]					AWLEN;
 	logic [2:0]					AWSIZE;
 	logic [1:0]					AWBURST;
+	logic [3:0]					DBG_AWID;
 	// ---------------------
 	// Write Data Channel
 	// ---------------------		
@@ -52,7 +53,7 @@ interface axi_if #(
 	// Master Modport (Driver)	
 	// ---------------------	
 	modport master(input ACLK, ARESETn, AWREADY, WREADY, BRESP, BVALID, 
-	output AWADDR, AWLEN, AWSIZE, AWBURST, AWVALID,
+	output AWADDR, AWLEN, AWSIZE, AWBURST, AWVALID, DBG_AWID,
 	output WDATA, WVALID, WLAST,
 	output BREADY
 	);
