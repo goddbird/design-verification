@@ -130,6 +130,11 @@ Study note
 	
 	結論 : 有virtual看物件 => base如果有virtual，就看物件是誰。
 	沒virtual，看handle是誰。
+	🎯 結論
+	👉 你問的核心答案：
+	Parent 沒有寫 virtual，為什麼還是印 Child？
+	✅ 因為：
+	virtual 是由 base 決定的，一旦 base 宣告 virtual，整條 inheritance chain 都是 virtual dispatch
 	
 6.	OOP相關問題 : 請問下面的code compile會display出什麼?
 	class animal;
@@ -491,7 +496,7 @@ Study note
 		// pos counter
 		always_ff @(posedge clk_in or negedge rst_n) begin
 			if(!rst_n) pos_cnt <= 2'b0;
-			else begin
+			else begin 
 				if(pos_cnt == 2'd2) pos_cnt <= 2'd0;
 				else pos_cnt <= pos_cnt + 1'b1;
 			end
