@@ -1,4 +1,4 @@
-<img width="244" height="26" alt="image" src="https://github.com/user-attachments/assets/60f2d34c-f1bf-41b3-a107-93ebda83a5d0" /><img width="732" height="412" alt="image" src="https://github.com/user-attachments/assets/1299f647-1401-46e8-a6fb-5f79e19c2cc3" /># 介紹
+# 介紹
  
 1. 建模DUT
 2. 實例 & 連接一個TLM的interface，用來從UVC傳送packet資訊到scoreboard
