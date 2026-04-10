@@ -37,13 +37,13 @@
 - **Driver**：
   - 根據 `sequencer` 給的資料
   - 用正確的時序 drive 到 DUT
-  - 接上 `virtual interface`  
+  - uvm_config_db接上 `virtual interface`  
   - 資料驅動完成後，會回報 `sequencer`，讓它送下一筆資料
  
 - **Monitor**：
   - 從 DUT 的 `virtual interface` 擷取訊號
   - 屬於**被動監控**，不影響 DUT 行為
-  - 觀察 transaction 並轉換成 `object`，再送給：
+  - 觀察 virtual interface 並轉換成 transaction，再送給：
     - `scoreboard`
     - `coverage`
     - `reference model`
@@ -116,8 +116,10 @@ uvm_field算是一種library，裡面擁有很多功能
 6. connect phase : 做driver / sequencer的連接
 ---
 
-## Env
-![image](https://github.com/user-attachments/assets/ee1c1df4-e126-4c7c-9482-af696686e195)
+## Env & Test
+<img width="650" height="531" alt="image" src="https://github.com/user-attachments/assets/7ef5cfc3-27b9-423a-aab9-4884c0cbbfeb" />
+<img width="737" height="784" alt="image" src="https://github.com/user-attachments/assets/4d618892-f5f6-4a35-8f1d-881264b9c33b" />
+
 env通常會在build_phase()中 : 使用factory建立agent, scoreboard，就跟FIFO的架構一樣。
 最後是有個router_tb (top-level testbench)
 router_tb是整個測試環境的最上層元件，會在build_phase中實例化yapp_env。
@@ -129,10 +131,10 @@ router_tb是整個測試環境的最上層元件，會在build_phase中實例化
 4. new自己
 5. 要增加build phase : 呼叫super.build_phase，還要create agent
 
-## 整理 Env 應注意事項：
-1. 從uvm_env extend (跟env一模一樣)
-2. 宣告env handle
-3. 要增加build phase : 呼叫super.build_phase
+## Test應注意
+1. raise / drop objection
+2. uvm_config_db 去set變數值，get從top設定下來的virtual interface
+3. 宣告env handle並實例化
 
 ## Sequence
 ![image](https://github.com/user-attachments/assets/d396bb42-d749-4f21-98ac-0dc4c003fb49)
@@ -180,10 +182,11 @@ active元件 (driver / sequence / sequencer) 需要處理transaction，需要知
 passive元件不需要知道型別，只要負責控制、建構、連接即可。
 
 3. UVC的目錄應該要包含 : 可重用程式碼 & 不可重用程式碼。架構圖應該要像下圖
+
 ![image](https://github.com/user-attachments/assets/2ea19865-6355-4031-a136-fcad0bd0030e)
 ![image](https://github.com/user-attachments/assets/ad43e900-09f6-479a-8955-2090c7d68898)
 ![image](https://github.com/user-attachments/assets/2ac9dc0d-954b-4311-bf40-d03ed703d5c5)
 
-4. 介紹實際的sv檔例子 : include的file必須要遵守bottom-up的順序 (從小的build到大的)
+5. 介紹實際的sv檔例子 : include的file必須要遵守bottom-up的順序 (從小的build到大的)
 ![image](https://github.com/user-attachments/assets/f2c41310-988c-47b5-af17-c23825b5e3d5)
 
