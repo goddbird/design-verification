@@ -242,8 +242,13 @@ Study note
 	4. 
 	Full狀態同時讀寫 : 同時發起wr_en, rd_en。理論上FIFO應維持full，波型應該是短暫拉下來再拉高。
 	必須確保寫入新的空位，並讀書正確舊值。
+	Empty狀態同時讀寫 : 測試資料是否能馬上寫入又再把資料讀出，empty拉high馬上又拉low
 
-	Empty狀態同時讀寫 : 測試資料是否能在下一個時脈正確呈現
+	5. Reset後與恢復測試
+		a. 若如果突然拉了reset_n，確認full / empty及內部指標是否立即恢復到初始狀態。
+		b. 重製後的下一個clock能正常接受第一筆write。
+
+	6. wr, rd ptr可以靠SVA檢查
 
 
 	
