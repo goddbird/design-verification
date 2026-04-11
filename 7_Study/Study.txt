@@ -581,4 +581,19 @@ Study note
 	如果m = 0，此時n可能為{0, 1, 2, 3}，所以每種可能性是1/4   => 所以n在這裡等於0的可能性為1/2 * 1/4 = 1/8
 	如果m = 1，n只能為0的機率是100%  => 1/2 * 100% = 1/2
 	所以n=0的組合是[0, 0], [1, 0] => 1/8 + 1/2 = 5/8
-	
+
+15. 你寫了一個counter，testbench中使用$display在每個clock cycle印出DUT的count輸出，發現印出的值始終為X。
+	a. 請列出三個為x的原因
+	b. 你會使用哪些方法或工具定位問題?
+
+	答:
+	a. 
+		1. 未初始化的暫存器 (Reset Missing): 計數器內部的 Flip-flops 在模擬開始時沒有給予重置（Reset），導致初始狀態為 X，後續的加法運算（X + 1）也會持續產生 X。
+		2. 多重驅動 (Multi-Driver): 同一個訊號線（例如 count）被兩個以上的邏輯區塊同時賦值，導致模擬器無法判定電位（即你提到的競爭驅動）。
+		3. 懸空或未連接的輸入 (Unconnected Ports): DUT 的輸入腳位（如 clk 或 en）在 Top 層未連接，或是 Testbench 的變數未賦初值就驅動給 DUT，導致內部邏輯因 X 傳播。
+
+	b. 
+		1. 波形追蹤 (Waveform Analysis): 使用工具（如 Verdi 或 SimVision）從 X 出現的點開始向後回溯（Back-tracing），檢查是哪個訊號最早變紅。
+		2. Log 檔案審閱: 檢查模擬編譯與執行時的 Warning/Error messages，確認是否有「Port connection mismatch」或「Multiple driver」的警告。
+		3. Active Drivers 檢查: 在波形工具中點擊 X 訊號，使用 "Trace Active Drivers" 功能，直接找出當前時刻有哪些邏輯在驅動該訊號。
+		4. 加上 Force/Release 或 Strobe: 在 TB 中暫時強制賦值（Force）來確認是否為 Reset 問題，或利用 $strobe 確認在時脈邊緣最後穩定的值。
