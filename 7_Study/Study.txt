@@ -228,7 +228,25 @@ Study note
 	https://www.cnblogs.com/gujiangtaoFuture/articles/10137170.html
 
 8.	如何驗證一個FIFO
+	1. 基礎邊界測試 (Boundary Conditions)
+	FIFO Full檢查 : 連續寫入16筆資料，確認full準確拉高，且此時wr_ptr指回起始點
+	FIFO Empty檢查: 在有資料的情況下讀取直到清空，確認empty準確拉高，且rd_data符合最後一筆有效值
 
+	2. 資料完整性測試
+	寫入一系列數值，透過scoreboard內部memory比對rd_data是否一致。
+
+	3. 異常行為測試
+	Write when Full : 在full拉高的情況下再測試wr_en = 1，確認資料不會被overwrite，且full訊號不變。
+	Read when empty : 在empty拉高的情況測試rd_en = 1，確認rdptr不會偏移。
+
+	4. 
+	Full狀態同時讀寫 : 同時發起wr_en, rd_en。理論上FIFO應維持full，波型應該是短暫拉下來再拉高。
+	必須確保寫入新的空位，並讀書正確舊值。
+
+	Empty狀態同時讀寫 : 測試資料是否能在下一個時脈正確呈現
+
+
+	
 
 9.	寫一個counter的verilog，input inverse，output 4 bit的counter
 	
