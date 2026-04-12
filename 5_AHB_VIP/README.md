@@ -23,7 +23,11 @@
 
 
 ---
+# AHB feature
+1. Burst write
+2. address phase / data phase
 
+---
 
 # My AHB VIP Topology
 ```
