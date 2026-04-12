@@ -47,14 +47,15 @@ APB_vip/
 │   ├── APB_sequencer.sv     ←【排程器】管理 sequence
 │   └── APB_agent.sv         ←【整合】driver + monitor
 │
+├── scoreboard/
+│   └── APB_scoreboard.sv    ←【記分板】接受monitor傳過來的tr & 實現write方法
+│
 ├── env/
 │   └── APB_env.sv           ←【環境】放一個或多個 agent
 │
 ├── test/
 │   └── APB_write_test.sv    ←【測試】選 sequence 跑 
 │
-├── sva/
-│   └── APB_assertions.sv    ←【SVA】確認WLAST訊號如預期變化
 │
 └── top/
     └── tb_top.sv            ←【最上層】DUT + VIP + vif config_db + clock/reset
