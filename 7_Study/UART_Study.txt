@@ -1,0 +1,37 @@
+uart_sqr
+內部直接有analysis port連線到uart_scb
+
+
+
+uart_scb
+|--run_phase : 不斷的get tlm fifo打出來的frame，並且比對
+|
+|--tlm fifo
+
+
+
+
+uart_env
+|--build_phase : configure ral
+|
+|--connect_phase : 連接TLM fifo
+
+
+uart_test_base -> uart_common -> ipsim_uart_common
+
+
+uart_ctrl_drv.sv 在小馬那邊
+
+
+
+
+**********
+**問題集:
+**********
+
+1. 怎麼做驗證的?
+seq -> seqr -> 
+
+2. front doot怎麼打出APB行為的?
+
+3. 看起來有個ntc_ral_top，在env裡面會宣告ral的class，然後透過ral去configure
