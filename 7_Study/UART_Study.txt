@@ -29,9 +29,18 @@ uart_ctrl_drv.sv 在小馬那邊
 **問題集:
 **********
 
-1. 怎麼做驗證的?
-seq -> seqr -> 
+1.  怎麼做驗證的?
+	test -> seq -> seqr -> 
+	
+2. 	front doot怎麼打出APB行為的?
 
-2. front doot怎麼打出APB行為的?
+3. 	看起來有個ntc_ral_top，在env裡面會宣告ral的class，然後透過ral去configure
 
-3. 看起來有個ntc_ral_top，在env裡面會宣告ral的class，然後透過ral去configure
+4. 	test層: ipsim_uart_common裡面會啟動ipsim_uart_common_seq
+	
+	怎麼讓sim先做cfg再跑run_time seq?  看code的uart_common_seq，是先setup_vip後 (pwr/half_duplex/cts/rts)，跑了以下的流程:
+	a. rand_cfg 	: rand ral的設定，在已經有constriant
+	b. setup_cfg 	: 宣告uart_cfg_seq (一個vseq)，會cfg dut & vip? 設定dut, vip的reg	
+	c. run_trans	: 宣告uart_run_seq (一個vseq)，會同時跑dut, vip seq
+	d. wait_done	: 使用ral去確認dut做完cmd了
+	
