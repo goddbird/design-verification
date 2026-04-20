@@ -1,0 +1,2 @@
+xrun -timescale 1ns/1ps -uvm   +access+rwc -f ./fifo_filelist.f
+//-coverage all
