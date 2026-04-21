@@ -15,6 +15,7 @@
 # Formal Verification in FIFO RTL
 ## Step 1. Generate FIFO
 ## Step 2. Generate System Verilog Assertion (SVA)
+需要把SVA跟DUT寫在同一個module裡面，不能分開成兩個module
 ## Step 3. Create formal filelist (formal.f)  /  Create tcl file
            ```
            ../rtl/fifo.sv
