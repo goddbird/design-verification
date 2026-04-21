@@ -16,4 +16,18 @@
 ## Step 1. Generate FIFO
 ## Step 2. Generate System Verilog Assertion (SVA)
 ## Step 3. Create formal filelist (formal.f)  /  Create tcl file
+           ```
+           ../rtl/fifo.sv
+           ./checker/assertion.sv
+           ./interface/interface.sv
+           ```
+---
            
+           ```
+           clear -all
+           analyze -sv ../rtl/fifo.sv
+           elaborate -top fifo
+           clock CLK
+           reset -expression {RESETn == 0}
+           prove -all
+           ```
