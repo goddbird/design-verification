@@ -1,71 +1,19 @@
-# APB Introduce
-<img width="722" height="501" alt="image" src="https://github.com/user-attachments/assets/be413808-ce4e-4e76-b67f-16556a6e8cec" />
-
-<img width="1268" height="291" alt="image" src="https://github.com/user-attachments/assets/d73ea48d-6aba-4956-85ba-33c5a404a1ad" />
-
-
----
-# APB Spec
-|Name|Source|Description|
-|---|---|---|
-|PCLK|Clock Source|Bus Clock(posedge edge trigger)|
-|PRESETn|Reset Controller|Bus reset(active low)|
-|PADDR[31:0]|Master|32 bit address bus|
-|PENABLE|Master|1 : indicate master can transfer data to slave|
-|PWRITE|Master|indicate direction of tranmission|
-|PWDATA[31:0]|Master|write data|
-|PPROT[2:0]|Master|indicate which is data / instruction|
-|PRDATA[31:0]|Slave|read data|
-|PREADY|Slave|1 : slave is ready for next cmd|
-|PSLVERR|Slave|show response result|
+# Formal Verification Introduce
+/*** 參考文獻 ***/
+// https://www.eettaiwan.com/20190715ta31-introduction-to-formal-verification/
+// https://www.wenhui.space/docs/07-ic-verify/formal/formal/
 
 
----
-# My APB VIP Architecture
+形式驗證(formal verification)是使用數學方法驗證設計正確性的過程，其工具使用各種演算法來驗證設計，但不執行任何時序檢查。這些工具不需要激勵(stimulus)或測試平台，在IC設計週期初期即可執行，也就是說，只要有RTL碼即可執行形式驗證。問題發現越早，修復就越容易。
+形式驗證的普及得益於在英特爾(Intel) Pentium處理器發現漏洞的業界知名事件；該事件導致故障處理器召回，英特爾也不得不承擔近5億美元的損失。還有其他各種事故，例如Ariane 5號運載火箭爆炸，以及巴拿馬癌症研究所(Panama Cancer Institute)輻射量超標事故等；這些事故實際上都可以利用形式驗證以避免。
+測試是指在軟硬體產品生產後，將選定的輸入訊號送入待測物 (device under testing；DUT)，從而檢驗產品設計的正確與否。模擬則不需要用到實際的待測物件，而用一個數學模型代替，觀察此數學模型的行為，以推斷產品設計的正確與否。而形式化驗證則完全在數學模型的抽象層次，企圖證明系統設計架構的正確性。
 
 
----
+# JasperGold implementation
+常用的使用方法有兩種類型,一個是SEC,對模組功能做對等性檢查,另一個是FPV,基於規則特性的功能驗證。這裡只對FPV進行介紹,也就是 Formal Property Verifycation
 
-# My APB VIP Topology
-```
-APB_vip/
-├── APB_if.sv                ←【介面】實體訊號、modport
-│
-├── APB_pkg.sv               ←【總入口】import 所有 class
-│
-├── transaction/
-│   └── APB_txn.sv     ←【交易】抽象的一次 write 行為
-│
-├── sequence/
-│   ├── APB_virtual_seq        ← 裝seq的容器，並同步addr
-│       └── APB_seq.sv         ←【刺激】產生write txn
-│       └── APB_read_seq.sv    ←【刺激】產生read txn
-│
-├── agent/
-│   ├── APB_driver.sv        ←【執行者】把 txn 變成 pin-level APB
-│   ├── APB_monitor.sv       ←【觀察者】從 pin-level 還原 txn
-│   ├── APB_sequencer.sv     ←【排程器】管理 sequence
-│   └── APB_agent.sv         ←【整合】driver + monitor
-│
-├── scoreboard/
-│   └── APB_scoreboard.sv    ←【記分板】接受monitor傳過來的tr & 實現write方法
-│
-├── env/
-│   └── APB_env.sv           ←【環境】放一個或多個 agent
-│
-├── test/
-│   └── APB_write_test.sv    ←【測試】選 sequence 跑 
-│
-│
-└── top/
-    └── tb_top.sv            ←【最上層】DUT + VIP + vif config_db + clock/reset
-```
-
----
-
-
-
-
-
-
-
+# Formal Verification in FIFO RTL
+## Step 1. Generate FIFO
+## Step 2. Generate System Verilog Assertion (SVA)
+## Step 3. Create formal filelist (formal.f)  /  Create tcl file
+           
