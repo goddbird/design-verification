@@ -1,7 +1,8 @@
 # Formal Verification Introduce
-/*** 參考文獻 ***/
-// https://www.eettaiwan.com/20190715ta31-introduction-to-formal-verification/
-// https://www.wenhui.space/docs/07-ic-verify/formal/formal/
+/*** 參考文獻 ***/ <br>
+https://www.eettaiwan.com/20190715ta31-introduction-to-formal-verification/  <br>
+https://www.wenhui.space/docs/07-ic-verify/formal/formal/ <br>
+https://www.systemverilog.io/verification/gentle-introduction-to-formal-verification/ <br>
 
 
 形式驗證(formal verification)是使用數學方法驗證設計正確性的過程，其工具使用各種演算法來驗證設計，但不執行任何時序檢查。這些工具不需要激勵(stimulus)或測試平台，在IC設計週期初期即可執行，也就是說，只要有RTL碼即可執行形式驗證。問題發現越早，修復就越容易。
