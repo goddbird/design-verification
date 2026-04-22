@@ -52,3 +52,68 @@ https://www.systemverilog.io/verification/gentle-introduction-to-formal-verifica
 - 參數化設計：讓 FIFO 或 assertion 支援參數化（如深度、資料寬度），提升驗證彈性。
 - 結合仿真驗證：可考慮 hybrid flow，將 formal assertion 與傳統仿真 testbench 結合，提升驗證信心。
 - 更細緻的 reset/clock 控制：根據設計需求，提供更彈性的 clock/reset 設定與多時脈支援。
+
+# TBD
+針對 FIFO (First-In-First-Out) 的驗證，編寫 Assertion (通常使用 SystemVerilog Assertions, SVA) 的核心在於確保**資料完整性**、**邊界條件**以及**時序協議**。
+
+以下我將 FIFO 的行為拆解為幾個維度，你可以根據這些行為來編寫 Assertion，以提升 Coverage：
+
+---
+
+### 1. 基礎指針與狀態行為 (Pointer & Status Flags)
+這部分確保 FIFO 的「滿」與「空」旗標邏輯正確。
+
+* **Reset 狀態檢查：** 當 `reset` 觸發時，`full` 必須為 0，`empty` 必須為 1，指針必須歸零。
+* **Full 狀態阻擋：** 當 `full` 為高電位時，若 `push` 動作仍然發生，必須觸發錯誤（除非設計允許自動忽略，否則通常視為 Overflow）。
+* **Empty 狀態阻擋：** 當 `empty` 為高電位時，若 `pop` 動作仍然發生，必須觸發錯誤（Underflow）。
+* **滿/空互斥：** 除非深度為 0（不合理），否則 `full` 和 `empty` 不應同時為 1。
+* **臨界旗標 (Thresholds)：** 若有 `almost_full` 或 `almost_empty`，檢查其觸發時的計數值是否符合設定。
+
+### 2. 資料完整性 (Data Integrity)
+這是 FIFO 最關鍵的部分，確保進去的資料跟出來的一模一樣。
+
+* **資料穩定性：** 當 `push` 有效但 `pop` 未發生時，`data_out` (或內部存儲) 在下一個時鐘週期不應改變。
+* **FIFO 順序檢查 (Ordered Pass-through)：** > **建議寫法：** 利用一個輔助的 Queue 或偵測特定 Data Tag。進入 FIFO 的第一個資料 `D1`，必須是第一個被輸出的資料。
+* **無中生有 (No Spurious Data)：** 當 `pop` 發生時，輸出的資料必須是之前曾經 `push` 進去的。
+
+### 3. 計數器與深度 (Counter & Depth)
+* **計數器遞增/遞減：** * 若只有 `push`，計數器必加 1。
+    * 若只有 `pop`，計數器必減 1。
+    * 若同時 `push` 和 `pop`，計數器應保持不變。
+* **最大深度：** 計數器的值永遠不可超過 FIFO 的 `DEPTH`。
+
+### 4. 握手協議與時序 (Interface Handshaking)
+如果你的 FIFO 介面是 AXI-Stream 或類似的 Ready/Valid 協議：
+
+* **Valid 穩定性：** 當 `valid` 拉高但 `ready` 為低時，`valid` 必須保持為高，且 `data` 內容不可變動，直到 `ready` 變高完成握手。
+* **連續讀寫：** 測試在連續 `push` 到滿、連續 `pop` 到空的極端切換。
+
+---
+
+### 5. 建議增加的 Assertion 行為列表 (可直接轉化為程式碼)
+
+| 行為分類 | 描述 (Assertion Logic) |
+| :--- | :--- |
+| **Overflow** | `assert property (@(posedge clk) full && push |-> ##1 (error_flag));` |
+| **Underflow** | `assert property (@(posedge clk) empty && pop |-> ##1 (error_flag));` |
+| **Full Delay** | 當 counter 達到 `DEPTH` 時，下一個週期 `full` 必須為 1。 |
+| **Empty Recovery** | 當最後一筆資料被 `pop` 後，下一個週期 `empty` 必須變為 1。 |
+| **Toggle Coverage** | 確保 `full` 和 `empty` 都至少被觸發過高與低狀態。 |
+| **Read-While-Write** | 在 `full` 的狀態下同時進行 `push` 與 `pop` (如果支援)，檢查 `full` 是否正確維持。 |
+
+---
+
+### 💡 提升 Coverage 的小技巧
+
+為了確保你的 Assertion 真的覆蓋了所有行為，你可以檢查以下 **Corner Cases**：
+1.  **Wrap-around:** 當寫入指針或讀取指針到達地址頂端並回到 0 時。
+2.  **Back-to-back:** 連續的單週期切換 `push` 與 `pop`。
+3.  **One-entry:** 只有一筆資料在 FIFO 裡面的行為。
+4.  **Simultaneous:** 同時發生 `push` 和 `pop` 且 FIFO 正好處於 `empty` 或 `full` 的邊界。
+
+針對你之前的問題，如果你寫了 `(icpen == 0 && wrtrmp == 0)` 的 Assertion 卻一直跑不到 (No hit)，你可以試著寫一個 **Cover Property** 來確認這兩個變數在模擬過程中是否真的有「同時為 0」的機會：
+`cover property (@(posedge clk) icpen == 0 && wrtrmp == 0);`
+
+如果 Cover report 顯示這條沒被滿足，那就說明你的 Testbench (Stimulus) 根本沒有產生這種情境，或是硬體邏輯上鎖死了這個組合。
+
+在你的設計中，`icpen` 和 `wrtrmp` 是否有特定的優先順序（例如其中一個為 1 時，另一個必然不為 0）？
