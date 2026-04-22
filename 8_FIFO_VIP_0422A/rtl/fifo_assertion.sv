@@ -34,4 +34,4 @@ cover property (@(posedge CLK) disable iff (!RESETn) full);
 cover property (@(posedge CLK) disable iff (!RESETn) empty);
 cover property (@(posedge CLK) disable iff (!RESETn) (wptr == 0) && ($past(wptr) == DEPTH-1));
 cover property (@(posedge CLK) disable iff (!RESETn) (rptr == 0) && ($past(rptr) == DEPTH-1));
-cover property (@(posedge CLK) disable iff (!RESETn) (full && rd && !$past(full)) |-> !full);
+cover property (@(posedge CLK) disable iff (!RESETn) (full && rd && !$past(full)) |=> !full);
