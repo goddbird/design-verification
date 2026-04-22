@@ -33,3 +33,22 @@ https://www.systemverilog.io/verification/gentle-introduction-to-formal-verifica
            reset -expression {RESETn == 0}
            prove -all
            ```
+
+
+# Side Project Agenda
+## 特色
+- 形式驗證方法：專案採用 formal verification（形式驗證），利用數學方法驗證設計正確性，不需激勵或傳統 testbench，能在 RTL 階段早期發現問題，修復成本低。
+- 自動化流程：有明確的流程與腳本（如 run_formal.tcl），自動化分析、elaborate、clock/reset 設定與 prove-all，方便快速驗證。
+- SVA 整合：強調 SystemVerilog Assertion（SVA）必須與 DUT 寫在同一 module，確保 assertion 能正確作用於設計。
+- 文件結構清楚：RTL、assertion、interface、formal filelist、tcl 腳本分明，易於維護與擴充。
+- 參考文獻豐富：README 提供多個 formal verification 相關資源，便於學習與查證。
+---
+
+## Future Work
+- Assertion 覆蓋率：可加入 assertion coverage 報告，檢查哪些設計行為未被 assertion 覆蓋，提升驗證完整性。
+- 模組化與重用性：將 assertion、interface、checker 進一步模組化，方便日後複用於其他專案。
+- 自動化報告產生：增設自動產生驗證報告（如通過/失敗、counterexample trace），方便追蹤與審查。
+- 多工具支援：目前流程偏向 JasperGold，可考慮支援其他 formal 工具（如 Synopsys VC Formal、OneSpin），提升移植性。
+- 參數化設計：讓 FIFO 或 assertion 支援參數化（如深度、資料寬度），提升驗證彈性。
+- 結合仿真驗證：可考慮 hybrid flow，將 formal assertion 與傳統仿真 testbench 結合，提升驗證信心。
+- 更細緻的 reset/clock 控制：根據設計需求，提供更彈性的 clock/reset 設定與多時脈支援。
