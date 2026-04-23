@@ -17,7 +17,7 @@ https://www.systemverilog.io/verification/gentle-introduction-to-formal-verifica
 ## Step 1. Generate FIFO
 ## Step 2. Generate System Verilog Assertion (SVA)
 需要把SVA跟DUT寫在同一個module裡面，不能分開成兩個module
-## Step 3. Create formal filelist (formal.f)  /  Create tcl file
+## Step 3. Create formal filelist (formal.f)  /  Create tcl file (run_formal.tcl)
            ```
            ../rtl/fifo.sv
            ./checker/assertion.sv
@@ -33,7 +33,7 @@ https://www.systemverilog.io/verification/gentle-introduction-to-formal-verifica
            reset -expression {RESETn == 0}
            prove -all
            ```
-
+## Step 4. bash打 source run_formal.tcl
 
 # Side Project Agenda
 ## 特色
