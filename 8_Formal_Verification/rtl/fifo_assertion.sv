@@ -3,6 +3,7 @@
 // reference model
 logic [DATA_WIDTH-1:0] assert_mem [DEPTH];
 logic [4:0] assert_wptr, assert_rptr;
+logic [DATA_WIDTH-1:0] golden_data_out;
 
 always @(posedge CLK or negedge RESETn) begin
 	if((full && wr) || (empty && rd)) begin
@@ -14,7 +15,7 @@ always @(posedge CLK or negedge RESETn) begin
 		assert_wptr <= assert_wptr + 1;
 	end
 	else if(rd) begin
-		data_out <= assert_mem[assert_rptr];
+		golden_data_out <= assert_mem[assert_rptr];
 		assert_rptr <= assert_rptr + 1;
 	end
 end
@@ -53,7 +54,7 @@ property p_fifo_reset_status_check;
 	@(posedge CLK)	
 	!RESETn |-> (wptr == 0 && rptr == 0 && !full && empty);
 endproperty
-assert property (p_fifo_reset_status_check);
+assert property (p_fifo_reset_status_check)
 	else $error("FIFO reset status incorrect: wptr=%0d, rptr=%0d, full=%b, empty=%b", wptr, rptr, full, empty);
 
 property p_full_empty_check;
@@ -82,9 +83,22 @@ property p_data_out_correctness;
 	disable iff (!RESETn)
 	(rd) |-> ##1 (data_out == assert_mem[$past(assert_rptr)]);
 endproperty
-assert property (p_data_out_correctness);
+assert property (p_data_out_correctness)
 	else $error("FIFO data integrity error: expected %h, got %h", assert_mem[$past(assert_rptr)], data_out);
 
+property p_wptr_liveness;
+  @(posedge CLK) disable iff (!RESETn)
+  (wr && !full) |=> ##[1:$] (wptr != $past(wptr));
+endproperty
+assert property (p_wptr_liveness)
+  else $error("Liveness failed: wptr did not update under write pressure");
+
+property p_rptr_liveness;
+  @(posedge CLK) disable iff (!RESETn)
+  (rd && !empty) |=> ##[1:$] (rptr != $past(rptr));
+endproperty
+assert property (p_rptr_liveness)
+  else $error("Liveness failed: rptr did not update under read pressure");
 
 
 // ================= Cover Properties (驗證狀態可達) =================
