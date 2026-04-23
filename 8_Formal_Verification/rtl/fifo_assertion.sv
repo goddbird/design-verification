@@ -64,18 +64,28 @@ endproperty
 assert property (p_full_empty_check);
 
 property p_data_integrity_out;
-	@(posedge clk) 
+	@(posedge CLK) 
 	disable iff (!RESETn)
 	(wr) |-> ##1 (data_out == $past(data_out));
 endproperty
 assert property (p_data_integrity_out);
 
 property p_data_integrity_in;
-	@(posedge clk) 
+	@(posedge CLK) 
 	disable iff (!RESETn)
 	(rd) |-> ##1 (data_in == $past(data_in));
 endproperty
 assert property (p_data_integrity_in);
+
+property p_data_out_correctness;
+	@(posedge CLK) 
+	disable iff (!RESETn)
+	(rd) |-> ##1 (data_out == assert_mem[$past(assert_rptr)]);
+endproperty
+assert property (p_data_out_correctness);
+	else $error("FIFO data integrity error: expected %h, got %h", assert_mem[$past(assert_rptr)], data_out);
+
+
 
 // ================= Cover Properties (驗證狀態可達) =================
 cover property (@(posedge CLK) disable iff (!RESETn) full);
