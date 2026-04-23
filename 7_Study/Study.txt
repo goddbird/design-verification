@@ -498,9 +498,10 @@ Study note
 		input wire reset,
 		output reg clk_out
 	);
-		always_ff @(posedge clk_in)
+		always_ff @(posedge clk_in) begin
 			if(!reset) clk_out <= 1'b0;
-			else if(enable) clk_out <= !clk_out;		
+			else if(enable) clk_out <= !clk_out;
+		end
 	endmodule
 	
 	
