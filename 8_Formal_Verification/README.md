@@ -117,3 +117,39 @@ https://www.systemverilog.io/verification/gentle-introduction-to-formal-verifica
 如果 Cover report 顯示這條沒被滿足，那就說明你的 Testbench (Stimulus) 根本沒有產生這種情境，或是硬體邏輯上鎖死了這個組合。
 
 在你的設計中，`icpen` 和 `wrtrmp` 是否有特定的優先順序（例如其中一個為 1 時，另一個必然不為 0）？
+
+
+---
+
+# Formal Goal
+### 1. 關鍵協議與微架構的「Bug Hunting」經驗
+公司最想看的是你如何處理那些「模擬驗證難以觸發」的深層邏輯錯誤。
+* **重點經驗：** 針對 **AXI / ACE / PCIe** 等複雜匯流排協議，或 **Arbiter (仲裁器)**、**Credit-based flow control** 的驗證。
+* **面試考點：** 你如何定義 Assertions (SVA) 來捕捉 Corner Case？當 Formal 跑不完 (Complexity issue) 時，你用了什麼 **Abstraction (抽象化)** 技巧？（例如：Data Invariant、Black-boxing、減少 Counter 位元數等）。
+
+### 2. 形式驗證的「Sign-off」流程經驗
+單純找到 Bug 只是第一步，公司更看重你是否知道何時可以說「這個模組驗證完了」。
+* **重點經驗：** 如何處理 **Full Proof (完整證明)**。如果你在 JasperGold 裡只跑出一個 Bounded Proof (深度有限的證明)，你該如何向主管證明這已經足夠？
+* **面試考點：** 你是否熟悉 **Formal Coverage (如 JasperGold 的 Unreachability / Observeability coverage)**？如何判斷哪些過不去的 Proof 是真正的設計缺陷，還是因為 Constraints (Assume) 寫得太緊？
+
+### 3. 特殊應用場景 (Special Apps) 的工具運用
+現在公司非常強調用「專門的 App」解決特定痛點，這比自己寫 SVA 更有商業價值：
+* **CDC (Clock Domain Crossing) Formal：** 證明非同步時鐘域轉換時不會產生亞穩態或數據丟失。這是目前業界 FV 最普遍的用途。
+* **SEC (Sequential Equivalence Checking)：** 當設計為了省電做了 Clock Gating 或改了 Pipeline，你如何用 SEC 證明改版前後的功能完全一致？這對產品迭代非常重要。
+* **Connectivity Checking：** 對於數百萬門電路的 SoC，證明 Pin 對 Pin 的連線正確。
+
+---
+
+### 如何包裝你的 AXI-to-APB Bridge 練習經驗？
+既然你正在做這個 7 天的 side project，建議在履歷或面試中強調以下細節：
+
+* **不要只說：** 「我用 JasperGold 驗證了 AXI-to-APB Bridge。」
+* **要這樣說：** > 「我針對 AXI-to-APB Bridge 建立了 Formal 驗證環境，重點在於證明 **Outstanding Transaction** 在極端壓力下的資料完整性。我透過撰寫 **Liveness Assertions** 成功找出了在特定 Back-pressure 情況下可能導致的 **Deadlock** 問題，並利用 **Symbolic Variables** 減少了 40% 的證明收斂時間。」
+
+### 實戰建議
+既然你有 3 年 DV 經驗且熟悉 UVM，面試官常會問：**「這部分為什麼不跑 Simulation 而要用 Formal？」**
+你必須能回答出：
+1.  **效率對比：** Simulation 需建構完整 Testbench 才能動，Formal 只要 RTL 完成就能提早介入 (Shift-left)。
+2.  **信心維度：** Simulation 是機率性的，Formal 是數學證明的 100% 覆蓋。
+
+你目前在 AXI-to-APB 的練習中，有試著寫出一些能觸發 Counter-example (反例) 的錯誤邏輯嗎？這通常是理解「收斂」最快的方式。
