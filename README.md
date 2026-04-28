@@ -1,6 +1,23 @@
 # design-verification
-## 學習資源
-1. chipverify
-2. bilibili (路科 & UVM基礎)
+This is my personal workspace for after-hours self-study. 
+To accelerate my growth in the Design Verification (DV) field, I am focused on mastering the essential skills as efficiently as possible.
+This repository show my practical projects and implementations—feel free to explore!
 
+## Protocol VIP (from easy -> hard)
+### APB
+`/6_APB_VIP`
 
+----
+
+### AHB
+`/5_AHB_VIP`
+
+----
+
+### AHB
+`/4_AXI_VIP`
+
+----
+
+## Formal Verification
+`/8_Formal Verification`
