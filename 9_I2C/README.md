@@ -10,3 +10,6 @@ I2C is a two wire protocol.
 3. ACK/NACK
 4. Data
 5. Stop
+
+
+<img width="581" height="93" alt="image" src="https://github.com/user-attachments/assets/891676dc-bd49-4d52-9f9c-ed841df4f6b4" />
