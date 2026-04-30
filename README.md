@@ -20,6 +20,9 @@ All these project file can be executed on simulation. My project environment is 
 
 ----
 
+### I2C
+[`/9_I2C_VIP`](https://github.com/goddbird/design-verification/tree/main/9_I2C_VIP)
+
 ## Formal Verification
 [`/8_Formal Verification`](https://github.com/goddbird/design-verification/tree/main/8_Formal_Verification)
 
