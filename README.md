@@ -22,3 +22,7 @@ All these project file can be executed on simulation. My project environment is 
 
 ## Formal Verification
 [`/8_Formal Verification`](https://github.com/goddbird/design-verification/tree/main/8_Formal_Verification)
+
+## Verification Management
+- Verification Plan: [`/dv_docs/verification_plan.md`](./dv_docs/verification_plan.md)
+- Traceability Matrix: [`/dv_docs/traceability_matrix.md`](./dv_docs/traceability_matrix.md)
