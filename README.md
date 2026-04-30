@@ -14,7 +14,7 @@ This repository show my practical projects and implementations—feel free to ex
 
 ----
 
-### AHB
+### AXI
 `/4_AXI_VIP`
 
 ----
